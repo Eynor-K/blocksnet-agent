@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "crematorium",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": "way/44091800", "@id": "way/44091800", "addr:city": "Екатеринбург", "addr:housenumber": "1/1", "addr:street": "Сибирский тракт", "amenity": "crematorium", "building": "public", "name": "Крематорий", "website": "https://www.kco-ekb.ru/krematorij.html", "capacity": 500000 }, "geometry": { "type": "Point", "coordinates": [ 60.713174940001309, 56.79503405 ] } }
+]
+}

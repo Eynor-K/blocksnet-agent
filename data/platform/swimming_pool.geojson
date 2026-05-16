@@ -1,0 +1,16 @@
+{
+"type": "FeatureCollection",
+"name": "swimming_pool",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "leisure": "sports_centre", "name": null, "sport": "swimming", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.5406561, 56.8202702 ] } },
+{ "type": "Feature", "properties": { "leisure": "sports_centre", "name": null, "sport": "swimming", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.4186978, 56.8218973 ] } },
+{ "type": "Feature", "properties": { "leisure": "sports_centre", "name": "Юность", "sport": "swimming", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.5676677, 56.8537909 ] } },
+{ "type": "Feature", "properties": { "leisure": "sports_centre", "name": "Осминожка", "sport": "swimming", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.5238493, 56.7853988 ] } },
+{ "type": "Feature", "properties": { "leisure": "sports_centre", "name": "СК «Урал»", "sport": "swimming", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.662214290657865, 56.8545212 ] } },
+{ "type": "Feature", "properties": { "leisure": "sports_centre", "name": "AVS Кристалл", "sport": "swimming", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.705781271510922, 56.75094085 ] } },
+{ "type": "Feature", "properties": { "leisure": "sports_centre", "name": "Бассейн \"Калининец\"", "sport": "swimming", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.643849886098991, 56.89392185 ] } },
+{ "type": "Feature", "properties": { "leisure": "sports_centre", "name": "Бассейн «Университетский»", "sport": "swimming", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.655132646465205, 56.83720045 ] } },
+{ "type": "Feature", "properties": { "leisure": "sports_centre", "name": "Дворец водных видов спорта", "sport": "swimming", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.767424798909495, 56.77062485 ] } }
+]
+}

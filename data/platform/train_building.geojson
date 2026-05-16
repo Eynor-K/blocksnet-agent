@@ -1,0 +1,16 @@
+{
+"type": "FeatureCollection",
+"name": "train_building",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "name": "Административное здание станции Калиновка", "operator": null, "public_transport": null, "train": null, "capacity": 30000 }, "geometry": { "type": "Point", "coordinates": [ 60.632858166826161, 56.9123023 ] } },
+{ "type": "Feature", "properties": { "name": "Вокзал Северка", "operator": null, "public_transport": null, "train": null, "capacity": 30000 }, "geometry": { "type": "Point", "coordinates": [ 60.30524475, 56.86234545 ] } },
+{ "type": "Feature", "properties": { "name": "Шарташ", "operator": null, "public_transport": null, "train": null, "capacity": 30000 }, "geometry": { "type": "Point", "coordinates": [ 60.6462338, 56.82992885 ] } },
+{ "type": "Feature", "properties": { "name": "Кольцово", "operator": null, "public_transport": null, "train": null, "capacity": 30000 }, "geometry": { "type": "Point", "coordinates": [ 60.820459232000459, 56.76183735 ] } },
+{ "type": "Feature", "properties": { "name": "Березит", "operator": null, "public_transport": null, "train": null, "capacity": 30000 }, "geometry": { "type": "Point", "coordinates": [ 60.723249277729302, 56.95333985 ] } },
+{ "type": "Feature", "properties": { "name": "Уктус", "operator": "РЖД", "public_transport": "station", "train": "yes", "capacity": 30000 }, "geometry": { "type": "Point", "coordinates": [ 60.625552230181469, 56.7777155 ] } },
+{ "type": "Feature", "properties": { "name": null, "operator": null, "public_transport": null, "train": null, "capacity": 30000 }, "geometry": { "type": "Point", "coordinates": [ 60.473238101518064, 56.88249525 ] } },
+{ "type": "Feature", "properties": { "name": "Екатеринбург", "operator": null, "public_transport": null, "train": null, "capacity": 30000 }, "geometry": { "type": "Point", "coordinates": [ 60.605404682368601, 56.8584887 ] } },
+{ "type": "Feature", "properties": { "name": "Ретровокзал", "operator": null, "public_transport": null, "train": null, "capacity": 30000 }, "geometry": { "type": "Point", "coordinates": [ 60.48307675, 56.9204304 ] } }
+]
+}

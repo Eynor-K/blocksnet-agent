@@ -1,0 +1,26 @@
+{
+"type": "FeatureCollection",
+"name": "train_station",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "name": "Путёвка", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.6972171, 56.8174959 ] } },
+{ "type": "Feature", "properties": { "name": "Гипсовая", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.5517273, 56.8789423 ] } },
+{ "type": "Feature", "properties": { "name": "Керамик", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.6087731, 56.7505929 ] } },
+{ "type": "Feature", "properties": { "name": "Сысерть", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.5774733, 56.677203 ] } },
+{ "type": "Feature", "properties": { "name": "Перегон", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.3714096, 56.8625472 ] } },
+{ "type": "Feature", "properties": { "name": "Кольцово", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.8198612, 56.7614851 ] } },
+{ "type": "Feature", "properties": { "name": "Аппаратная", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.6745251, 56.8715635 ] } },
+{ "type": "Feature", "properties": { "name": "Звезда", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.5778852, 56.8685676 ] } },
+{ "type": "Feature", "properties": { "name": "Шувакиш", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.4818442, 56.9203449 ] } },
+{ "type": "Feature", "properties": { "name": "Северка", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.3051762, 56.861909 ] } },
+{ "type": "Feature", "properties": { "name": "Тальковая", "operator": "Сысертское ППЖТ", "operator:branch": null, "railway": "station", "train": null, "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.6089939, 56.6289058 ] } },
+{ "type": "Feature", "properties": { "name": "Разъезд № 1", "operator": "Сысертское ППЖТ", "operator:branch": null, "railway": "station", "train": null, "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.5785809, 56.6710163 ] } },
+{ "type": "Feature", "properties": { "name": "Уктус", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.6251295, 56.7778264 ] } },
+{ "type": "Feature", "properties": { "name": "Екатеринбург-Пассажирский", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.6048898, 56.8595683 ] } },
+{ "type": "Feature", "properties": { "name": "Екатеринбург-Сортировочный", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.4730787, 56.8821915 ] } },
+{ "type": "Feature", "properties": { "name": "Шарташ", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.646445, 56.8301486 ] } },
+{ "type": "Feature", "properties": { "name": "Лечебный", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.7275941, 56.7949078 ] } },
+{ "type": "Feature", "properties": { "name": "Исток", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.787983, 56.7874205 ] } },
+{ "type": "Feature", "properties": { "name": "Березит", "operator": "ОАО «РЖД»", "operator:branch": "Свердловская железная дорога", "railway": "station", "train": "yes", "capacity": 1000 }, "geometry": { "type": "Point", "coordinates": [ 60.7230176, 56.9536139 ] } }
+]
+}

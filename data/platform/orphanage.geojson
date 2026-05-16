@@ -1,0 +1,14 @@
+{
+"type": "FeatureCollection",
+"name": "orphanage",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "amenity": "social_facility", "name": "Обитель милосердия во имя прпмц Великой княгини Елисаветы Фёдоровны", "capacity": 300 }, "geometry": { "type": "Point", "coordinates": [ 60.575361, 56.8653507 ] } },
+{ "type": "Feature", "properties": { "amenity": "social_facility", "name": "Дом-интернат для престарелых и инвалидов Орджоникидзевского района", "capacity": 300 }, "geometry": { "type": "Point", "coordinates": [ 60.578388916939033, 56.90809425 ] } },
+{ "type": "Feature", "properties": { "amenity": null, "name": null, "capacity": 300 }, "geometry": { "type": "Point", "coordinates": [ 60.686046494434763, 56.83383285 ] } },
+{ "type": "Feature", "properties": { "amenity": "social_facility", "name": "Центр социальной помощи семье и детям \"Каравелла\"", "capacity": 300 }, "geometry": { "type": "Point", "coordinates": [ 60.534727422797332, 56.82890325 ] } },
+{ "type": "Feature", "properties": { "amenity": "social_facility", "name": "Тёплый дом", "capacity": 300 }, "geometry": { "type": "Point", "coordinates": [ 60.57746295, 56.8071621 ] } },
+{ "type": "Feature", "properties": { "amenity": "social_facility", "name": "Уктусский пансионат для престарелых и инвалидов", "capacity": 300 }, "geometry": { "type": "Point", "coordinates": [ 60.651923303342187, 56.79327095 ] } },
+{ "type": "Feature", "properties": { "amenity": "social_facility", "name": "Центр социальной помощи семье и детям \"Отрада\"", "capacity": 300 }, "geometry": { "type": "Point", "coordinates": [ 60.669877200229465, 56.82751785 ] } }
+]
+}

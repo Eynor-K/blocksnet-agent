@@ -1,0 +1,12 @@
+{
+"type": "FeatureCollection",
+"name": "bus_station",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "amenity": "bus_station", "name": "Северный автовокзал Екатеринбург", "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.599234, 56.8580579 ] } },
+{ "type": "Feature", "properties": { "amenity": "bus_station", "name": null, "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.6194746, 56.9118189 ] } },
+{ "type": "Feature", "properties": { "amenity": "bus_station", "name": "Восточная автостанция", "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.63206426512258, 56.8424725 ] } },
+{ "type": "Feature", "properties": { "amenity": "bus_station", "name": "Южный автовокзал", "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.611228592327762, 56.8078441 ] } },
+{ "type": "Feature", "properties": { "amenity": "bus_station", "name": null, "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.493492596384513, 56.78889425 ] } }
+]
+}

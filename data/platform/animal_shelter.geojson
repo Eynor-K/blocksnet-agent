@@ -1,0 +1,11 @@
+{
+"type": "FeatureCollection",
+"name": "animal_shelter",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "amenity": "animal_shelter", "name": "Центр Реабилитации Животных", "capacity": 100 }, "geometry": { "type": "Point", "coordinates": [ 60.6192117, 56.8177938 ] } },
+{ "type": "Feature", "properties": { "amenity": "animal_shelter", "name": "Лови момент", "capacity": 100 }, "geometry": { "type": "Point", "coordinates": [ 60.544322, 56.772857 ] } },
+{ "type": "Feature", "properties": { "amenity": "animal_shelter", "name": "Студия четвероногих модников", "capacity": 100 }, "geometry": { "type": "Point", "coordinates": [ 60.575459, 56.799859 ] } },
+{ "type": "Feature", "properties": { "amenity": "animal_shelter", "name": "Хаски-питомник \"Эльбрус\"", "capacity": 100 }, "geometry": { "type": "Point", "coordinates": [ 60.353156951681044, 56.7697128 ] } }
+]
+}

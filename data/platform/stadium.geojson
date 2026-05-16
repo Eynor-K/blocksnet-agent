@@ -1,0 +1,31 @@
+{
+"type": "FeatureCollection",
+"name": "stadium",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": "Стадион", "sport": null, "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.5496426, 56.8332594 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": "Центральный стадион", "sport": null, "capacity": 10000 }, "geometry": { "type": "Point", "coordinates": [ 60.573935973163614, 56.83217775 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": "Межшкольный стадион", "sport": "soccer;athletics;fitness", "capacity": 10000 }, "geometry": { "type": "Point", "coordinates": [ 60.587815424089811, 56.79479825 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": "Динамо", "sport": null, "capacity": 10000 }, "geometry": { "type": "Point", "coordinates": [ 60.600273469470721, 56.84538305 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": "Локомотив", "sport": "ice_hockey", "capacity": 10000 }, "geometry": { "type": "Point", "coordinates": [ 60.515949920757762, 56.87771605 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": "Стадион «Южный»", "sport": null, "capacity": 10000 }, "geometry": { "type": "Point", "coordinates": [ 60.602767950929938, 56.78959765 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": "Школьный стадион, школа #23", "sport": null, "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.512244821578946, 56.7934555 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": "Калининец", "sport": null, "capacity": 10000 }, "geometry": { "type": "Point", "coordinates": [ 60.645329854035509, 56.89417965 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": null, "sport": null, "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.521300700130134, 56.7887073 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": null, "sport": "ice_hockey", "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.653072701903938, 56.8713297 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": null, "sport": "basketball", "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.642020723149592, 56.843301 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": null, "sport": null, "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.707587333077683, 56.78814635 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": "Ледовая арена «Авто»", "sport": null, "capacity": 10000 }, "geometry": { "type": "Point", "coordinates": [ 60.560243958596502, 56.74920595 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": null, "sport": null, "capacity": 10000 }, "geometry": { "type": "Point", "coordinates": [ 60.582479243740558, 56.7669064 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": "УГМК-Арена", "sport": null, "capacity": 10000 }, "geometry": { "type": "Point", "coordinates": [ 60.609610940922487, 56.82428365 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": null, "sport": null, "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.661535394411985, 56.78470475 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": null, "sport": null, "capacity": 10000 }, "geometry": { "type": "Point", "coordinates": [ 60.627538192358081, 56.7891202 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": "Brand New Park", "sport": "basketball;soccer", "capacity": 10000 }, "geometry": { "type": "Point", "coordinates": [ 60.620983768269227, 56.8261745 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": null, "sport": null, "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.529358623381178, 56.8719891 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": null, "sport": null, "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.532842343041892, 56.8705611 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": null, "sport": null, "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.5841780772829, 56.7594169 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": null, "sport": null, "capacity": 10000 }, "geometry": { "type": "Point", "coordinates": [ 60.560950850288634, 56.74234615 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": null, "sport": "soccer;basketball", "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.601757165547163, 56.80377955 ] } },
+{ "type": "Feature", "properties": { "leisure": "stadium", "name": null, "sport": null, "capacity": 2000 }, "geometry": { "type": "Point", "coordinates": [ 60.602070693169139, 56.7725845 ] } }
+]
+}

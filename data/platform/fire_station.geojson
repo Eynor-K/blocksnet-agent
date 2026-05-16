@@ -1,0 +1,31 @@
+{
+"type": "FeatureCollection",
+"name": "fire_station",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": null, "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.621507, 56.8151036 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": null, "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.8123147, 56.7475175 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Учебная часть УИГПС", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.6469098, 56.8461739 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "СПСЧ", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.6315251, 56.9064084 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "ФПС №49 МЧС, часть №1", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.6139685, 56.8761629 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарная часть №305", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.478547472296583, 56.7863911 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Отдельный пост пожарной части №1", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.612606587795518, 56.8372568 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарная часть №19", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.587381243100339, 56.88483495 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарная часть №3", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.585966007086348, 56.8286203 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарная часть №6", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.710837939175917, 56.7579152 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Специальное управление Федеральной Противопожарной Службы № 49 МЧС России ГУ", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.66393574945338, 56.85842435 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарная часть №7", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.534016519158442, 56.88476875 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарная часть №9", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.705453589839351, 56.8117015 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарная часть №105", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.552767197114335, 56.7737232 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарный поезд", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.509426591338034, 56.8686551 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Специализированная пожарно-спасательная часть №2", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.648596467829869, 56.83213285 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарная часть №1", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.656103650460125, 56.8450669 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарная часть №4", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.691953262952339, 56.87561955 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарная часть №5", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.650389402073642, 56.8866471 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарная часть №2", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.558782337829086, 56.82125655 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарная часть №8", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.632707901488217, 56.78844305 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарная часть №74", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.640042408015105, 56.82305405 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Пожарная часть №97", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.622500552987752, 56.76706535 ] } },
+{ "type": "Feature", "properties": { "amenity": "fire_station", "name": "Отдельный пост пожарной части №19", "capacity": 100000 }, "geometry": { "type": "Point", "coordinates": [ 60.685997598862009, 56.95601755 ] } }
+]
+}

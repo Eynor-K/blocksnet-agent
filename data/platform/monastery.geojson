@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "monastery",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "amenity": "monastery", "name": "Ново-Тихвинский женский монастырь", "religion": "christian", "capacity": 1500 }, "geometry": { "type": "Point", "coordinates": [ 60.612592354985686, 56.74220825 ] } },
+{ "type": "Feature", "properties": { "amenity": "monastery", "name": "Ново-Тихвинский женский монастырь, первый жилой корпус", "religion": "christian", "capacity": 1500 }, "geometry": { "type": "Point", "coordinates": [ 60.600872816800774, 56.8215902 ] } }
+]
+}

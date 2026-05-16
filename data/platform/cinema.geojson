@@ -1,0 +1,27 @@
+{
+"type": "FeatureCollection",
+"name": "cinema",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "name": "Космос", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.6049471, 56.8453937 ] } },
+{ "type": "Feature", "properties": { "name": "Салют", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.6100205, 56.8381839 ] } },
+{ "type": "Feature", "properties": { "name": "Колизей", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.6108091, 56.8395273 ] } },
+{ "type": "Feature", "properties": { "name": "Юго-Западный", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.5660397, 56.803889 ] } },
+{ "type": "Feature", "properties": { "name": "Дружба", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.5544945, 56.8034373 ] } },
+{ "type": "Feature", "properties": { "name": "Титаник Синема", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.5990772, 56.8287408 ] } },
+{ "type": "Feature", "properties": { "name": "Дом Кино", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.6220867, 56.8370262 ] } },
+{ "type": "Feature", "properties": { "name": "Синема Парк", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.5824855, 56.8328898 ] } },
+{ "type": "Feature", "properties": { "name": "3D Мегаполис", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.6117752, 56.8069233 ] } },
+{ "type": "Feature", "properties": { "name": "Киноплекс", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.551061, 56.8530715 ] } },
+{ "type": "Feature", "properties": { "name": "Киноплекс", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.6302935, 56.8637808 ] } },
+{ "type": "Feature", "properties": { "name": "Олимп", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.7753791, 56.7888295 ] } },
+{ "type": "Feature", "properties": { "name": "Роликс", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.6714712, 56.8296221 ] } },
+{ "type": "Feature", "properties": { "name": "Заря", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.6151175, 56.8868997 ] } },
+{ "type": "Feature", "properties": { "name": "ЦК «Урал»", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.6607346, 56.8550601 ] } },
+{ "type": "Feature", "properties": { "name": "Prada 3D", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.5196385, 56.7936345 ] } },
+{ "type": "Feature", "properties": { "name": "KiberRoom", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.5503377, 56.8530774 ] } },
+{ "type": "Feature", "properties": { "name": "Мягкий кинотеатр", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.6147836, 56.9178423 ] } },
+{ "type": "Feature", "properties": { "name": "Премьер зал Омега", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.6123543, 56.8998737 ] } },
+{ "type": "Feature", "properties": { "name": "Премьер зал Парк-Хаус", "capacity": 600 }, "geometry": { "type": "Point", "coordinates": [ 60.6299029, 56.8632618 ] } }
+]
+}
