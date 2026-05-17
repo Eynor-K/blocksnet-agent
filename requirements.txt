@@ -1,0 +1,9 @@
+langgraph>=1.1.0
+langchain-openai>=1.2.0
+langchain-core>=1.3.0
+pydantic-settings>=2.0.0
+python-dotenv>=1.0.0
+geopandas>=0.14.0
+pandas>=2.0.0
+numpy>=1.24.0
+blocksnet>=1.0.0a9
