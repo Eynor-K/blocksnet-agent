@@ -18,5 +18,3 @@ data/platform/
 # нормативы сервисов и исходники пересборки — ВЕРСИОНИРУЮТСЯ:
 !data/service_type.json
 !data/archetypes.csv
-!data/raw/
-!data/raw/**
