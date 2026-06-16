@@ -1,101 +1,82 @@
 # blocksnet-agent
 
-ReAct-агент для городского планирования на основе библиотеки [blocksnet](https://github.com/aimclub/blocksnet).
+Tool-calling агент городской аналитики на основе библиотеки [blocksnet](https://github.com/aimclub/blocksnet).
 
-Агент получает задачу на естественном языке, самостоятельно выбирает и вызывает инструменты анализа, сохраняет результаты в CSV-файлы и возвращает структурированный ответ.
+Агент получает задачу на естественном языке, **рассуждает над ней до расчётов** (ANALYSIS PLAN с проверяемыми гипотезами и выбранными метриками), сам выбирает и вызывает инструменты анализа по предвычисленной локальной модели города, **разбирает результат после** (REFLECTION / HYPOTHESES / NUMERIC SELF-CHECK), проверяет гипотезы фактическим выводом инструментов и возвращает машиночитаемый структурированный ответ с уверенностью и ограничениями. Для генеративных вопросов («что и где строить») формирует измеренную гипотезу развития через TPE-оптимизатор и независимую сценарную проверку.
+
+---
+
+## Архитектура
+
+```
+Вопрос → AgentExecutor (ReAct, tool-calling)
+        ↓                                          ↓
+  краткие описания инструментов            ↻ цикл LLM ⇄ инструменты BlocksNet (max_iter)
+        ↓                                          ↓
+  ANALYSIS PLAN (рассуждение до расчётов)   intermediate_steps (tool/input/observation)
+        ↓                                          ↓
+  слой согласованности M1–M3 (заземление verdict'ов · самосогласованность с планом · план+саморефлексия) ·
+  REFLECTION/RESULT из наблюдений · авто-скоринг CONFIDENCE → структурированный ответ
+```
+
+- **Движок** — `create_tool_calling_agent` + `AgentExecutor` (`return_intermediate_steps=True`): нативный tool-calling API без ручного парсинга Action/Observation; все шаги сохраняются для логирования и скоринга уверенности.
+- **RAG по инструментам** — LLM видит короткие описания всех инструментов; полные контракты и подсказки доступны через `get_tool_help(name)`, поиск подходящих инструментов — через `find_tools(query)`. Заданных workflow-карточек нет: маршрут строится из плана, гипотез и доступных инструментов.
+- **Структурированный вывод** (8 машиночитаемых секций, парсятся регулярками): `ANALYSIS PLAN`, `RESULT`, `REFLECTION`, `HYPOTHESES`, `NUMERIC SELF-CHECK`, `FOLLOW_UPS`, `CONFIDENCE`, `LIMITATIONS`.
+- **Петля гипотез** generate → test → verify: `suggest_target_blocks` → `propose_zone_development` (TPE/Optuna) → `compute_scenario_provision` (независимый пересчёт обеспеченности before/after).
+- **Кэш данных** (`tool_state: dict`) переживает вызовы `run()` — `blocks`, `acc_mx` и результаты `compute_*` не перечитываются повторно.
 
 ---
 
 ## Быстрый старт
 
 ```bash
-# 1. Клонируй репозиторий
 git clone <repo-url>
 cd blocksnet-agent
-
-# 2. Установи зависимости
 pip install -r requirements.txt
-
-# 3. Создай .env из шаблона и заполни ключи
-cp .env.example .env
+cp .env.example .env   # заполни ключи
 ```
 
 ```python
 from blocksnet_agent import BlocksNetAgent, AgentResult
 
-agent = BlocksNetAgent()
+agent = BlocksNetAgent(model="openai/gpt-4o-mini")
 
 result: AgentResult = agent.run(
     "Проанализируй транспортную доступность городских кварталов."
 )
 
-print(result["input"])   # исходная задача
-print(result["output"])  # финальный ответ агента
-for msg in result["log"]:
-    print(type(msg).__name__, ":", str(msg.content)[:200])
-```
-
----
-
-## Установка
-
-**Требования:** Python 3.11+
-
-```bash
-pip install -r requirements.txt
-```
-
-`requirements.txt`:
-```
-langgraph>=1.1.0
-langchain-openai>=1.2.0
-langchain-core>=1.3.0
-pydantic-settings>=2.0.0
-python-dotenv>=1.0.0
-geopandas>=0.14.0
-pandas>=2.0.0
-numpy>=1.24.0
-blocksnet>=1.0.0a9
+print(result["output"])       # структурированный ответ (ANALYSIS PLAN / RESULT / ...)
+print(result["confidence"])   # 0.0–1.0, авто-скоринг по уликам
+print(result["limitations"])  # список ограничений
+print(result["run_dir"])      # каталог с CSV, картами и run_log
 ```
 
 ---
 
 ## Конфигурация
 
-Создай файл `.env` в корне проекта:
+Создай `.env` в корне проекта:
 
 ```env
-# OpenAI-совместимый API (OpenRouter, OpenAI, LM Studio и др.)
 FP2MP_CHAT_URL=https://openrouter.ai/api/v1
 FP2MP_API_KEY=sk-or-v1-...
-
-# Имя модели (для OpenRouter используй формат provider/model)
-FP2MP_MODEL=openai/gpt-4o
+FP2MP_MODEL=openai/gpt-4o-mini
 ```
-
-Поддерживаемые переменные:
 
 | Переменная | Алиас | Описание | По умолчанию |
 |---|---|---|---|
-| `FP2MP_CHAT_URL` | `CHAT_URL` | URL API-эндпоинта | — |
+| `FP2MP_CHAT_URL` | `CHAT_URL` | URL OpenAI-совместимого API | — |
 | `FP2MP_API_KEY` | `API_KEY` | Ключ авторизации | — |
 | `FP2MP_MODEL` | `MODEL` | Имя модели | `gpt-4o-mini` |
 
-Настройки также можно передать программно:
+Программно:
 
 ```python
 from blocksnet_agent import BlocksNetAgent
 from blocksnet_agent.config import Settings
 
-settings = Settings(
-    chat_url="https://openrouter.ai/api/v1",
-    api_key="sk-or-v1-...",
-    model="openai/gpt-4o",
-)
-agent = BlocksNetAgent(settings=settings)
-
-# или только модель
-agent = BlocksNetAgent(model="openai/gpt-4o-mini")
+agent = BlocksNetAgent(settings=Settings(chat_url="...", api_key="...", model="openai/gpt-4o"))
+agent = BlocksNetAgent(model="openai/gpt-4o-mini", max_iterations=10)
 ```
 
 ---
@@ -106,23 +87,29 @@ agent = BlocksNetAgent(model="openai/gpt-4o-mini")
 blocksnet-agent/
 ├── blocksnet_agent/          # Python-пакет агента
 │   ├── __init__.py           # BlocksNetAgent, AgentResult
-│   ├── agent.py              # класс агента
-│   ├── config.py             # Settings (pydantic-settings)
-│   ├── prompts.py            # системный промпт
-│   └── tools/                # инструменты blocksnet
-│       ├── __init__.py       # make_tools() — фабрика
-│       ├── data.py           # загрузка данных
-│       ├── network.py        # анализ доступности
-│       ├── provision.py      # обеспеченность сервисами
-│       ├── services.py       # сервисы и централность
-│       └── indicators.py     # индикаторы и граф смежности
-├── data/                     # геопространственные данные
+│   ├── agent.py              # AgentExecutor + парсинг секций, слой согласованности M1–M3, скоринг confidence
+│   ├── prompts.py            # system prompt (8 секций, правила планирования и заземления)
+│   ├── config.py             # Settings + get_settings()
+│   ├── llm.py                # фабрика ChatOpenAI (get_chat_model)
+│   ├── runtime.py            # каталог запуска (run_*), record_file, run_log
+│   └── tools/
+│       ├── __init__.py       # make_tools() — фабрика 30 инструментов
+│       ├── data.py           # загрузка модели, list_key_services, кэш (ensure_*)
+│       ├── network.py        # доступность и связность
+│       ├── provision.py      # обеспеченность сервисами (+ пресеты key/basic/advanced/comfort)
+│       ├── services.py       # плотность, разнообразие, колокация, центральность
+│       ├── indicators.py     # морфология FSI/GSI/MXI/OSR, граф смежности
+│       ├── optimize.py       # TPE-оптимизация зон + compute_scenario_provision
+│       ├── viz.py            # картограммы метрик (save_metric_map)
+│       └── registry.py       # короткие/полные описания инструментов, find_tools/get_tool_help
+├── data/
 │   ├── blocks_with_services.gpkg   # кварталы + сервисы
-│   ├── acc_mx.pickle               # матрица доступности
-│   └── platform/                   # 68 GeoJSON файлов сервисов
-├── examples/
-│   └── demo.ipynb            # демонстрационный ноутбук
-├── outputs/                  # CSV-результаты анализа
+│   ├── acc_mx.pickle               # предвычисленная матрица доступности
+│   ├── service_type.json           # нормативы demand/accessibility сервисов
+│   ├── archetypes.csv              # веса архетипов для TPE-оптимизатора
+│   ├── platform/                   # GeoJSON сервисов
+│   └── raw/                        # исходники для пересборки локальной модели
+├── outputs/run_*/            # per-run: CSV, maps/*.png, run_log.{json,md}
 ├── requirements.txt
 └── .env.example
 ```
@@ -132,108 +119,89 @@ blocksnet-agent/
 ## Формат вывода
 
 ```python
-class AgentResult(TypedDict):
+class AgentResult(TypedDict, total=False):
     input: str               # исходная задача
-    output: str              # финальный ответ агента
-    log: list[BaseMessage]   # история: HumanMessage + AIMessage
+    output: str              # структурированный ответ (секции)
+    log: list[BaseMessage]   # HumanMessage + AIMessage (с usage_metadata)
+    confidence: float        # 0.0–1.0, авто-скоринг по числу успешных compute-вызовов,
+                             #          наличию REFLECTION и верифицированных гипотез
+    limitations: list[str]   # ограничения (в т.ч. выход за пределы локальной модели)
+    sections: dict[str, str] # распарсенные секции по именам
+    run_dir: str             # каталог запуска с артефактами
 ```
 
-```python
-result = agent.run("Какие кварталы наименее доступны?")
+**Машиночитаемые секции** (`output` / `sections`):
 
-result["input"]   # → "Какие кварталы наименее доступны?"
-result["output"]  # → "Наименее доступными являются кварталы №..."
-result["log"]     # → [HumanMessage(...), AIMessage(...), AIMessage(...)]
+| Секция | Назначение |
+|---|---|
+| `ANALYSIS PLAN` | Рассуждение **до** расчётов: вопрос → потребности → проверяемые гипотезы → метрики/инструменты с обоснованием |
+| `RESULT` | Ключевые числа модели с единицами и интерпретацией |
+| `REFLECTION` | Лучшие/худшие кварталы, дефициты, связь метрик — с числами и block_id |
+| `HYPOTHESES` | claim / test / verdict; verdict обязан содержать число и block_id из вывода инструмента, иначе `unverified` |
+| `NUMERIC SELF-CHECK` | Диапазоны, единицы, санити-проверка чисел |
+| `FOLLOW_UPS` | Необязательные вопросы для следующего раунда анализа |
+| `CONFIDENCE` | Самооценка агента 0.0–1.0 |
+| `LIMITATIONS` | Что не учтено; явная пометка выхода за пределы `data/` |
 
-from langchain_core.messages import BaseMessage
-assert all(isinstance(m, BaseMessage) for m in result["log"])
-```
+Если агент не выдал `RESULT`/`REFLECTION`, пост-обработка восстанавливает их из наблюдений инструментов. До этого работает универсальный **слой согласованности** (`_refine_until_coherent`): незаземлённые verdict'ы, незакрытые потребности собственного `ANALYSIS PLAN` или отсутствие плана запускают повторный самоаудит-проход AgentExecutor (домен-нейтрально, до 2 проходов).
 
 ---
 
 ## Инструменты агента
 
-Агент управляет 23 инструментами blocksnet, разбитыми по группам.
+30 инструментов в 7 семействах. Все результаты автоматически сохраняются в каталог запуска (`outputs/run_*`): CSV + картограммы (`maps/*.png`).
 
-### Загрузка данных (`tools/data.py`)
+### Данные (`tools/data.py`)
+`load_blocks` · `load_accessibility_matrix` · `list_cached_data` · `list_service_types` · `list_key_services` (нормативы demand/accessibility) · `get_block_info` · `get_analysis_results`
 
-| Инструмент | Описание |
+### Доступность (`tools/network.py`)
+`compute_mean_accessibility` · `compute_median_accessibility` · `compute_max_accessibility` · `compute_connectivity` · `compute_land_use_accessibility` · `compute_area_accessibility`
+
+### Обеспеченность (`tools/provision.py`)
+`compute_service_provision` (конкретный сервис ИЛИ пресет `key/basic/advanced/comfort` — батч) · `compute_shared_provision`
+
+### Сервисы и центральность (`tools/services.py`)
+`compute_services_density` · `compute_services_count` · `compute_services_collocation` · `compute_shannon_diversity` · `compute_services_centrality` · `compute_population_centrality`
+
+### Морфология (`tools/indicators.py`)
+`compute_density_indicators` (FSI/GSI/MXI/OSR) · `compute_development_indicators` · `build_adjacency_graph`
+
+### Оптимизация развития (`tools/optimize.py`)
+`suggest_target_blocks` → `propose_zone_development` / `optimize_zone_services` (TPE/Optuna) → `compute_scenario_provision` (независимый before/after)
+
+### Визуализация и справка
+`render_metric_map` (`tools/viz.py`) · `find_tools` / `get_tool_help` (`tools/registry.py`)
+
+---
+
+## Справка по инструментам
+
+Каждый инструмент документирован двухуровнево:
+
+| Уровень | Как используется |
 |---|---|
-| `load_blocks()` | Загружает кварталы из `blocks_with_services.gpkg` |
-| `load_accessibility_matrix()` | Загружает матрицу доступности из `acc_mx.pickle` |
-| `list_cached_data()` | Показывает, что уже загружено в кэш |
-| `list_service_types()` | Перечисляет доступные типы сервисов |
-| `get_block_info(block_id)` | Детальная информация о квартале по ID |
-| `get_analysis_results(key)` | Сводка по ранее вычисленному результату |
+| Короткое описание | Показывается LLM в списке доступных инструментов для быстрого выбора |
+| Полный docstring | Доступен через `get_tool_help(name)`: параметры, контракт входа/выхода, интерпретация, ограничения |
 
-### Сетевая доступность (`tools/network.py`)
-
-| Инструмент | Описание |
-|---|---|
-| `compute_mean_accessibility(out)` | Среднее время в пути от/до каждого квартала |
-| `compute_median_accessibility(out)` | Медианное время (устойчиво к выбросам) |
-| `compute_max_accessibility(out)` | Максимальное время (наихудший сценарий) |
-| `compute_connectivity(key)` | Связность сети (1 / время) |
-| `compute_land_use_accessibility(land_use, out)` | Доступность до зон заданного типа |
-| `compute_area_accessibility(out)` | Площадно-взвешенная доступность |
-
-### Обеспеченность сервисами (`tools/provision.py`)
-
-| Инструмент | Описание |
-|---|---|
-| `compute_service_provision(service, minutes, depth)` | Конкурентная обеспеченность населения сервисом |
-| `compute_shared_provision(service, minutes)` | Совместная обеспеченность (доля населения с доступом) |
-
-### Сервисы и централность (`tools/services.py`)
-
-| Инструмент | Описание |
-|---|---|
-| `compute_services_density()` | Плотность сервисов (объектов на кв. км) |
-| `compute_services_count()` | Количество объектов каждого типа сервиса |
-| `compute_services_collocation()` | Попарная матрица совместного расположения сервисов |
-| `compute_shannon_diversity()` | Индекс разнообразия Шеннона для сервисной среды |
-| `compute_services_centrality()` | Составная централность по связности, плотности, разнообразию |
-| `compute_population_centrality()` | Централность по численности населения и смежности |
-
-### Индикаторы и граф (`tools/indicators.py`)
-
-| Инструмент | Описание |
-|---|---|
-| `compute_density_indicators()` | FSI, GSI, MXI, L, OSR для каждого квартала |
-| `compute_development_indicators()` | Индикаторы освоенности территории |
-| `build_adjacency_graph(buffer_size)` | Граф пространственной смежности кварталов |
-
-Все результаты автоматически сохраняются в папку `outputs/` в виде CSV.
+`find_tools(query)` выполняет keyword-поиск по реестру docstring-ов и возвращает подходящие инструменты. Это заменяет старые workflow-карточки: агент сам строит маршрут из своего `ANALYSIS PLAN`, гипотез и доступных инструментов.
 
 ---
 
 ## Примеры задач
 
 ```python
-agent = BlocksNetAgent()
+agent = BlocksNetAgent(model="openai/gpt-4o-mini")
 
-# Транспортная доступность
-r1 = agent.run(
-    "Проанализируй транспортную доступность городских кварталов. "
-    "Какие районы наиболее и наименее связаны с остальным городом?"
-)
+# Диагностика доступности
+agent.run("Какие районы наиболее и наименее связаны с остальным городом?")
 
-# Обеспеченность сервисами
-r2 = agent.run(
-    "Оцени обеспеченность населения школами с порогом 15 минут. "
-    "Назови кварталы с наибольшим дефицитом."
-)
+# Обеспеченность набором сервисов (батч-пресет)
+agent.run("Оцени обеспеченность населения базовым набором сервисов с порогом 15 минут.")
 
-# Разнообразие сервисной среды
-r3 = agent.run(
-    "Вычисли индекс разнообразия Шеннона и централность кварталов. "
-    "Какие районы имеют наиболее разнообразную сервисную среду?"
-)
+# Генеративная гипотеза развития (TPE + сценарная проверка)
+agent.run("Где и что построить, чтобы повысить обеспеченность? Предложи и проверь сценарий.")
 
-# Повторный запуск без перезагрузки данных (кэш сохраняется между run())
-r4 = agent.run("Теперь добавь анализ плотности застройки (FSI, GSI).")
-
-# Сброс кэша при необходимости
+# Повторный запуск использует кэш данных; сброс — agent.reset()
 agent.reset()
 ```
 
@@ -241,46 +209,22 @@ agent.reset()
 
 ## Данные
 
-| Файл | Описание | Размер |
-|---|---|---|
-| `data/blocks_with_services.gpkg` | 3113 кварталов, 153 атрибута, 67 типов сервисов | ~2 МБ |
-| `data/acc_mx.pickle` | Матрица доступности 3113×3113 (время в пути, мин.) | ~19 МБ |
-| `data/building.gpkg` | Контуры зданий | ~31 МБ |
-| `data/platform/*.geojson` | 68 файлов с расположением объектов сервисов | ~5 МБ |
-
-> **Важно:** не вызывай `calculate_accessibility_matrix()` напрямую — пересчёт матрицы занимает несколько часов. Используй готовый `acc_mx.pickle`.
-
----
-
-## Производительность
-
-| Операция | Время |
+| Файл | Описание |
 |---|---|
-| Загрузка кварталов | 2–5 с |
-| Загрузка матрицы доступности | 1–3 с |
-| Анализ доступности (mean/median/max) | 2–10 с |
-| Индекс Шеннона | 1–3 с |
-| Обеспеченность сервисом | 15–60 с |
-| Централность сервисов | 5–15 с |
-| Граф смежности | 20–60 с |
-| Индикаторы плотности (FSI/GSI) | 1–5 с |
+| `data/blocks_with_services.gpkg` | Кварталы с сервисами, населением, землепользованием |
+| `data/acc_mx.pickle` | Предвычисленная матрица доступности (время в пути, мин.) |
+| `data/service_type.json` | Нормативы demand/accessibility сервисов |
+| `data/archetypes.csv` | Веса архетипов для TPE-оптимизатора |
+| `data/platform/` | GeoJSON сервисов |
+| `data/raw/` | Исходные геоданные и GPKG для пересборки локальной модели |
 
----
-
-## Демонстрационный ноутбук
-
-Открой `examples/demo.ipynb` в Jupyter для интерактивного запуска:
-
-```bash
-jupyter notebook examples/demo.ipynb
-```
+> **Важно:** не пересчитывай матрицу доступности напрямую — используй готовый `acc_mx.pickle`.
 
 ---
 
 ## Зависимости
 
-- [blocksnet](https://github.com/aimclub/blocksnet) — библиотека городского анализа
-- [LangGraph](https://github.com/langchain-ai/langgraph) — фреймворк ReAct-агента
-- [LangChain OpenAI](https://github.com/langchain-ai/langchain) — подключение к LLM
-- [GeoPandas](https://geopandas.org/) — работа с геоданными
-- [Pydantic Settings](https://docs.pydantic.dev/latest/concepts/pydantic_settings/) — конфигурация
+- [blocksnet](https://github.com/aimclub/blocksnet) — городской анализ + TPE-оптимизатор зон
+- [LangChain](https://github.com/langchain-ai/langchain) (`langchain-classic` AgentExecutor, `langchain-openai`) — движок агента и подключение к LLM
+- [Optuna](https://optuna.org/) — TPE для оптимизации зон
+- [GeoPandas](https://geopandas.org/), [matplotlib](https://matplotlib.org/) — геоданные и картограммы

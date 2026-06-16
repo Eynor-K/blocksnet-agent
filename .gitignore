@@ -1,0 +1,21 @@
+# окружение и кэш
+.env
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# результаты запусков
+outputs/
+
+# крупные геоданные локальной модели (не версионируются)
+data/*.gpkg
+data/*.pickle
+data/*.geojson
+data/platform/
+
+# нормативы сервисов и исходники пересборки — ВЕРСИОНИРУЮТСЯ:
+!data/service_type.json
+!data/archetypes.csv
+!data/raw/
+!data/raw/**
