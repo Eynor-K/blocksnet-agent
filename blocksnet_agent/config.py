@@ -1,3 +1,4 @@
+from functools import lru_cache
 from pathlib import Path
 
 from pydantic import AliasChoices, Field
@@ -25,3 +26,9 @@ class Settings(BaseSettings):
 
     def model_post_init(self, _) -> None:
         self.output_dir.mkdir(exist_ok=True)
+
+
+@lru_cache(maxsize=1)
+def get_settings() -> Settings:
+    """Кэшированный синглтон настроек, читается из окружения / .env."""
+    return Settings()

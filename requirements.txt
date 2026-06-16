@@ -1,9 +1,18 @@
-langgraph>=1.1.0
-langchain-openai>=1.2.0
+# --- ядро агента ---
 langchain-core>=1.3.0
+langchain-classic>=1.0.0        # AgentExecutor, create_tool_calling_agent
+langchain-openai>=1.2.0
+langgraph>=1.1.0
 pydantic-settings>=2.0.0
 python-dotenv>=1.0.0
+tiktoken>=0.7.0                 # оценка токенов в логе
+
+# --- данные и аналитика BlocksNet ---
 geopandas>=0.14.0
 pandas>=2.0.0
 numpy>=1.24.0
 blocksnet>=1.0.0a9
+matplotlib>=3.7.0               # картограммы метрик (viz)
+optuna>=3.4.0                   # TPE-оптимизатор зон (optimize)
+
+# RAG по инструментам — keyword-поиск (registry.py), без векторной БД и моделей-эмбеддингов.

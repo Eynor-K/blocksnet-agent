@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 import numpy as np
 import pandas as pd
 import geopandas as gpd
@@ -19,6 +21,36 @@ def _service_columns(blocks: pd.DataFrame) -> list[str]:
     return sorted(c.replace("capacity_", "", 1) for c in blocks.columns if c.startswith("capacity_"))
 
 
+def _read_service_type_metadata(data_dir) -> list[dict]:
+    """Читает нормативы сервисов: сначала из data/service_type.json, иначе из конфига blocksnet."""
+    path = data_dir / "service_type.json"
+    if path.exists():
+        with path.open("r", encoding="utf-8") as file:
+            data = json.load(file)
+        if isinstance(data, list):
+            return data
+    return _service_type_metadata_from_blocksnet()
+
+
+def _service_type_metadata_from_blocksnet() -> list[dict]:
+    """Fallback: достаёт demand/accessibility из blocksnet.config.service_types."""
+    try:
+        from blocksnet.config.service_types.config import SERVICE_TYPES
+    except Exception:
+        return []
+    rows: list[dict] = []
+    for name, row in SERVICE_TYPES.iterrows():
+        rows.append(
+            {
+                "name": str(name),
+                "name_ru": str(row.get("name", name)) if hasattr(row, "get") else str(name),
+                "demand": row.get("demand") if hasattr(row, "get") else None,
+                "accessibility": row.get("accessibility") if hasattr(row, "get") else None,
+            }
+        )
+    return rows
+
+
 def _parse_land_use(value):
     if isinstance(value, LandUse):
         return value
@@ -31,6 +63,25 @@ def _parse_land_use(value):
     return value
 
 
+def ensure_blocks(state: dict, data_dir):
+    """Возвращает кварталы из кэша, загружая их при первом обращении."""
+    if "blocks" not in state:
+        blocks = gpd.read_file(data_dir / "blocks_with_services.gpkg")
+        if "land_use" in blocks.columns:
+            blocks["land_use"] = blocks["land_use"].apply(_parse_land_use)
+        blocks["site_area"] = blocks.geometry.area
+        state["blocks"] = blocks
+    return state["blocks"]
+
+
+def ensure_acc_mx(state: dict, data_dir):
+    """Возвращает матрицу доступности из кэша, загружая её при первом обращении."""
+    if "acc_mx" not in state:
+        acc_mx = pd.read_pickle(data_dir / "acc_mx.pickle")
+        state["acc_mx"] = acc_mx.astype("float64")
+    return state["acc_mx"]
+
+
 def make_data_tools(ctx: dict) -> list:
     state = ctx["state"]
     data_dir = ctx["data_dir"]
@@ -39,11 +90,7 @@ def make_data_tools(ctx: dict) -> list:
     def load_blocks() -> str:
         """Загружает GeoDataFrame кварталов с сервисами из data/blocks_with_services.gpkg."""
         try:
-            blocks = gpd.read_file(data_dir / "blocks_with_services.gpkg")
-            if "land_use" in blocks.columns:
-                blocks["land_use"] = blocks["land_use"].apply(_parse_land_use)
-            blocks["site_area"] = blocks.geometry.area
-            state["blocks"] = blocks
+            blocks = ensure_blocks(state, data_dir)
 
             land_use_counts = blocks["land_use"].value_counts(dropna=False).to_dict() if "land_use" in blocks else {}
             services = _service_columns(blocks)
@@ -66,12 +113,13 @@ def make_data_tools(ctx: dict) -> list:
     def load_accessibility_matrix() -> str:
         """Загружает предвычисленную матрицу доступности из data/acc_mx.pickle."""
         try:
-            acc_mx = pd.read_pickle(data_dir / "acc_mx.pickle")
-            state["acc_mx"] = acc_mx
+            original = pd.read_pickle(data_dir / "acc_mx.pickle")
+            original_dtype = original.dtypes.iloc[0]
+            acc_mx = ensure_acc_mx(state, data_dir)
             values = acc_mx.to_numpy()
             flat = values[np.isfinite(values) & (values > 0)]
             return (
-                f"Матрица доступности загружена: {acc_mx.shape[0]}x{acc_mx.shape[1]}, dtype={acc_mx.dtypes.iloc[0]}.\n"
+                f"Матрица доступности загружена: {acc_mx.shape[0]}x{acc_mx.shape[1]}, dtype={original_dtype}.\n"
                 f"Время в пути (мин) - мин: {flat.min():.1f}, макс: {flat.max():.1f}, "
                 f"среднее: {flat.mean():.1f}, медиана: {np.median(flat):.1f}."
             )
@@ -89,20 +137,40 @@ def make_data_tools(ctx: dict) -> list:
     def list_service_types() -> str:
         """Возвращает список типов сервисов из загруженных кварталов."""
         try:
-            if "blocks" not in state:
-                return "Ошибка: сначала вызови load_blocks()."
-            services = _service_columns(state["blocks"])
+            services = _service_columns(ensure_blocks(state, data_dir))
             return f"Доступные типы сервисов ({len(services)} шт.):\n" + ", ".join(services)
         except Exception as exc:
             return f"Ошибка: {exc}"
 
     @tool
-    def get_block_info(block_id: int) -> str:
-        """Возвращает подробную информацию о квартале по индексу или колонке block_id."""
+    def list_key_services() -> str:
+        """Возвращает доступные сервисы с нормативами demand и accessibility (service_type.json / blocksnet)."""
         try:
-            if "blocks" not in state:
-                return "Ошибка: сначала вызови load_blocks()."
-            blocks = state["blocks"]
+            available = set(_service_columns(ensure_blocks(state, data_dir)))
+            rows = []
+            for item in _read_service_type_metadata(data_dir):
+                name = str(item.get("name", "")).strip()
+                if not name or name not in available:
+                    continue
+                demand = item.get("demand")
+                accessibility = item.get("accessibility")
+                name_ru = item.get("name_ru") or name
+                rows.append((name, name_ru, demand, accessibility))
+            rows.sort(key=lambda row: row[0])
+            if not rows:
+                return "Сервисы с нормативами не найдены. Проверь service_type.json и capacity_* в кварталах."
+            lines = ["Ключевые сервисы с нормативами (только доступные в модели):"]
+            for name, name_ru, demand, accessibility in rows:
+                lines.append(f"- {name} ({name_ru}): demand={demand}, accessibility={accessibility} мин")
+            return "\n".join(lines)
+        except Exception as exc:
+            return f"Ошибка: {exc}"
+
+    @tool
+    def get_block_info(block_id: int) -> str:
+        """Возвращает атрибуты квартала И поквартальные значения всех уже вычисленных метрик из кэша."""
+        try:
+            blocks = ensure_blocks(state, data_dir)
             row = blocks[blocks.index == block_id]
             if row.empty and "block_id" in blocks.columns:
                 row = blocks[blocks["block_id"] == block_id]
@@ -113,7 +181,33 @@ def make_data_tools(ctx: dict) -> list:
             for column, value in series.items():
                 if pd.notna(value) and value != 0:
                     lines.append(f"  {column}: {value}")
+            # Поквартальные значения ранее вычисленных метрик, чтобы заземлять выводы о квартале
+            # на его собственные числа, а не на общегородские агрегаты.
+            metric_lines = _block_metric_values(state, block_id)
+            if metric_lines:
+                lines.append("Значения вычисленных метрик для этого квартала (поквартально):")
+                lines.extend(f"  {line}" for line in metric_lines)
             return "\n".join(lines)
+        except Exception as exc:
+            return f"Ошибка: {exc}"
+
+    @tool
+    def get_metric_for_block(result_key: str, block_id: int) -> str:
+        """Возвращает поквартальное значение метрики result_key для block_id с честной позицией в распределении."""
+        try:
+            available = sorted(k for k in state if k not in ("blocks", "acc_mx"))
+            if result_key not in state:
+                return f"Ключ '{result_key}' не найден. Доступные: {available}"
+            series = _metric_series_for_blocks(state[result_key])
+            if series is None or series.empty:
+                return f"Результат '{result_key}' не содержит поквартальной числовой метрики."
+            if block_id not in series.index:
+                return f"block_id={block_id} отсутствует в '{result_key}' (индекс {series.index.min()}–{series.index.max()})."
+            value = float(series.loc[block_id])
+            return (
+                f"'{result_key}' для block_id {block_id}: {value:.4f} "
+                f"({_value_context(series, value)}; город: мин {series.min():.4f}, макс {series.max():.4f})."
+            )
         except Exception as exc:
             return f"Ошибка: {exc}"
 
@@ -136,4 +230,69 @@ def make_data_tools(ctx: dict) -> list:
         except Exception as exc:
             return f"Ошибка: {exc}"
 
-    return [load_blocks, load_accessibility_matrix, list_cached_data, list_service_types, get_block_info, get_analysis_results]
+    return [
+        load_blocks,
+        load_accessibility_matrix,
+        list_cached_data,
+        list_service_types,
+        list_key_services,
+        get_block_info,
+        get_metric_for_block,
+        get_analysis_results,
+    ]
+
+
+def _metric_series_for_blocks(value) -> pd.Series | None:
+    """Извлекает поквартальную числовую серию (индекс = block_id) из кэшированного результата."""
+    if isinstance(value, pd.Series):
+        return pd.to_numeric(value, errors="coerce").dropna()
+    if isinstance(value, (pd.DataFrame, gpd.GeoDataFrame)):
+        preferred = [
+            "provision_strong", "provision", "provision_weak",
+            "mean_accessibility", "median_accessibility", "max_accessibility", "accessibility",
+            "services_centrality", "population_centrality", "shannon_diversity",
+            "fsi", "gsi", "mxi", "osr",
+        ]
+        for column in preferred:
+            if column in value.columns:
+                return pd.to_numeric(value[column], errors="coerce").dropna()
+        numeric = value.select_dtypes(include="number")
+        if not numeric.empty:
+            return pd.to_numeric(numeric.iloc[:, -1], errors="coerce").dropna()
+    return None
+
+
+def _value_context(series: pd.Series, value: float) -> str:
+    """Честная позиция значения в городском распределении — без обманчивого «перцентиля снизу».
+
+    На zero-inflated метриках (обеспеченность, где у многих кварталов 0) перцентиль «снизу» для 0.0
+    давал высокое число и читался как «много», хотя 0 — это дефицит. Здесь показываем долю кварталов
+    строго ниже / равных / выше и явно помечаем минимум, не навязывая направление «хорошо/плохо».
+    """
+    below = 100.0 * float((series < value).mean())
+    equal = 100.0 * float((series == value).mean())
+    above = 100.0 * float((series > value).mean())
+    parts = (
+        f"медиана города {series.median():.4f}; "
+        f"ниже {below:.0f}%, столько же {equal:.0f}%, выше {above:.0f}% кварталов"
+    )
+    if value <= float(series.min()):
+        parts += " — это минимум по городу"
+    return parts
+
+
+def _block_metric_values(state: dict, block_id: int) -> list[str]:
+    """Собирает поквартальные значения всех кэшированных метрик для одного квартала."""
+    lines: list[str] = []
+    for key, value in state.items():
+        if key in ("blocks", "acc_mx") or not isinstance(value, (pd.Series, pd.DataFrame)):
+            continue
+        series = _metric_series_for_blocks(value)
+        if series is None or series.empty or block_id not in series.index:
+            continue
+        try:
+            cell = float(series.loc[block_id])
+            lines.append(f"{key}: {cell:.4f} ({_value_context(series, cell)})")
+        except Exception:
+            continue
+    return lines
