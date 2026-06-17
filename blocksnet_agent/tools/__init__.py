@@ -3,6 +3,7 @@ from pathlib import Path
 
 from langchain_core.tools import BaseTool
 
+from blocksnet_agent.metrics import FAILURE_MARKERS
 from blocksnet_agent.tools.data import make_data_tools
 from blocksnet_agent.tools.indicators import make_indicators_tools
 from blocksnet_agent.tools.network import make_network_tools
@@ -15,7 +16,15 @@ from blocksnet_agent.tools.viz import make_viz_tools
 # T1.2: инструменты, для которых повторный вызов с теми же аргументами в рамках ОДНОГО запуска
 # идемпотентен — результат можно отдать из кэша, не пересчитывая и не пересохраняя артефакты.
 # Сюда НЕ входят генераторы/оптимизаторы (TPE стохастичен), viz (render_*) и meta-инструменты RAG.
-_MEMOIZABLE_PREFIXES = ("compute_", "list_", "get_", "load_")
+_MEMOIZABLE_PREFIXES = ("compute_", "list_", "load_")
+_NON_MEMOIZABLE_TOOLS = {"compute_scenario_provision", "list_cached_data"}
+_STALE_OBSERVATION_MARKERS = (
+    "нет кэшированных",
+    "Сначала вызови",
+    "сначала вызови",
+    "не найден",
+    "не удалось",
+)
 
 
 def _memoize_tools(tools: list[BaseTool]) -> list[BaseTool]:
@@ -28,7 +37,11 @@ def _memoize_tools(tools: list[BaseTool]) -> list[BaseTool]:
     wrapped: list[BaseTool] = []
     for tool in tools:
         original_func = getattr(tool, "func", None)
-        if original_func is None or not any(tool.name.startswith(p) for p in _MEMOIZABLE_PREFIXES):
+        if (
+            original_func is None
+            or tool.name in _NON_MEMOIZABLE_TOOLS
+            or not any(tool.name.startswith(p) for p in _MEMOIZABLE_PREFIXES)
+        ):
             wrapped.append(tool)
             continue
 
@@ -41,7 +54,7 @@ def _memoize_tools(tools: list[BaseTool]) -> list[BaseTool]:
                 if key in cache:
                     return cache[key]
                 result = func(*args, **kwargs)
-                if isinstance(result, str):
+                if isinstance(result, str) and _cacheable_observation(result):
                     cache[key] = result
                 return result
 
@@ -52,6 +65,13 @@ def _memoize_tools(tools: list[BaseTool]) -> list[BaseTool]:
         except Exception:
             wrapped.append(tool)
     return wrapped
+
+
+def _cacheable_observation(result: str) -> bool:
+    text = result.strip()
+    if text.startswith(FAILURE_MARKERS):
+        return False
+    return not any(marker in text for marker in _STALE_OBSERVATION_MARKERS)
 
 
 def make_tools(state: dict, data_dir: Path, output_dir: Path) -> list[BaseTool]:

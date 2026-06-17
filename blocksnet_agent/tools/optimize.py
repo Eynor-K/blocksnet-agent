@@ -69,6 +69,8 @@ def make_optimize_tools(ctx: dict) -> list:
         criterion='low_provision' требует ПРЕДВАРИТЕЛЬНО вычисленной обеспеченности по service_type
         (сначала вызови compute_service_provision(service_type)); иначе вернёт просьбу её вычислить.
         criterion='high_population' — кварталы по убыванию населения. land_use — фильтр по типу зоны.
+        Если целевой квартал уже известен из задачи, передавай его напрямую в propose_zone_development;
+        suggest_target_blocks нужен для поиска кандидатов, когда block_id неизвестны.
         """
         try:
             blocks = ensure_blocks(state, data_dir)
@@ -120,7 +122,12 @@ def make_optimize_tools(ctx: dict) -> list:
 
         service_set: пресет ('basic'/'advanced'/'comfort'/'key') ИЛИ конкретный сервис ('school', 'pitch', …).
         Передай КОНКРЕТНЫЙ сервис, чтобы сфокусировать оптимизацию на нём; пресет оптимизирует весь набор
-        зоны и добавит не только целевой сервис.
+        зоны и добавит не только целевой сервис. Пример фокуса: service_set='school', затем проверь
+        эффект через compute_scenario_provision(service_set='school'). RESULT должен цитировать block_id,
+        service_type и предложенную capacity.
+
+        Когда выбирать: когда нужен вариант развития/добавления сервисов в уже выбранных block_id.
+        Не путать с: suggest_target_blocks — он только ищет кандидатов, но не генерирует решение.
         """
         try:
             from blocksnet.optimization.services import (
@@ -259,7 +266,11 @@ def make_optimize_tools(ctx: dict) -> list:
 
         Главный инструмент проверки ЭФФЕКТА развития: даёт измеренные before→after по сервисам.
         scenario=None + use_cached_solution=True берёт последнее предложение propose_zone_development;
-        либо задай scenario вручную ({block_id: {service: capacity}}). service_set — набор для пересчёта.
+        либо задай scenario вручную ({block_id: {service: capacity}}). Для проверки целевого сервиса передай
+        его имя в service_set (например 'school'), а не пресет; пресет пересчитывает весь набор.
+
+        Когда выбирать: после любого предложения добавить capacity, чтобы проверить измеренный эффект.
+        Не путать с: propose_zone_development — он генерирует сценарий, а этот инструмент проверяет before→after.
         """
         try:
             base_blocks = ensure_blocks(state, data_dir).copy()
@@ -548,7 +559,10 @@ def _format_target_suggestion(ids: list[int], reason: str, values: pd.Series | N
     if values is not None and ids:
         lines.append("Значения по выбранному критерию:")
         lines.extend(f"- block_id {bid}: {float(values.loc[bid]):.4f}" for bid in ids if bid in values.index)
-    lines.append("Используй эти IDs в propose_zone_development(block_ids=[...]) при явном запросе гипотез развития.")
+    lines.append(
+        "Используй эти IDs в propose_zone_development(block_ids=[...]) при явном запросе гипотез развития. "
+        "Если block_id уже задан в вопросе, этот поиск кандидатов не нужен."
+    )
     return "\n".join(lines)
 
 
@@ -582,16 +596,33 @@ def _format_development_hypothesis(
         )
     block_summary = ""
     if not services_df.empty:
-        per_block = services_df.groupby("block_id")["count"].sum().sort_values(ascending=False).head(10)
-        block_summary = "; ".join(f"block_id {int(bid)}: {int(count)} ед." for bid, count in per_block.items())
+        per_block_services = (
+            services_df.groupby(["block_id", "service_type"])
+            .agg(count=("count", "sum"), capacity=("capacity", "sum"))
+            .sort_values("capacity", ascending=False)
+            .head(20)
+        )
+        block_summary = "; ".join(
+            f"block_id {int(bid)}: {service} {int(row['count'])} ед., capacity={int(row['capacity'])}"
+            for (bid, service), row in per_block_services.iterrows()
+        )
     provision_summary = _format_provision_delta(provisions)
     artifact_summary = ", ".join(f"{key}={path}" for key, path in paths.items())
     considered = ", ".join(added_services) if added_services else "—"
+    service_set_key = str(service_set).strip().lower()
+    if service_set_key in _SERVICE_PRESETS:
+        focus_note = (
+            f"ВНИМАНИЕ: service_set='{service_set}' — пресет; оптимизировался набор сервисов ({considered}). "
+            "Если цель — конкретный сервис, перезапусти с service_set='<имя сервиса>' и сравни эффект по нему. "
+        )
+    else:
+        focus_note = (
+            f"Оптимизация сфокусирована на service_set='{service_set}' (рассмотрены: {considered}). "
+        )
     return (
         "HYPOTHESES: Гипотеза развития зоны: для кварталов "
         f"{ids} рассмотреть целевое землепользование {target_land_use} и набор сервисов '{service_set}'. "
-        f"ВНИМАНИЕ: оптимизатор подбирает набор сервисов ВСЕЙ зоны (рассмотрены: {considered}), "
-        f"а не только одноимённый сервис; сопоставляй эффект по каждому сервису отдельно. "
+        f"{focus_note}"
         f"Оптимизатор предложил: {services_summary}. "
         + (f"Распределение по кварталам: {block_summary}. " if block_summary else "")
         + (f"Оценка обеспеченности: {provision_summary}. " if provision_summary else "")

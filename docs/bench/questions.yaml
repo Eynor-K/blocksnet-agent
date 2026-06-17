@@ -1,0 +1,200 @@
+[
+  {
+    "id": "q01_block_603_development",
+    "question": "Что нужно разместить в квартале 603?",
+    "category": "A",
+    "expected_entity": 603,
+    "expected_tools": ["get_block_info", "get_weakest_services", "propose_zone_development", "compute_scenario_provision"],
+    "expects_grounding": true,
+    "expects_measured": true,
+    "expects_out_of_model": false,
+    "notes": "Drill-down дефицитов квартала 603; измеренное предложение, не город-агрегат."
+  },
+  {
+    "id": "q02_block_7_needs",
+    "question": "Чего не хватает в квартале 7?",
+    "category": "A",
+    "expected_entity": 7,
+    "expected_tools": ["get_block_info", "get_weakest_services"],
+    "expects_grounding": true,
+    "expects_measured": false,
+    "expects_out_of_model": false,
+    "notes": "Диагностика конкретного квартала без обязательного сценария."
+  },
+  {
+    "id": "q03_block_711_provision",
+    "question": "Какова обеспеченность квартала 711 сервисами?",
+    "category": "A",
+    "expected_entity": 711,
+    "expected_tools": ["get_block_info", "get_weakest_services"],
+    "expects_grounding": true,
+    "expects_measured": false,
+    "expects_out_of_model": false,
+    "notes": "Поквартальная обеспеченность и слабые сервисы."
+  },
+  {
+    "id": "q04_city_hotel_placement",
+    "question": "Где разместить новые гостиницы?",
+    "category": "B",
+    "expected_entity": "hotel",
+    "expected_tools": ["compute_service_provision", "suggest_target_blocks", "propose_zone_development", "compute_scenario_provision"],
+    "expects_grounding": false,
+    "expects_measured": true,
+    "expects_out_of_model": false,
+    "notes": "Городской сценарий для service_type=hotel."
+  },
+  {
+    "id": "q05_city_pitch_placement",
+    "question": "Где разместить спортивные площадки?",
+    "category": "B",
+    "expected_entity": "pitch",
+    "expected_tools": ["compute_service_provision", "suggest_target_blocks", "propose_zone_development", "compute_scenario_provision"],
+    "expects_grounding": false,
+    "expects_measured": true,
+    "expects_out_of_model": false,
+    "notes": "Спортивные площадки мапятся в pitch."
+  },
+  {
+    "id": "q06_city_pharmacy_gaps",
+    "question": "Где не хватает аптек?",
+    "category": "B",
+    "expected_entity": "pharmacy",
+    "expected_tools": ["compute_service_provision", "suggest_target_blocks"],
+    "expects_grounding": false,
+    "expects_measured": false,
+    "expects_out_of_model": false,
+    "notes": "Диагностика дефицита аптек без обязательного сценария."
+  },
+  {
+    "id": "q07_pedestrian_streets",
+    "question": "Какие улицы сделать пешеходными?",
+    "category": "E/D",
+    "expected_entity": "",
+    "expected_tools": ["compute_connectivity", "compute_mean_accessibility"],
+    "expects_grounding": false,
+    "expects_measured": false,
+    "expects_out_of_model": true,
+    "notes": "Пешеходизация улиц вне block-модели; нужны честные LIMITATIONS."
+  },
+  {
+    "id": "q08_healthcare_gaps",
+    "question": "Какие кварталы хуже всего обеспечены объектами здравоохранения?",
+    "category": "C",
+    "expected_entity": "polyclinic",
+    "expected_tools": ["compute_service_provision", "suggest_target_blocks"],
+    "expects_grounding": false,
+    "expects_measured": false,
+    "expects_out_of_model": false,
+    "notes": "Здравоохранение канонически проверяем через polyclinic."
+  },
+  {
+    "id": "q09_lowest_transport_accessibility",
+    "question": "Где самая низкая транспортная доступность?",
+    "category": "C",
+    "expected_entity": "",
+    "expected_tools": ["compute_mean_accessibility"],
+    "expects_grounding": false,
+    "expects_measured": false,
+    "expects_out_of_model": false,
+    "notes": "Диагностика доступности."
+  },
+  {
+    "id": "q10_least_connected_blocks",
+    "question": "Какие кварталы наименее связны?",
+    "category": "C",
+    "expected_entity": "",
+    "expected_tools": ["compute_connectivity"],
+    "expects_grounding": false,
+    "expects_measured": false,
+    "expects_out_of_model": false,
+    "notes": "Диагностика связности."
+  },
+  {
+    "id": "q11_lowest_service_diversity",
+    "question": "Где самое низкое разнообразие сервисов?",
+    "category": "C",
+    "expected_entity": "",
+    "expected_tools": ["compute_shannon_diversity"],
+    "expects_grounding": false,
+    "expects_measured": false,
+    "expects_out_of_model": false,
+    "notes": "Диагностика разнообразия сервисов."
+  },
+  {
+    "id": "q12_hospital_access_population",
+    "question": "Где разместить новую больницу с учётом доступности и населения?",
+    "category": "D",
+    "expected_entity": "hospital",
+    "expected_tools": ["compute_service_provision", "compute_mean_accessibility", "compute_population_centrality", "suggest_target_blocks", "propose_zone_development"],
+    "expects_grounding": false,
+    "expects_measured": true,
+    "expects_out_of_model": false,
+    "notes": "Комбо: дефицит hospital + доступность + население."
+  },
+  {
+    "id": "q13_pitch_density_placement",
+    "question": "Где разместить спортплощадки с учётом плотности застройки?",
+    "category": "D",
+    "expected_entity": "pitch",
+    "expected_tools": ["compute_service_provision", "compute_density_indicators", "suggest_target_blocks", "propose_zone_development"],
+    "expects_grounding": false,
+    "expects_measured": true,
+    "expects_out_of_model": false,
+    "notes": "Комбо: pitch + плотность застройки."
+  },
+  {
+    "id": "q14_service_center_centrality_gap",
+    "question": "Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?",
+    "category": "D",
+    "expected_entity": "multifunctional_center",
+    "expected_tools": ["compute_services_centrality", "compute_service_provision", "suggest_target_blocks"],
+    "expects_grounding": false,
+    "expects_measured": false,
+    "expects_out_of_model": false,
+    "notes": "Комбо: центральность сервисов + дефицит multifunctional_center."
+  },
+  {
+    "id": "q15_sports_name_recovery",
+    "question": "Где разместить новые спортивные объекты?",
+    "category": "E",
+    "expected_entity": "pitch",
+    "expected_tools": ["list_service_types", "list_key_services", "compute_service_provision", "suggest_target_blocks"],
+    "expects_grounding": false,
+    "expects_measured": true,
+    "expects_out_of_model": false,
+    "notes": "Робастное разрешение общего спортивного имени в pitch/swimming_pool."
+  },
+  {
+    "id": "q16_sports_centre_unavailable",
+    "question": "Посчитай обеспеченность спортивными центрами.",
+    "category": "E",
+    "expected_entity": "sports_centre",
+    "expected_tools": ["list_service_types", "list_key_services", "compute_service_provision"],
+    "expects_grounding": false,
+    "expects_measured": false,
+    "expects_out_of_model": true,
+    "notes": "sports_centre нет в capacity-данных; нужен честный provision_available=false."
+  },
+  {
+    "id": "q17_housing_price_out_of_model",
+    "question": "Какая средняя цена жилья в квартале 100?",
+    "category": "E",
+    "expected_entity": 100,
+    "expected_tools": ["get_block_info"],
+    "expects_grounding": true,
+    "expects_measured": false,
+    "expects_out_of_model": true,
+    "notes": "Цен жилья нет в локальной модели; нужны LIMITATIONS без выдумывания."
+  },
+  {
+    "id": "q18_block_243_development",
+    "question": "Что разместить в квартале 243 для роста обеспеченности?",
+    "category": "A",
+    "expected_entity": 243,
+    "expected_tools": ["get_block_info", "get_weakest_services", "propose_zone_development", "compute_scenario_provision"],
+    "expects_grounding": true,
+    "expects_measured": true,
+    "expects_out_of_model": false,
+    "notes": "Измеренное развитие конкретного квартала."
+  }
+]

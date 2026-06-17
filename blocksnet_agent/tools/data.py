@@ -21,6 +21,18 @@ def _service_columns(blocks: pd.DataFrame) -> list[str]:
     return sorted(c.replace("capacity_", "", 1) for c in blocks.columns if c.startswith("capacity_"))
 
 
+def _metadata_by_name(data_dir) -> dict[str, dict]:
+    return {str(item.get("name", "")).strip(): item for item in _read_service_type_metadata(data_dir)}
+
+
+def _provision_available(item: dict | None) -> bool:
+    if not item:
+        return False
+    demand = item.get("demand")
+    accessibility = item.get("accessibility")
+    return pd.notna(demand) and pd.notna(accessibility)
+
+
 def _read_service_type_metadata(data_dir) -> list[dict]:
     """Читает нормативы сервисов: сначала из data/service_type.json, иначе из конфига blocksnet."""
     path = data_dir / "service_type.json"
@@ -85,6 +97,7 @@ def ensure_acc_mx(state: dict, data_dir):
 def make_data_tools(ctx: dict) -> list:
     state = ctx["state"]
     data_dir = ctx["data_dir"]
+    output_dir = ctx["output_dir"]
 
     @tool
     def load_blocks() -> str:
@@ -135,10 +148,24 @@ def make_data_tools(ctx: dict) -> list:
 
     @tool
     def list_service_types() -> str:
-        """Возвращает список типов сервисов из загруженных кварталов."""
+        """Возвращает список типов сервисов из загруженных кварталов с флагом доступности provision."""
         try:
             services = _service_columns(ensure_blocks(state, data_dir))
-            return f"Доступные типы сервисов ({len(services)} шт.):\n" + ", ".join(services)
+            metadata = _metadata_by_name(data_dir)
+            lines = [f"Доступные типы сервисов ({len(services)} шт.):"]
+            for name in services:
+                item = metadata.get(name)
+                if _provision_available(item):
+                    lines.append(
+                        f"- {name}: provision_available=True, demand={item.get('demand')}, "
+                        f"accessibility={item.get('accessibility')} мин"
+                    )
+                else:
+                    lines.append(
+                        f"- {name}: provision_available=False "
+                        "(нет demand/accessibility; используй capacity напрямую или близкий нормируемый сервис)"
+                    )
+            return "\n".join(lines)
         except Exception as exc:
             return f"Ошибка: {exc}"
 
@@ -161,14 +188,27 @@ def make_data_tools(ctx: dict) -> list:
                 return "Сервисы с нормативами не найдены. Проверь service_type.json и capacity_* в кварталах."
             lines = ["Ключевые сервисы с нормативами (только доступные в модели):"]
             for name, name_ru, demand, accessibility in rows:
-                lines.append(f"- {name} ({name_ru}): demand={demand}, accessibility={accessibility} мин")
+                available_provision = pd.notna(demand) and pd.notna(accessibility)
+                suffix = (
+                    "provision_available=True"
+                    if available_provision
+                    else "provision_available=False (нет demand/accessibility; используй capacity напрямую или другой сервис)"
+                )
+                lines.append(
+                    f"- {name} ({name_ru}): demand={demand}, accessibility={accessibility} мин, {suffix}"
+                )
             return "\n".join(lines)
         except Exception as exc:
             return f"Ошибка: {exc}"
 
     @tool
     def get_block_info(block_id: int) -> str:
-        """Возвращает атрибуты квартала И поквартальные значения всех уже вычисленных метрик из кэша."""
+        """Возвращает атрибуты квартала И поквартальные значения всех уже вычисленных метрик из кэша.
+
+        Когда выбирать: когда в задаче назван конкретный block_id или нужно заземлить вывод по кварталу.
+        Не путать с: get_analysis_results — он показывает городскую сводку и первые строки, а не
+        обязательную детализацию для одного block_id.
+        """
         try:
             blocks = ensure_blocks(state, data_dir)
             row = blocks[blocks.index == block_id]
@@ -193,7 +233,11 @@ def make_data_tools(ctx: dict) -> list:
 
     @tool
     def get_metric_for_block(result_key: str, block_id: int) -> str:
-        """Возвращает поквартальное значение метрики result_key для block_id с честной позицией в распределении."""
+        """Возвращает поквартальное значение метрики result_key для block_id с честной позицией в распределении.
+
+        Когда выбирать: после compute_* или батча, если нужно процитировать значение именно для block_id.
+        Не путать с: агрегатами strong/weak по городу — они не описывают конкретный квартал.
+        """
         try:
             available = sorted(k for k in state if k not in ("blocks", "acc_mx"))
             if result_key not in state:
@@ -208,6 +252,48 @@ def make_data_tools(ctx: dict) -> list:
                 f"'{result_key}' для block_id {block_id}: {value:.4f} "
                 f"({_value_context(series, value)}; город: мин {series.min():.4f}, макс {series.max():.4f})."
             )
+        except Exception as exc:
+            return f"Ошибка: {exc}"
+
+    @tool
+    def get_weakest_services(block_id: int, k: int = 5) -> str:
+        """Возвращает K слабейших сервисов квартала по уже вычисленной competitive_provision_*.
+
+        Сначала вычисли нужные сервисы через compute_service_provision(service_type или preset).
+        Если кэша ещё нет, инструмент сам считает компактный preset 'key' без артефактов и затем
+        ранжирует поквартальные значения для block_id с контекстом распределения по городу.
+
+        Когда выбирать: когда вопрос спрашивает, чего не хватает в конкретном квартале.
+        Не путать с: get_analysis_results по городскому батчу — он не даёт дефициты именно block_id.
+        """
+        try:
+            k = max(1, min(int(k), 20))
+            computed_note = _ensure_default_provision_cache(state, data_dir, output_dir)
+            rows: list[tuple[str, float, str]] = []
+            for key, value in state.items():
+                if not str(key).startswith("competitive_provision_"):
+                    continue
+                service = str(key).removeprefix("competitive_provision_")
+                series = _metric_series_for_blocks(value)
+                if series is None or series.empty or block_id not in series.index:
+                    continue
+                provision = float(series.loc[block_id])
+                rows.append((service, provision, _value_context(series, provision)))
+            if not rows:
+                cached = sorted(key for key in state if str(key).startswith("competitive_provision_"))
+                return (
+                    f"Для block_id {block_id} нет кэшированных competitive_provision_* значений. "
+                    "Сначала вызови compute_service_provision для нужных сервисов или пресета. "
+                    f"Сейчас в кэше: {cached}"
+                )
+            rows.sort(key=lambda row: row[1])
+            lines = [f"Слабейшие сервисы block_id {block_id} по поквартальной обеспеченности:"]
+            if computed_note:
+                lines.append(computed_note)
+            for service, provision, context in rows[:k]:
+                deficit_note = "0.0 = дефицит" if provision <= 0 else "ниже лучше проверять по контексту города"
+                lines.append(f"- {service}: {provision:.4f} ({context}; {deficit_note})")
+            return "\n".join(lines)
         except Exception as exc:
             return f"Ошибка: {exc}"
 
@@ -238,6 +324,7 @@ def make_data_tools(ctx: dict) -> list:
         list_key_services,
         get_block_info,
         get_metric_for_block,
+        get_weakest_services,
         get_analysis_results,
     ]
 
@@ -296,3 +383,27 @@ def _block_metric_values(state: dict, block_id: int) -> list[str]:
         except Exception:
             continue
     return lines
+
+
+def _ensure_default_provision_cache(state: dict, data_dir, output_dir) -> str:
+    if any(str(key).startswith("competitive_provision_") for key in state):
+        return ""
+    try:
+        from blocksnet_agent.tools.provision import _compute_service_batch, _preset_services
+
+        blocks = ensure_blocks(state, data_dir)
+        services = _preset_services("key", blocks)[:8]
+        if not services:
+            return ""
+        _compute_service_batch(
+            state,
+            data_dir,
+            output_dir,
+            services,
+            "key",
+            accessibility_minutes=15,
+            max_depth=1,
+        )
+        return "Кэша competitive_provision_* не было; автоматически посчитан preset 'key' без карт по сервисам."
+    except Exception:
+        return ""

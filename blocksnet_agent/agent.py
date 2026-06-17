@@ -28,7 +28,15 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.tools import BaseTool
 
 from blocksnet_agent.config import Settings, get_settings
+from blocksnet_agent.hypotheses import (
+    build_hypothesis_ledger,
+    classify_hypothesis_ledger,
+    hypothesis_contradiction_issue,
+    inconclusive_measurement_issue,
+    merge_hypotheses_section,
+)
 from blocksnet_agent.llm import get_chat_model, set_active_model
+from blocksnet_agent import metrics as agent_metrics
 from blocksnet_agent.prompts import SYSTEM_PROMPT
 from blocksnet_agent.runtime import get_run_dir, start_run, write_run_log
 from blocksnet_agent.tools import make_tools
@@ -95,16 +103,53 @@ class BlocksNetAgent:
             ctx = start_run(self._settings.output_dir)
             output_dir = get_run_dir(self._settings.output_dir)
             tools = make_tools(self._state, self._settings.data_dir, output_dir)
+            hypothesis_ledger = build_hypothesis_ledger(
+                task,
+                [tool.name for tool in tools],
+                lambda prompt: get_chat_model(temperature=0.0).invoke(prompt),
+                _available_metric_keys(self._state),
+            )
+            tool_names = {tool.name for tool in tools}
+            context = _context_with_hypotheses(hypothesis_ledger.to_context())
 
             executor = _build_agent(tools, self._max_iterations)
 
-            result = executor.invoke({"input": task, "context": _CONTEXT})
+            result = executor.invoke({"input": task, "context": context})
             output_text = result.get("output", "")
             steps = _format_steps(result.get("intermediate_steps", []))
 
             # Универсальный слой согласованности: проверяет СВОЙСТВА ответа (план, заземление
             # сущностей и эффект-утверждений, самосогласованность), не зная тип вопроса.
-            output_text, steps = _refine_until_coherent(executor, task, output_text, steps)
+            output_text, steps = _refine_until_coherent(executor, task, output_text, steps, context)
+
+            hypothesis_ledger = classify_hypothesis_ledger(
+                hypothesis_ledger,
+                steps,
+                lambda prompt: get_chat_model(temperature=0.0).invoke(prompt),
+                self._state,
+            )
+            hyp_issue = inconclusive_measurement_issue(hypothesis_ledger, tool_names, steps) or hypothesis_contradiction_issue(
+                hypothesis_ledger, output_text
+            )
+            if hyp_issue:
+                try:
+                    result = executor.invoke(
+                        {
+                            "input": _build_reentry_prompt(task, output_text, [hyp_issue], steps),
+                            "context": context,
+                        }
+                    )
+                    steps.extend(_format_steps(result.get("intermediate_steps", [])))
+                    output_text = _merge_sections(output_text, str(result.get("output", "")))
+                    hypothesis_ledger = classify_hypothesis_ledger(
+                        hypothesis_ledger,
+                        steps,
+                        lambda prompt: get_chat_model(temperature=0.0).invoke(prompt),
+                        self._state,
+                    )
+                except Exception:
+                    pass
+            output_text = merge_hypotheses_section(output_text, hypothesis_ledger)
 
             # T1.4: гарантируем наличие ANALYSIS PLAN (восстанавливаем из вызовов, если модель не выдала).
             output_text = _ensure_plan(output_text, task, steps)
@@ -171,6 +216,20 @@ class BlocksNetAgent:
 _CONTEXT = "Одиночный агент: внешнего контекста от других агентов нет."
 
 
+def _context_with_hypotheses(hypothesis_context: str) -> str:
+    budget_note = (
+        "Soft call discipline: avoid repeating identical failed calls; if tool calls approach 20, "
+        "prefer using existing observations and finalize with explicit limitations."
+    )
+    if not hypothesis_context:
+        return f"{_CONTEXT}\n\n{budget_note}"
+    return f"{_CONTEXT}\n\n{budget_note}\n\n{hypothesis_context}"
+
+
+def _available_metric_keys(state: dict) -> list[str]:
+    return sorted(str(key) for key in state if key not in {"blocks", "acc_mx"})[:80]
+
+
 def _steps_text(steps: list[dict[str, str]]) -> str:
     """T1.2: сводка фактически выполненных вызовов — чтобы реентри не повторял их вслепую."""
     seen: list[str] = []
@@ -205,6 +264,7 @@ def _refine_until_coherent(
     task: str,
     output_text: str,
     steps: list[dict[str, str]],
+    context: str = _CONTEXT,
 ) -> tuple[str, list[dict[str, str]]]:
     """Повторно запускает executor, пока сохраняется внутренняя несогласованность ответа.
 
@@ -219,7 +279,7 @@ def _refine_until_coherent(
             break
         try:
             result = executor.invoke(
-                {"input": _build_reentry_prompt(task, output_text, issues, steps), "context": _CONTEXT}
+                {"input": _build_reentry_prompt(task, output_text, issues, steps), "context": context}
             )
         except Exception:
             break
@@ -243,13 +303,17 @@ def _coherence_issues(output_text: str, steps: list[dict[str, str]]) -> list[str
     if grounding_problem:
         issues.append(grounding_problem)
 
-    entity_problem = _entity_grounding_issue(output_text, steps)  # C1: заземление сущностей ответа
+    entity_problem = agent_metrics.entity_grounding_issue(output_text, steps)  # C1: заземление сущностей ответа
     if entity_problem:
         issues.append(entity_problem)
 
-    effect_problem = _effect_claim_issue(output_text, steps)  # C2: эффект требует измерения
+    effect_problem = agent_metrics.proposal_measurement_issue(output_text, steps)  # C2: эффект требует измерения
     if effect_problem:
         issues.append(effect_problem)
+
+    concreteness_problem = agent_metrics.recommendation_concreteness_issue(output_text, steps)  # C3
+    if concreteness_problem:
+        issues.append(concreteness_problem)
 
     if not plan_problem:  # M2 + T2.2: план закрыт вызовами, ответ не противоречит себе
         coherence_problem = _plan_and_coherence_issue(plan, steps, output_text)
@@ -463,6 +527,8 @@ def _build_reentry_prompt(
         "Если утверждение МОЖНО проверить доступным инструментом (эффект — сравнительным before→after, "
         "например compute_scenario_provision), сначала ПРОВЕРЬ инструментом — не ограничивайся пометкой "
         "unverified; unverified оставляй только тому, что измерить реально нечем.\n"
+        "4) если PTR-гипотеза refuted — явно отклони её с причиной или переформулируй как новую проверяемую "
+        "гипотезу; если inconclusive, но test доступен — сначала выполни test или объясни, почему измерить нечем.\n"
         "Верни ПОЛНЫЙ финальный блок в обязательном формате "
         "(ANALYSIS PLAN/RESULT/REFLECTION/HYPOTHESES/NUMERIC SELF-CHECK/FOLLOW_UPS/CONFIDENCE/LIMITATIONS).\n\n"
         f"Исходный вопрос: {task}\n\nТекущий ответ:\n{output_text[:4000]}"
@@ -557,14 +623,20 @@ def _parse_output(
 
     unverified = False
     if hypotheses:
-        hypotheses, unverified = _ensure_hypothesis_verdicts(hypotheses, steps or [])
-        if unverified:
-            limitations.append("Some BlocksNet hypotheses were not verified by tool output and are marked unverified.")
+        if "status:" in hypotheses:
+            unverified = "inconclusive" in hypotheses.lower()
+            if unverified:
+                limitations.append("Some PTR hypotheses are inconclusive against available tool output.")
+        else:
+            hypotheses, unverified = _ensure_hypothesis_verdicts(hypotheses, steps or [])
+            if unverified:
+                limitations.append("Some BlocksNet hypotheses were not verified by tool output and are marked unverified.")
 
     # C1/C2 (доменно-нейтрально): честные лимитации, если утверждение о квартале не заземлено
     # или заявленный эффект не измерен — выводится из самого ОТВЕТА, без знания типа вопроса.
-    grounding_gap = bool(_entity_grounding_issue(text, steps or []))
-    effect_gap = bool(_effect_claim_issue(text, steps or []))
+    grounding_gap = bool(agent_metrics.entity_grounding_issue(text, steps or []))
+    effect_gap = bool(agent_metrics.proposal_measurement_issue(text, steps or []))
+    concreteness_gap = bool(agent_metrics.recommendation_concreteness_issue(text, steps or []))
     if grounding_gap:
         limitations.append(
             "Часть утверждений о конкретных кварталах не заземлена поквартальным выводом инструмента "
@@ -574,12 +646,17 @@ def _parse_output(
         limitations.append(
             "Заявлен эффект без сравнительного (before→after) измерения — вывод носит качественный характер."
         )
+    if concreteness_gap:
+        limitations.append(
+            "Предложение развития недостаточно конкретно: не названы все требуемые сущности (сервис и block_id)."
+        )
 
     evidence_count = _successful_evidence_count(steps or [])
     confidence = _confidence_from_evidence(
         evidence_count, bool(reflection), _verified_hypothesis_count(hypotheses), unverified
     )
-    if grounding_gap or effect_gap:  # незакрытые потребности снижают доверие к выводу
+    confidence = _confidence_from_hypothesis_statuses(confidence, hypotheses, evidence_count)
+    if grounding_gap or effect_gap or concreteness_gap:  # незакрытые потребности снижают доверие к выводу
         confidence = min(confidence, 0.55)
     sections = []
     if analysis_plan:
@@ -643,6 +720,29 @@ def _verified_hypothesis_count(text: str) -> int:
         if _NUMBER_RE.search(line) and "block_id" in lowered:
             count += 1
     return count
+
+
+def _hypothesis_status_counts(text: str) -> dict[str, int]:
+    statuses = {"supported": 0, "refuted": 0, "inconclusive": 0, "abandoned": 0}
+    for status in statuses:
+        statuses[status] = len(re.findall(rf"\bstatus:\s*{status}\b", text or "", flags=re.IGNORECASE))
+    return statuses
+
+
+def _confidence_from_hypothesis_statuses(confidence: float, hypotheses: str, evidence_count: int) -> float:
+    counts = _hypothesis_status_counts(hypotheses)
+    total = sum(counts.values())
+    if total == 0:
+        return confidence
+    if counts["inconclusive"] == total:
+        return min(confidence, 0.45)
+    if counts["supported"] and counts["refuted"] and evidence_count >= 2:
+        confidence = max(confidence, 0.72)
+    if counts["inconclusive"]:
+        confidence = min(confidence, 0.62)
+    if counts["supported"] >= 2 and counts["refuted"] == 0 and counts["inconclusive"] == 0:
+        confidence = min(confidence, 0.70)
+    return confidence
 
 
 def _confidence_from_evidence(evidence_count: int, has_reflection: bool, verified_hypotheses: int, has_unverified: bool) -> float:

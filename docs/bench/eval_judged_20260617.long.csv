@@ -1,0 +1,541 @@
+id,category,repeat,question,dimension,score,run_dir
+q01_block_603_development,A,1,Что нужно разместить в квартале 603?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004409-2425fc
+q01_block_603_development,A,1,Что нужно разместить в квартале 603?,D2,0.75,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004409-2425fc
+q01_block_603_development,A,1,Что нужно разместить в квартале 603?,D3,0.5555555555555556,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004409-2425fc
+q01_block_603_development,A,1,Что нужно разместить в квартале 603?,D4,0.7995,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004409-2425fc
+q01_block_603_development,A,1,Что нужно разместить в квартале 603?,composite,0.7762638888888889,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004409-2425fc
+q01_block_603_development,A,1,Что нужно разместить в квартале 603?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004409-2425fc
+q01_block_603_development,A,1,Что нужно разместить в квартале 603?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004409-2425fc
+q01_block_603_development,A,1,Что нужно разместить в квартале 603?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004409-2425fc
+q01_block_603_development,A,1,Что нужно разместить в квартале 603?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004409-2425fc
+q01_block_603_development,A,1,Что нужно разместить в квартале 603?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004409-2425fc
+q01_block_603_development,A,2,Что нужно разместить в квартале 603?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004457-78dc05
+q01_block_603_development,A,2,Что нужно разместить в квартале 603?,D2,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004457-78dc05
+q01_block_603_development,A,2,Что нужно разместить в квартале 603?,D3,0.5185185185185186,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004457-78dc05
+q01_block_603_development,A,2,Что нужно разместить в квартале 603?,D4,0.84675,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004457-78dc05
+q01_block_603_development,A,2,Что нужно разместить в квартале 603?,composite,0.7579837962962963,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004457-78dc05
+q01_block_603_development,A,2,Что нужно разместить в квартале 603?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004457-78dc05
+q01_block_603_development,A,2,Что нужно разместить в квартале 603?,judge_coherence,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004457-78dc05
+q01_block_603_development,A,2,Что нужно разместить в квартале 603?,judge_justification,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004457-78dc05
+q01_block_603_development,A,2,Что нужно разместить в квартале 603?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004457-78dc05
+q01_block_603_development,A,2,Что нужно разместить в квартале 603?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004457-78dc05
+q01_block_603_development,A,3,Что нужно разместить в квартале 603?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004536-8a6c19
+q01_block_603_development,A,3,Что нужно разместить в квартале 603?,D2,0.75,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004536-8a6c19
+q01_block_603_development,A,3,Что нужно разместить в квартале 603?,D3,0.5185185185185186,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004536-8a6c19
+q01_block_603_development,A,3,Что нужно разместить в квартале 603?,D4,0.8155,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004536-8a6c19
+q01_block_603_development,A,3,Что нужно разместить в квартале 603?,composite,0.7710046296296297,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004536-8a6c19
+q01_block_603_development,A,3,Что нужно разместить в квартале 603?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004536-8a6c19
+q01_block_603_development,A,3,Что нужно разместить в квартале 603?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004536-8a6c19
+q01_block_603_development,A,3,Что нужно разместить в квартале 603?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004536-8a6c19
+q01_block_603_development,A,3,Что нужно разместить в квартале 603?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004536-8a6c19
+q01_block_603_development,A,3,Что нужно разместить в квартале 603?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004536-8a6c19
+q02_block_7_needs,A,1,Чего не хватает в квартале 7?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004557-c3ba06
+q02_block_7_needs,A,1,Чего не хватает в квартале 7?,D2,0.8333333333333334,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004557-c3ba06
+q02_block_7_needs,A,1,Чего не хватает в квартале 7?,D3,0.5185185185185186,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004557-c3ba06
+q02_block_7_needs,A,1,Чего не хватает в квартале 7?,D4,0.7925,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004557-c3ba06
+q02_block_7_needs,A,1,Чего не хватает в квартале 7?,composite,0.786087962962963,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004557-c3ba06
+q02_block_7_needs,A,1,Чего не хватает в квартале 7?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004557-c3ba06
+q02_block_7_needs,A,1,Чего не хватает в квартале 7?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004557-c3ba06
+q02_block_7_needs,A,1,Чего не хватает в квартале 7?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004557-c3ba06
+q02_block_7_needs,A,1,Чего не хватает в квартале 7?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004557-c3ba06
+q02_block_7_needs,A,1,Чего не хватает в квартале 7?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004557-c3ba06
+q02_block_7_needs,A,2,Чего не хватает в квартале 7?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004621-48123b
+q02_block_7_needs,A,2,Чего не хватает в квартале 7?,D2,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004621-48123b
+q02_block_7_needs,A,2,Чего не хватает в квартале 7?,D3,0.5185185185185186,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004621-48123b
+q02_block_7_needs,A,2,Чего не хватает в квартале 7?,D4,0.8155,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004621-48123b
+q02_block_7_needs,A,2,Чего не хватает в квартале 7?,composite,0.7501712962962963,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004621-48123b
+q02_block_7_needs,A,2,Чего не хватает в квартале 7?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004621-48123b
+q02_block_7_needs,A,2,Чего не хватает в квартале 7?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004621-48123b
+q02_block_7_needs,A,2,Чего не хватает в квартале 7?,judge_justification,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004621-48123b
+q02_block_7_needs,A,2,Чего не хватает в квартале 7?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004621-48123b
+q02_block_7_needs,A,2,Чего не хватает в квартале 7?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004621-48123b
+q02_block_7_needs,A,3,Чего не хватает в квартале 7?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004642-b8aab6
+q02_block_7_needs,A,3,Чего не хватает в квартале 7?,D2,0.8333333333333334,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004642-b8aab6
+q02_block_7_needs,A,3,Чего не хватает в квартале 7?,D3,0.5185185185185186,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004642-b8aab6
+q02_block_7_needs,A,3,Чего не хватает в квартале 7?,D4,0.84675,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004642-b8aab6
+q02_block_7_needs,A,3,Чего не хватает в квартале 7?,composite,0.799650462962963,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004642-b8aab6
+q02_block_7_needs,A,3,Чего не хватает в квартале 7?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004642-b8aab6
+q02_block_7_needs,A,3,Чего не хватает в квартале 7?,judge_coherence,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004642-b8aab6
+q02_block_7_needs,A,3,Чего не хватает в квартале 7?,judge_justification,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004642-b8aab6
+q02_block_7_needs,A,3,Чего не хватает в квартале 7?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004642-b8aab6
+q02_block_7_needs,A,3,Чего не хватает в квартале 7?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004642-b8aab6
+q03_block_711_provision,A,1,Какова обеспеченность квартала 711 сервисами?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004703-29a4de
+q03_block_711_provision,A,1,Какова обеспеченность квартала 711 сервисами?,D2,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004703-29a4de
+q03_block_711_provision,A,1,Какова обеспеченность квартала 711 сервисами?,D3,0.5185185185185186,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004703-29a4de
+q03_block_711_provision,A,1,Какова обеспеченность квартала 711 сервисами?,D4,0.8155,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004703-29a4de
+q03_block_711_provision,A,1,Какова обеспеченность квартала 711 сервисами?,composite,0.7501712962962963,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004703-29a4de
+q03_block_711_provision,A,1,Какова обеспеченность квартала 711 сервисами?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004703-29a4de
+q03_block_711_provision,A,1,Какова обеспеченность квартала 711 сервисами?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004703-29a4de
+q03_block_711_provision,A,1,Какова обеспеченность квартала 711 сервисами?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004703-29a4de
+q03_block_711_provision,A,1,Какова обеспеченность квартала 711 сервисами?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004703-29a4de
+q03_block_711_provision,A,1,Какова обеспеченность квартала 711 сервисами?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004703-29a4de
+q03_block_711_provision,A,2,Какова обеспеченность квартала 711 сервисами?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004733-3be66e
+q03_block_711_provision,A,2,Какова обеспеченность квартала 711 сервисами?,D2,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004733-3be66e
+q03_block_711_provision,A,2,Какова обеспеченность квартала 711 сервисами?,D3,0.5185185185185186,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004733-3be66e
+q03_block_711_provision,A,2,Какова обеспеченность квартала 711 сервисами?,D4,0.84675,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004733-3be66e
+q03_block_711_provision,A,2,Какова обеспеченность квартала 711 сервисами?,composite,0.7579837962962963,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004733-3be66e
+q03_block_711_provision,A,2,Какова обеспеченность квартала 711 сервисами?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004733-3be66e
+q03_block_711_provision,A,2,Какова обеспеченность квартала 711 сервисами?,judge_coherence,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004733-3be66e
+q03_block_711_provision,A,2,Какова обеспеченность квартала 711 сервисами?,judge_justification,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004733-3be66e
+q03_block_711_provision,A,2,Какова обеспеченность квартала 711 сервисами?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004733-3be66e
+q03_block_711_provision,A,2,Какова обеспеченность квартала 711 сервисами?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004733-3be66e
+q03_block_711_provision,A,3,Какова обеспеченность квартала 711 сервисами?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004800-236c50
+q03_block_711_provision,A,3,Какова обеспеченность квартала 711 сервисами?,D2,0.8333333333333334,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004800-236c50
+q03_block_711_provision,A,3,Какова обеспеченность квартала 711 сервисами?,D3,0.5925925925925927,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004800-236c50
+q03_block_711_provision,A,3,Какова обеспеченность квартала 711 сервисами?,D4,0.84675,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004800-236c50
+q03_block_711_provision,A,3,Какова обеспеченность квартала 711 сервисами?,composite,0.8181689814814815,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004800-236c50
+q03_block_711_provision,A,3,Какова обеспеченность квартала 711 сервисами?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004800-236c50
+q03_block_711_provision,A,3,Какова обеспеченность квартала 711 сервисами?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004800-236c50
+q03_block_711_provision,A,3,Какова обеспеченность квартала 711 сервисами?,judge_justification,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004800-236c50
+q03_block_711_provision,A,3,Какова обеспеченность квартала 711 сервисами?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004800-236c50
+q03_block_711_provision,A,3,Какова обеспеченность квартала 711 сервисами?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004800-236c50
+q04_city_hotel_placement,B,1,Где разместить новые гостиницы?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004826-dd9bc0
+q04_city_hotel_placement,B,1,Где разместить новые гостиницы?,D2,0.75,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004826-dd9bc0
+q04_city_hotel_placement,B,1,Где разместить новые гостиницы?,D3,0.5185185185185186,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004826-dd9bc0
+q04_city_hotel_placement,B,1,Где разместить новые гостиницы?,D4,0.8155,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004826-dd9bc0
+q04_city_hotel_placement,B,1,Где разместить новые гостиницы?,composite,0.7710046296296297,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004826-dd9bc0
+q04_city_hotel_placement,B,1,Где разместить новые гостиницы?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004826-dd9bc0
+q04_city_hotel_placement,B,1,Где разместить новые гостиницы?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004826-dd9bc0
+q04_city_hotel_placement,B,1,Где разместить новые гостиницы?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004826-dd9bc0
+q04_city_hotel_placement,B,1,Где разместить новые гостиницы?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004826-dd9bc0
+q04_city_hotel_placement,B,1,Где разместить новые гостиницы?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004826-dd9bc0
+q04_city_hotel_placement,B,2,Где разместить новые гостиницы?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004902-6d5650
+q04_city_hotel_placement,B,2,Где разместить новые гостиницы?,D2,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004902-6d5650
+q04_city_hotel_placement,B,2,Где разместить новые гостиницы?,D3,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004902-6d5650
+q04_city_hotel_placement,B,2,Где разместить новые гостиницы?,D4,0.84675,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004902-6d5650
+q04_city_hotel_placement,B,2,Где разместить новые гостиницы?,composite,0.7950208333333333,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004902-6d5650
+q04_city_hotel_placement,B,2,Где разместить новые гостиницы?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004902-6d5650
+q04_city_hotel_placement,B,2,Где разместить новые гостиницы?,judge_coherence,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004902-6d5650
+q04_city_hotel_placement,B,2,Где разместить новые гостиницы?,judge_justification,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004902-6d5650
+q04_city_hotel_placement,B,2,Где разместить новые гостиницы?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004902-6d5650
+q04_city_hotel_placement,B,2,Где разместить новые гостиницы?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004902-6d5650
+q04_city_hotel_placement,B,3,Где разместить новые гостиницы?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004926-953a66
+q04_city_hotel_placement,B,3,Где разместить новые гостиницы?,D2,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004926-953a66
+q04_city_hotel_placement,B,3,Где разместить новые гостиницы?,D3,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004926-953a66
+q04_city_hotel_placement,B,3,Где разместить новые гостиницы?,D4,0.84675,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004926-953a66
+q04_city_hotel_placement,B,3,Где разместить новые гостиницы?,composite,0.7950208333333333,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004926-953a66
+q04_city_hotel_placement,B,3,Где разместить новые гостиницы?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004926-953a66
+q04_city_hotel_placement,B,3,Где разместить новые гостиницы?,judge_coherence,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004926-953a66
+q04_city_hotel_placement,B,3,Где разместить новые гостиницы?,judge_justification,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004926-953a66
+q04_city_hotel_placement,B,3,Где разместить новые гостиницы?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004926-953a66
+q04_city_hotel_placement,B,3,Где разместить новые гостиницы?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004926-953a66
+q05_city_pitch_placement,B,1,Где разместить спортивные площадки?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004957-4328ec
+q05_city_pitch_placement,B,1,Где разместить спортивные площадки?,D2,0.75,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004957-4328ec
+q05_city_pitch_placement,B,1,Где разместить спортивные площадки?,D3,0.5925925925925927,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004957-4328ec
+q05_city_pitch_placement,B,1,Где разместить спортивные площадки?,D4,0.84675,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004957-4328ec
+q05_city_pitch_placement,B,1,Где разместить спортивные площадки?,composite,0.7660856481481482,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004957-4328ec
+q05_city_pitch_placement,B,1,Где разместить спортивные площадки?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004957-4328ec
+q05_city_pitch_placement,B,1,Где разместить спортивные площадки?,judge_coherence,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004957-4328ec
+q05_city_pitch_placement,B,1,Где разместить спортивные площадки?,judge_justification,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004957-4328ec
+q05_city_pitch_placement,B,1,Где разместить спортивные площадки?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004957-4328ec
+q05_city_pitch_placement,B,1,Где разместить спортивные площадки?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-004957-4328ec
+q05_city_pitch_placement,B,2,Где разместить спортивные площадки?,D1,0.75,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005040-6ca242
+q05_city_pitch_placement,B,2,Где разместить спортивные площадки?,D2,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005040-6ca242
+q05_city_pitch_placement,B,2,Где разместить спортивные площадки?,D3,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005040-6ca242
+q05_city_pitch_placement,B,2,Где разместить спортивные площадки?,D4,0.7155,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005040-6ca242
+q05_city_pitch_placement,B,2,Где разместить спортивные площадки?,composite,0.6997083333333333,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005040-6ca242
+q05_city_pitch_placement,B,2,Где разместить спортивные площадки?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005040-6ca242
+q05_city_pitch_placement,B,2,Где разместить спортивные площадки?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005040-6ca242
+q05_city_pitch_placement,B,2,Где разместить спортивные площадки?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005040-6ca242
+q05_city_pitch_placement,B,2,Где разместить спортивные площадки?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005040-6ca242
+q05_city_pitch_placement,B,2,Где разместить спортивные площадки?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005040-6ca242
+q05_city_pitch_placement,B,3,Где разместить спортивные площадки?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005105-88fd96
+q05_city_pitch_placement,B,3,Где разместить спортивные площадки?,D2,0.75,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005105-88fd96
+q05_city_pitch_placement,B,3,Где разместить спортивные площадки?,D3,0.3703703703703704,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005105-88fd96
+q05_city_pitch_placement,B,3,Где разместить спортивные площадки?,D4,0.4575,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005105-88fd96
+q05_city_pitch_placement,B,3,Где разместить спортивные площадки?,composite,0.6132175925925927,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005105-88fd96
+q05_city_pitch_placement,B,3,Где разместить спортивные площадки?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005105-88fd96
+q05_city_pitch_placement,B,3,Где разместить спортивные площадки?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005105-88fd96
+q05_city_pitch_placement,B,3,Где разместить спортивные площадки?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005105-88fd96
+q05_city_pitch_placement,B,3,Где разместить спортивные площадки?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005105-88fd96
+q05_city_pitch_placement,B,3,Где разместить спортивные площадки?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005105-88fd96
+q06_city_pharmacy_gaps,B,1,Где не хватает аптек?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005151-152477
+q06_city_pharmacy_gaps,B,1,Где не хватает аптек?,D2,0.8333333333333334,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005151-152477
+q06_city_pharmacy_gaps,B,1,Где не хватает аптек?,D3,0.5185185185185186,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005151-152477
+q06_city_pharmacy_gaps,B,1,Где не хватает аптек?,D4,0.5700000000000001,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005151-152477
+q06_city_pharmacy_gaps,B,1,Где не хватает аптек?,composite,0.7304629629629631,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005151-152477
+q06_city_pharmacy_gaps,B,1,Где не хватает аптек?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005151-152477
+q06_city_pharmacy_gaps,B,1,Где не хватает аптек?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005151-152477
+q06_city_pharmacy_gaps,B,1,Где не хватает аптек?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005151-152477
+q06_city_pharmacy_gaps,B,1,Где не хватает аптек?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005151-152477
+q06_city_pharmacy_gaps,B,1,Где не хватает аптек?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005151-152477
+q06_city_pharmacy_gaps,B,2,Где не хватает аптек?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005219-ab03ca
+q06_city_pharmacy_gaps,B,2,Где не хватает аптек?,D2,0.9583333333333334,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005219-ab03ca
+q06_city_pharmacy_gaps,B,2,Где не хватает аптек?,D3,0.8240740740740741,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005219-ab03ca
+q06_city_pharmacy_gaps,B,2,Где не хватает аптек?,D4,0.9155,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005219-ab03ca
+q06_city_pharmacy_gaps,B,2,Где не хватает аптек?,composite,0.9244768518518518,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005219-ab03ca
+q06_city_pharmacy_gaps,B,2,Где не хватает аптек?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005219-ab03ca
+q06_city_pharmacy_gaps,B,2,Где не хватает аптек?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005219-ab03ca
+q06_city_pharmacy_gaps,B,2,Где не хватает аптек?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005219-ab03ca
+q06_city_pharmacy_gaps,B,2,Где не хватает аптек?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005219-ab03ca
+q06_city_pharmacy_gaps,B,2,Где не хватает аптек?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005219-ab03ca
+q06_city_pharmacy_gaps,B,3,Где не хватает аптек?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005823-0f1f8e
+q06_city_pharmacy_gaps,B,3,Где не хватает аптек?,D2,0.8333333333333334,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005823-0f1f8e
+q06_city_pharmacy_gaps,B,3,Где не хватает аптек?,D3,0.8888888888888888,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005823-0f1f8e
+q06_city_pharmacy_gaps,B,3,Где не хватает аптек?,D4,0.7925,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005823-0f1f8e
+q06_city_pharmacy_gaps,B,3,Где не хватает аптек?,composite,0.8474305555555556,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005823-0f1f8e
+q06_city_pharmacy_gaps,B,3,Где не хватает аптек?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005823-0f1f8e
+q06_city_pharmacy_gaps,B,3,Где не хватает аптек?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005823-0f1f8e
+q06_city_pharmacy_gaps,B,3,Где не хватает аптек?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005823-0f1f8e
+q06_city_pharmacy_gaps,B,3,Где не хватает аптек?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005823-0f1f8e
+q06_city_pharmacy_gaps,B,3,Где не хватает аптек?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005823-0f1f8e
+q07_pedestrian_streets,E/D,1,Какие улицы сделать пешеходными?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005920-914a8d
+q07_pedestrian_streets,E/D,1,Какие улицы сделать пешеходными?,D2,0.8333333333333334,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005920-914a8d
+q07_pedestrian_streets,E/D,1,Какие улицы сделать пешеходными?,D3,0.5185185185185186,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005920-914a8d
+q07_pedestrian_streets,E/D,1,Какие улицы сделать пешеходными?,D4,0.5675,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005920-914a8d
+q07_pedestrian_streets,E/D,1,Какие улицы сделать пешеходными?,composite,0.698587962962963,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005920-914a8d
+q07_pedestrian_streets,E/D,1,Какие улицы сделать пешеходными?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005920-914a8d
+q07_pedestrian_streets,E/D,1,Какие улицы сделать пешеходными?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005920-914a8d
+q07_pedestrian_streets,E/D,1,Какие улицы сделать пешеходными?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005920-914a8d
+q07_pedestrian_streets,E/D,1,Какие улицы сделать пешеходными?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005920-914a8d
+q07_pedestrian_streets,E/D,1,Какие улицы сделать пешеходными?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-005920-914a8d
+q07_pedestrian_streets,E/D,2,Какие улицы сделать пешеходными?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010006-2c109a
+q07_pedestrian_streets,E/D,2,Какие улицы сделать пешеходными?,D2,0.8333333333333334,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010006-2c109a
+q07_pedestrian_streets,E/D,2,Какие улицы сделать пешеходными?,D3,0.5185185185185186,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010006-2c109a
+q07_pedestrian_streets,E/D,2,Какие улицы сделать пешеходными?,D4,0.5675,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010006-2c109a
+q07_pedestrian_streets,E/D,2,Какие улицы сделать пешеходными?,composite,0.698587962962963,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010006-2c109a
+q07_pedestrian_streets,E/D,2,Какие улицы сделать пешеходными?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010006-2c109a
+q07_pedestrian_streets,E/D,2,Какие улицы сделать пешеходными?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010006-2c109a
+q07_pedestrian_streets,E/D,2,Какие улицы сделать пешеходными?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010006-2c109a
+q07_pedestrian_streets,E/D,2,Какие улицы сделать пешеходными?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010006-2c109a
+q07_pedestrian_streets,E/D,2,Какие улицы сделать пешеходными?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010006-2c109a
+q07_pedestrian_streets,E/D,3,Какие улицы сделать пешеходными?,D1,0.75,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010117-63f4d6
+q07_pedestrian_streets,E/D,3,Какие улицы сделать пешеходными?,D2,0.8333333333333334,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010117-63f4d6
+q07_pedestrian_streets,E/D,3,Какие улицы сделать пешеходными?,D3,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010117-63f4d6
+q07_pedestrian_streets,E/D,3,Какие улицы сделать пешеходными?,D4,0.69875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010117-63f4d6
+q07_pedestrian_streets,E/D,3,Какие улицы сделать пешеходными?,composite,0.7371875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010117-63f4d6
+q07_pedestrian_streets,E/D,3,Какие улицы сделать пешеходными?,judge_framing,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010117-63f4d6
+q07_pedestrian_streets,E/D,3,Какие улицы сделать пешеходными?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010117-63f4d6
+q07_pedestrian_streets,E/D,3,Какие улицы сделать пешеходными?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010117-63f4d6
+q07_pedestrian_streets,E/D,3,Какие улицы сделать пешеходными?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010117-63f4d6
+q07_pedestrian_streets,E/D,3,Какие улицы сделать пешеходными?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010117-63f4d6
+q08_healthcare_gaps,C,1,Какие кварталы хуже всего обеспечены объектами здравоохранения?,D1,0.625,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010227-95ef5f
+q08_healthcare_gaps,C,1,Какие кварталы хуже всего обеспечены объектами здравоохранения?,D2,0.8333333333333334,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010227-95ef5f
+q08_healthcare_gaps,C,1,Какие кварталы хуже всего обеспечены объектами здравоохранения?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010227-95ef5f
+q08_healthcare_gaps,C,1,Какие кварталы хуже всего обеспечены объектами здравоохранения?,D4,0.5905,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010227-95ef5f
+q08_healthcare_gaps,C,1,Какие кварталы хуже всего обеспечены объектами здравоохранения?,composite,0.6233194444444445,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010227-95ef5f
+q08_healthcare_gaps,C,1,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010227-95ef5f
+q08_healthcare_gaps,C,1,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010227-95ef5f
+q08_healthcare_gaps,C,1,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010227-95ef5f
+q08_healthcare_gaps,C,1,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010227-95ef5f
+q08_healthcare_gaps,C,1,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010227-95ef5f
+q08_healthcare_gaps,C,2,Какие кварталы хуже всего обеспечены объектами здравоохранения?,D1,0.625,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010323-c33343
+q08_healthcare_gaps,C,2,Какие кварталы хуже всего обеспечены объектами здравоохранения?,D2,0.9666666666666667,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010323-c33343
+q08_healthcare_gaps,C,2,Какие кварталы хуже всего обеспечены объектами здравоохранения?,D3,0.48888888888888893,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010323-c33343
+q08_healthcare_gaps,C,2,Какие кварталы хуже всего обеспечены объектами здравоохранения?,D4,0.5974999999999999,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010323-c33343
+q08_healthcare_gaps,C,2,Какие кварталы хуже всего обеспечены объектами здравоохранения?,composite,0.669513888888889,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010323-c33343
+q08_healthcare_gaps,C,2,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010323-c33343
+q08_healthcare_gaps,C,2,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010323-c33343
+q08_healthcare_gaps,C,2,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010323-c33343
+q08_healthcare_gaps,C,2,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010323-c33343
+q08_healthcare_gaps,C,2,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010323-c33343
+q08_healthcare_gaps,C,3,Какие кварталы хуже всего обеспечены объектами здравоохранения?,D1,0.625,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010445-2bff08
+q08_healthcare_gaps,C,3,Какие кварталы хуже всего обеспечены объектами здравоохранения?,D2,0.8333333333333334,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010445-2bff08
+q08_healthcare_gaps,C,3,Какие кварталы хуже всего обеспечены объектами здравоохранения?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010445-2bff08
+q08_healthcare_gaps,C,3,Какие кварталы хуже всего обеспечены объектами здравоохранения?,D4,0.5387500000000001,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010445-2bff08
+q08_healthcare_gaps,C,3,Какие кварталы хуже всего обеспечены объектами здравоохранения?,composite,0.6103819444444445,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010445-2bff08
+q08_healthcare_gaps,C,3,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010445-2bff08
+q08_healthcare_gaps,C,3,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010445-2bff08
+q08_healthcare_gaps,C,3,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010445-2bff08
+q08_healthcare_gaps,C,3,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010445-2bff08
+q08_healthcare_gaps,C,3,Какие кварталы хуже всего обеспечены объектами здравоохранения?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010445-2bff08
+q09_lowest_transport_accessibility,C,1,Где самая низкая транспортная доступность?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010547-6c9f78
+q09_lowest_transport_accessibility,C,1,Где самая низкая транспортная доступность?,D2,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010547-6c9f78
+q09_lowest_transport_accessibility,C,1,Где самая низкая транспортная доступность?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010547-6c9f78
+q09_lowest_transport_accessibility,C,1,Где самая низкая транспортная доступность?,D4,0.67,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010547-6c9f78
+q09_lowest_transport_accessibility,C,1,Где самая низкая транспортная доступность?,composite,0.7786111111111111,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010547-6c9f78
+q09_lowest_transport_accessibility,C,1,Где самая низкая транспортная доступность?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010547-6c9f78
+q09_lowest_transport_accessibility,C,1,Где самая низкая транспортная доступность?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010547-6c9f78
+q09_lowest_transport_accessibility,C,1,Где самая низкая транспортная доступность?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010547-6c9f78
+q09_lowest_transport_accessibility,C,1,Где самая низкая транспортная доступность?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010547-6c9f78
+q09_lowest_transport_accessibility,C,1,Где самая низкая транспортная доступность?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010547-6c9f78
+q09_lowest_transport_accessibility,C,2,Где самая низкая транспортная доступность?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010632-5df795
+q09_lowest_transport_accessibility,C,2,Где самая низкая транспортная доступность?,D2,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010632-5df795
+q09_lowest_transport_accessibility,C,2,Где самая низкая транспортная доступность?,D3,0.48148148148148157,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010632-5df795
+q09_lowest_transport_accessibility,C,2,Где самая низкая транспортная доступность?,D4,0.5908333333333333,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010632-5df795
+q09_lowest_transport_accessibility,C,2,Где самая низкая транспортная доступность?,composite,0.7368287037037037,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010632-5df795
+q09_lowest_transport_accessibility,C,2,Где самая низкая транспортная доступность?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010632-5df795
+q09_lowest_transport_accessibility,C,2,Где самая низкая транспортная доступность?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010632-5df795
+q09_lowest_transport_accessibility,C,2,Где самая низкая транспортная доступность?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010632-5df795
+q09_lowest_transport_accessibility,C,2,Где самая низкая транспортная доступность?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010632-5df795
+q09_lowest_transport_accessibility,C,2,Где самая низкая транспортная доступность?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010632-5df795
+q09_lowest_transport_accessibility,C,3,Где самая низкая транспортная доступность?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010756-b37e20
+q09_lowest_transport_accessibility,C,3,Где самая низкая транспортная доступность?,D2,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010756-b37e20
+q09_lowest_transport_accessibility,C,3,Где самая низкая транспортная доступность?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010756-b37e20
+q09_lowest_transport_accessibility,C,3,Где самая низкая транспортная доступность?,D4,0.6325000000000001,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010756-b37e20
+q09_lowest_transport_accessibility,C,3,Где самая низкая транспортная доступность?,composite,0.7692361111111112,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010756-b37e20
+q09_lowest_transport_accessibility,C,3,Где самая низкая транспортная доступность?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010756-b37e20
+q09_lowest_transport_accessibility,C,3,Где самая низкая транспортная доступность?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010756-b37e20
+q09_lowest_transport_accessibility,C,3,Где самая низкая транспортная доступность?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010756-b37e20
+q09_lowest_transport_accessibility,C,3,Где самая низкая транспортная доступность?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010756-b37e20
+q09_lowest_transport_accessibility,C,3,Где самая низкая транспортная доступность?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010756-b37e20
+q10_least_connected_blocks,C,1,Какие кварталы наименее связны?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010839-0b5256
+q10_least_connected_blocks,C,1,Какие кварталы наименее связны?,D2,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010839-0b5256
+q10_least_connected_blocks,C,1,Какие кварталы наименее связны?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010839-0b5256
+q10_least_connected_blocks,C,1,Какие кварталы наименее связны?,D4,0.445,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010839-0b5256
+q10_least_connected_blocks,C,1,Какие кварталы наименее связны?,composite,0.6911111111111111,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010839-0b5256
+q10_least_connected_blocks,C,1,Какие кварталы наименее связны?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010839-0b5256
+q10_least_connected_blocks,C,1,Какие кварталы наименее связны?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010839-0b5256
+q10_least_connected_blocks,C,1,Какие кварталы наименее связны?,judge_justification,2.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010839-0b5256
+q10_least_connected_blocks,C,1,Какие кварталы наименее связны?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010839-0b5256
+q10_least_connected_blocks,C,1,Какие кварталы наименее связны?,judge_metacognition,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010839-0b5256
+q10_least_connected_blocks,C,2,Какие кварталы наименее связны?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010930-81c8b8
+q10_least_connected_blocks,C,2,Какие кварталы наименее связны?,D2,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010930-81c8b8
+q10_least_connected_blocks,C,2,Какие кварталы наименее связны?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010930-81c8b8
+q10_least_connected_blocks,C,2,Какие кварталы наименее связны?,D4,0.445,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010930-81c8b8
+q10_least_connected_blocks,C,2,Какие кварталы наименее связны?,composite,0.6911111111111111,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010930-81c8b8
+q10_least_connected_blocks,C,2,Какие кварталы наименее связны?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010930-81c8b8
+q10_least_connected_blocks,C,2,Какие кварталы наименее связны?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010930-81c8b8
+q10_least_connected_blocks,C,2,Какие кварталы наименее связны?,judge_justification,2.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010930-81c8b8
+q10_least_connected_blocks,C,2,Какие кварталы наименее связны?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010930-81c8b8
+q10_least_connected_blocks,C,2,Какие кварталы наименее связны?,judge_metacognition,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-010930-81c8b8
+q10_least_connected_blocks,C,3,Какие кварталы наименее связны?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011019-3b8b76
+q10_least_connected_blocks,C,3,Какие кварталы наименее связны?,D2,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011019-3b8b76
+q10_least_connected_blocks,C,3,Какие кварталы наименее связны?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011019-3b8b76
+q10_least_connected_blocks,C,3,Какие кварталы наименее связны?,D4,0.445,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011019-3b8b76
+q10_least_connected_blocks,C,3,Какие кварталы наименее связны?,composite,0.6911111111111111,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011019-3b8b76
+q10_least_connected_blocks,C,3,Какие кварталы наименее связны?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011019-3b8b76
+q10_least_connected_blocks,C,3,Какие кварталы наименее связны?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011019-3b8b76
+q10_least_connected_blocks,C,3,Какие кварталы наименее связны?,judge_justification,2.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011019-3b8b76
+q10_least_connected_blocks,C,3,Какие кварталы наименее связны?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011019-3b8b76
+q10_least_connected_blocks,C,3,Какие кварталы наименее связны?,judge_metacognition,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011019-3b8b76
+q11_lowest_service_diversity,C,1,Где самое низкое разнообразие сервисов?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011051-6ccde1
+q11_lowest_service_diversity,C,1,Где самое низкое разнообразие сервисов?,D2,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011051-6ccde1
+q11_lowest_service_diversity,C,1,Где самое низкое разнообразие сервисов?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011051-6ccde1
+q11_lowest_service_diversity,C,1,Где самое низкое разнообразие сервисов?,D4,0.5700000000000001,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011051-6ccde1
+q11_lowest_service_diversity,C,1,Где самое низкое разнообразие сервисов?,composite,0.7536111111111112,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011051-6ccde1
+q11_lowest_service_diversity,C,1,Где самое низкое разнообразие сервисов?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011051-6ccde1
+q11_lowest_service_diversity,C,1,Где самое низкое разнообразие сервисов?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011051-6ccde1
+q11_lowest_service_diversity,C,1,Где самое низкое разнообразие сервисов?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011051-6ccde1
+q11_lowest_service_diversity,C,1,Где самое низкое разнообразие сервисов?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011051-6ccde1
+q11_lowest_service_diversity,C,1,Где самое низкое разнообразие сервисов?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011051-6ccde1
+q11_lowest_service_diversity,C,2,Где самое низкое разнообразие сервисов?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011141-f3b31d
+q11_lowest_service_diversity,C,2,Где самое низкое разнообразие сервисов?,D2,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011141-f3b31d
+q11_lowest_service_diversity,C,2,Где самое низкое разнообразие сервисов?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011141-f3b31d
+q11_lowest_service_diversity,C,2,Где самое низкое разнообразие сервисов?,D4,0.5075000000000001,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011141-f3b31d
+q11_lowest_service_diversity,C,2,Где самое низкое разнообразие сервисов?,composite,0.7067361111111112,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011141-f3b31d
+q11_lowest_service_diversity,C,2,Где самое низкое разнообразие сервисов?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011141-f3b31d
+q11_lowest_service_diversity,C,2,Где самое низкое разнообразие сервисов?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011141-f3b31d
+q11_lowest_service_diversity,C,2,Где самое низкое разнообразие сервисов?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011141-f3b31d
+q11_lowest_service_diversity,C,2,Где самое низкое разнообразие сервисов?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011141-f3b31d
+q11_lowest_service_diversity,C,2,Где самое низкое разнообразие сервисов?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011141-f3b31d
+q11_lowest_service_diversity,C,3,Где самое низкое разнообразие сервисов?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011217-16ed3c
+q11_lowest_service_diversity,C,3,Где самое низкое разнообразие сервисов?,D2,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011217-16ed3c
+q11_lowest_service_diversity,C,3,Где самое низкое разнообразие сервисов?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011217-16ed3c
+q11_lowest_service_diversity,C,3,Где самое низкое разнообразие сервисов?,D4,0.5700000000000001,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011217-16ed3c
+q11_lowest_service_diversity,C,3,Где самое низкое разнообразие сервисов?,composite,0.7536111111111112,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011217-16ed3c
+q11_lowest_service_diversity,C,3,Где самое низкое разнообразие сервисов?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011217-16ed3c
+q11_lowest_service_diversity,C,3,Где самое низкое разнообразие сервисов?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011217-16ed3c
+q11_lowest_service_diversity,C,3,Где самое низкое разнообразие сервисов?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011217-16ed3c
+q11_lowest_service_diversity,C,3,Где самое низкое разнообразие сервисов?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011217-16ed3c
+q11_lowest_service_diversity,C,3,Где самое низкое разнообразие сервисов?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011217-16ed3c
+q12_hospital_access_population,D,1,Где разместить новую больницу с учётом доступности и населения?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011307-f2ffa9
+q12_hospital_access_population,D,1,Где разместить новую больницу с учётом доступности и населения?,D2,0.9333333333333332,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011307-f2ffa9
+q12_hospital_access_population,D,1,Где разместить новую больницу с учётом доступности и населения?,D3,0.3703703703703704,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011307-f2ffa9
+q12_hospital_access_population,D,1,Где разместить новую больницу с учётом доступности и населения?,D4,0.4575,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011307-f2ffa9
+q12_hospital_access_population,D,1,Где разместить новую больницу с учётом доступности и населения?,composite,0.6590509259259258,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011307-f2ffa9
+q12_hospital_access_population,D,1,Где разместить новую больницу с учётом доступности и населения?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011307-f2ffa9
+q12_hospital_access_population,D,1,Где разместить новую больницу с учётом доступности и населения?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011307-f2ffa9
+q12_hospital_access_population,D,1,Где разместить новую больницу с учётом доступности и населения?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011307-f2ffa9
+q12_hospital_access_population,D,1,Где разместить новую больницу с учётом доступности и населения?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011307-f2ffa9
+q12_hospital_access_population,D,1,Где разместить новую больницу с учётом доступности и населения?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011307-f2ffa9
+q12_hospital_access_population,D,2,Где разместить новую больницу с учётом доступности и населения?,D1,0.25,
+q12_hospital_access_population,D,2,Где разместить новую больницу с учётом доступности и населения?,D2,0.6666666666666666,
+q12_hospital_access_population,D,2,Где разместить новую больницу с учётом доступности и населения?,D3,0.6666666666666666,
+q12_hospital_access_population,D,2,Где разместить новую больницу с учётом доступности и населения?,D4,0.16,
+q12_hospital_access_population,D,2,Где разместить новую больницу с учётом доступности и населения?,composite,0.4358333333333333,
+q12_hospital_access_population,D,2,Где разместить новую больницу с учётом доступности и населения?,judge_framing,1.0,
+q12_hospital_access_population,D,2,Где разместить новую больницу с учётом доступности и населения?,judge_coherence,1.0,
+q12_hospital_access_population,D,2,Где разместить новую больницу с учётом доступности и населения?,judge_justification,1.0,
+q12_hospital_access_population,D,2,Где разместить новую больницу с учётом доступности и населения?,judge_uncertainty,1.0,
+q12_hospital_access_population,D,2,Где разместить новую больницу с учётом доступности и населения?,judge_metacognition,1.0,
+q12_hospital_access_population,D,3,Где разместить новую больницу с учётом доступности и населения?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011401-2d97bf
+q12_hospital_access_population,D,3,Где разместить новую больницу с учётом доступности и населения?,D2,0.7999999999999999,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011401-2d97bf
+q12_hospital_access_population,D,3,Где разместить новую больницу с учётом доступности и населения?,D3,0.5925925925925927,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011401-2d97bf
+q12_hospital_access_population,D,3,Где разместить новую больницу с учётом доступности и населения?,D4,0.6925,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011401-2d97bf
+q12_hospital_access_population,D,3,Где разместить новую больницу с учётом доступности и населения?,composite,0.7712731481481481,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011401-2d97bf
+q12_hospital_access_population,D,3,Где разместить новую больницу с учётом доступности и населения?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011401-2d97bf
+q12_hospital_access_population,D,3,Где разместить новую больницу с учётом доступности и населения?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011401-2d97bf
+q12_hospital_access_population,D,3,Где разместить новую больницу с учётом доступности и населения?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011401-2d97bf
+q12_hospital_access_population,D,3,Где разместить новую больницу с учётом доступности и населения?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011401-2d97bf
+q12_hospital_access_population,D,3,Где разместить новую больницу с учётом доступности и населения?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011401-2d97bf
+q13_pitch_density_placement,D,1,Где разместить спортплощадки с учётом плотности застройки?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011454-aa5943
+q13_pitch_density_placement,D,1,Где разместить спортплощадки с учётом плотности застройки?,D2,0.8333333333333334,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011454-aa5943
+q13_pitch_density_placement,D,1,Где разместить спортплощадки с учётом плотности застройки?,D3,0.5925925925925927,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011454-aa5943
+q13_pitch_density_placement,D,1,Где разместить спортплощадки с учётом плотности застройки?,D4,0.67,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011454-aa5943
+q13_pitch_density_placement,D,1,Где разместить спортплощадки с учётом плотности застройки?,composite,0.7739814814814815,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011454-aa5943
+q13_pitch_density_placement,D,1,Где разместить спортплощадки с учётом плотности застройки?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011454-aa5943
+q13_pitch_density_placement,D,1,Где разместить спортплощадки с учётом плотности застройки?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011454-aa5943
+q13_pitch_density_placement,D,1,Где разместить спортплощадки с учётом плотности застройки?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011454-aa5943
+q13_pitch_density_placement,D,1,Где разместить спортплощадки с учётом плотности застройки?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011454-aa5943
+q13_pitch_density_placement,D,1,Где разместить спортплощадки с учётом плотности застройки?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011454-aa5943
+q13_pitch_density_placement,D,2,Где разместить спортплощадки с учётом плотности застройки?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011535-ecbe9b
+q13_pitch_density_placement,D,2,Где разместить спортплощадки с учётом плотности застройки?,D2,0.75,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011535-ecbe9b
+q13_pitch_density_placement,D,2,Где разместить спортплощадки с учётом плотности застройки?,D3,0.5185185185185186,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011535-ecbe9b
+q13_pitch_density_placement,D,2,Где разместить спортплощадки с учётом плотности застройки?,D4,0.5387500000000001,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011535-ecbe9b
+q13_pitch_density_placement,D,2,Где разместить спортплощадки с учётом плотности застройки?,composite,0.6705671296296296,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011535-ecbe9b
+q13_pitch_density_placement,D,2,Где разместить спортплощадки с учётом плотности застройки?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011535-ecbe9b
+q13_pitch_density_placement,D,2,Где разместить спортплощадки с учётом плотности застройки?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011535-ecbe9b
+q13_pitch_density_placement,D,2,Где разместить спортплощадки с учётом плотности застройки?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011535-ecbe9b
+q13_pitch_density_placement,D,2,Где разместить спортплощадки с учётом плотности застройки?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011535-ecbe9b
+q13_pitch_density_placement,D,2,Где разместить спортплощадки с учётом плотности застройки?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011535-ecbe9b
+q13_pitch_density_placement,D,3,Где разместить спортплощадки с учётом плотности застройки?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011606-c44efb
+q13_pitch_density_placement,D,3,Где разместить спортплощадки с учётом плотности застройки?,D2,0.8333333333333334,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011606-c44efb
+q13_pitch_density_placement,D,3,Где разместить спортплощадки с учётом плотности застройки?,D3,0.29629629629629634,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011606-c44efb
+q13_pitch_density_placement,D,3,Где разместить спортплощадки с учётом плотности застройки?,D4,0.52,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011606-c44efb
+q13_pitch_density_placement,D,3,Где разместить спортплощадки с учётом плотности застройки?,composite,0.6624074074074074,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011606-c44efb
+q13_pitch_density_placement,D,3,Где разместить спортплощадки с учётом плотности застройки?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011606-c44efb
+q13_pitch_density_placement,D,3,Где разместить спортплощадки с учётом плотности застройки?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011606-c44efb
+q13_pitch_density_placement,D,3,Где разместить спортплощадки с учётом плотности застройки?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011606-c44efb
+q13_pitch_density_placement,D,3,Где разместить спортплощадки с учётом плотности застройки?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011606-c44efb
+q13_pitch_density_placement,D,3,Где разместить спортплощадки с учётом плотности застройки?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011606-c44efb
+q14_service_center_centrality_gap,D,1,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,D1,0.625,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011655-ec8ec4
+q14_service_center_centrality_gap,D,1,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,D2,0.8888888888888888,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011655-ec8ec4
+q14_service_center_centrality_gap,D,1,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,D3,0.5185185185185186,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011655-ec8ec4
+q14_service_center_centrality_gap,D,1,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,D4,0.53625,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011655-ec8ec4
+q14_service_center_centrality_gap,D,1,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,composite,0.6421643518518518,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011655-ec8ec4
+q14_service_center_centrality_gap,D,1,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011655-ec8ec4
+q14_service_center_centrality_gap,D,1,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011655-ec8ec4
+q14_service_center_centrality_gap,D,1,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011655-ec8ec4
+q14_service_center_centrality_gap,D,1,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011655-ec8ec4
+q14_service_center_centrality_gap,D,1,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_metacognition,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011655-ec8ec4
+q14_service_center_centrality_gap,D,2,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,D1,0.75,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011815-b4e21c
+q14_service_center_centrality_gap,D,2,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,D2,0.7777777777777777,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011815-b4e21c
+q14_service_center_centrality_gap,D,2,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,D3,0.5185185185185186,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011815-b4e21c
+q14_service_center_centrality_gap,D,2,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,D4,0.67,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011815-b4e21c
+q14_service_center_centrality_gap,D,2,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,composite,0.679074074074074,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011815-b4e21c
+q14_service_center_centrality_gap,D,2,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011815-b4e21c
+q14_service_center_centrality_gap,D,2,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011815-b4e21c
+q14_service_center_centrality_gap,D,2,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011815-b4e21c
+q14_service_center_centrality_gap,D,2,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011815-b4e21c
+q14_service_center_centrality_gap,D,2,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011815-b4e21c
+q14_service_center_centrality_gap,D,3,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,D1,0.75,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011855-2f0020
+q14_service_center_centrality_gap,D,3,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,D2,0.7777777777777777,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011855-2f0020
+q14_service_center_centrality_gap,D,3,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,D3,0.5555555555555556,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011855-2f0020
+q14_service_center_centrality_gap,D,3,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,D4,0.67,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011855-2f0020
+q14_service_center_centrality_gap,D,3,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,composite,0.6883333333333332,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011855-2f0020
+q14_service_center_centrality_gap,D,3,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011855-2f0020
+q14_service_center_centrality_gap,D,3,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011855-2f0020
+q14_service_center_centrality_gap,D,3,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011855-2f0020
+q14_service_center_centrality_gap,D,3,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011855-2f0020
+q14_service_center_centrality_gap,D,3,Какие кварталы лучше для нового сервисного центра (центральность + дефицит)?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-011855-2f0020
+q15_sports_name_recovery,E,1,Где разместить новые спортивные объекты?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012020-6fdf29
+q15_sports_name_recovery,E,1,Где разместить новые спортивные объекты?,D2,0.75,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012020-6fdf29
+q15_sports_name_recovery,E,1,Где разместить новые спортивные объекты?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012020-6fdf29
+q15_sports_name_recovery,E,1,Где разместить новые спортивные объекты?,D4,0.73,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012020-6fdf29
+q15_sports_name_recovery,E,1,Где разместить новые спортивные объекты?,composite,0.6998611111111112,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012020-6fdf29
+q15_sports_name_recovery,E,1,Где разместить новые спортивные объекты?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012020-6fdf29
+q15_sports_name_recovery,E,1,Где разместить новые спортивные объекты?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012020-6fdf29
+q15_sports_name_recovery,E,1,Где разместить новые спортивные объекты?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012020-6fdf29
+q15_sports_name_recovery,E,1,Где разместить новые спортивные объекты?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012020-6fdf29
+q15_sports_name_recovery,E,1,Где разместить новые спортивные объекты?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012020-6fdf29
+q15_sports_name_recovery,E,2,Где разместить новые спортивные объекты?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012106-57a8a6
+q15_sports_name_recovery,E,2,Где разместить новые спортивные объекты?,D2,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012106-57a8a6
+q15_sports_name_recovery,E,2,Где разместить новые спортивные объекты?,D3,0.5185185185185185,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012106-57a8a6
+q15_sports_name_recovery,E,2,Где разместить новые спортивные объекты?,D4,0.7241666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012106-57a8a6
+q15_sports_name_recovery,E,2,Где разместить новые спортивные объекты?,composite,0.6960879629629629,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012106-57a8a6
+q15_sports_name_recovery,E,2,Где разместить новые спортивные объекты?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012106-57a8a6
+q15_sports_name_recovery,E,2,Где разместить новые спортивные объекты?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012106-57a8a6
+q15_sports_name_recovery,E,2,Где разместить новые спортивные объекты?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012106-57a8a6
+q15_sports_name_recovery,E,2,Где разместить новые спортивные объекты?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012106-57a8a6
+q15_sports_name_recovery,E,2,Где разместить новые спортивные объекты?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012106-57a8a6
+q15_sports_name_recovery,E,3,Где разместить новые спортивные объекты?,D1,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012230-c959a2
+q15_sports_name_recovery,E,3,Где разместить новые спортивные объекты?,D2,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012230-c959a2
+q15_sports_name_recovery,E,3,Где разместить новые спортивные объекты?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012230-c959a2
+q15_sports_name_recovery,E,3,Где разместить новые спортивные объекты?,D4,0.7995,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012230-c959a2
+q15_sports_name_recovery,E,3,Где разместить новые спортивные объекты?,composite,0.7276527777777777,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012230-c959a2
+q15_sports_name_recovery,E,3,Где разместить новые спортивные объекты?,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012230-c959a2
+q15_sports_name_recovery,E,3,Где разместить новые спортивные объекты?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012230-c959a2
+q15_sports_name_recovery,E,3,Где разместить новые спортивные объекты?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012230-c959a2
+q15_sports_name_recovery,E,3,Где разместить новые спортивные объекты?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012230-c959a2
+q15_sports_name_recovery,E,3,Где разместить новые спортивные объекты?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012230-c959a2
+q16_sports_centre_unavailable,E,1,Посчитай обеспеченность спортивными центрами.,D1,0.75,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012327-d7342f
+q16_sports_centre_unavailable,E,1,Посчитай обеспеченность спортивными центрами.,D2,0.8222222222222223,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012327-d7342f
+q16_sports_centre_unavailable,E,1,Посчитай обеспеченность спортивными центрами.,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012327-d7342f
+q16_sports_centre_unavailable,E,1,Посчитай обеспеченность спортивными центрами.,D4,0.7995,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012327-d7342f
+q16_sports_centre_unavailable,E,1,Посчитай обеспеченность спортивными центрами.,composite,0.7040416666666667,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012327-d7342f
+q16_sports_centre_unavailable,E,1,Посчитай обеспеченность спортивными центрами.,judge_framing,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012327-d7342f
+q16_sports_centre_unavailable,E,1,Посчитай обеспеченность спортивными центрами.,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012327-d7342f
+q16_sports_centre_unavailable,E,1,Посчитай обеспеченность спортивными центрами.,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012327-d7342f
+q16_sports_centre_unavailable,E,1,Посчитай обеспеченность спортивными центрами.,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012327-d7342f
+q16_sports_centre_unavailable,E,1,Посчитай обеспеченность спортивными центрами.,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012327-d7342f
+q16_sports_centre_unavailable,E,2,Посчитай обеспеченность спортивными центрами.,D1,0.625,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012425-f4d481
+q16_sports_centre_unavailable,E,2,Посчитай обеспеченность спортивными центрами.,D2,0.6777777777777777,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012425-f4d481
+q16_sports_centre_unavailable,E,2,Посчитай обеспеченность спортивными центрами.,D3,0.2222222222222222,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012425-f4d481
+q16_sports_centre_unavailable,E,2,Посчитай обеспеченность спортивными центрами.,D4,0.4575,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012425-f4d481
+q16_sports_centre_unavailable,E,2,Посчитай обеспеченность спортивными центрами.,composite,0.495625,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012425-f4d481
+q16_sports_centre_unavailable,E,2,Посчитай обеспеченность спортивными центрами.,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012425-f4d481
+q16_sports_centre_unavailable,E,2,Посчитай обеспеченность спортивными центрами.,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012425-f4d481
+q16_sports_centre_unavailable,E,2,Посчитай обеспеченность спортивными центрами.,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012425-f4d481
+q16_sports_centre_unavailable,E,2,Посчитай обеспеченность спортивными центрами.,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012425-f4d481
+q16_sports_centre_unavailable,E,2,Посчитай обеспеченность спортивными центрами.,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012425-f4d481
+q16_sports_centre_unavailable,E,3,Посчитай обеспеченность спортивными центрами.,D1,0.625,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012522-bdfd68
+q16_sports_centre_unavailable,E,3,Посчитай обеспеченность спортивными центрами.,D2,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012522-bdfd68
+q16_sports_centre_unavailable,E,3,Посчитай обеспеченность спортивными центрами.,D3,0.5555555555555556,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012522-bdfd68
+q16_sports_centre_unavailable,E,3,Посчитай обеспеченность спортивными центрами.,D4,0.7575000000000001,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012522-bdfd68
+q16_sports_centre_unavailable,E,3,Посчитай обеспеченность спортивными центрами.,composite,0.6511805555555555,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012522-bdfd68
+q16_sports_centre_unavailable,E,3,Посчитай обеспеченность спортивными центрами.,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012522-bdfd68
+q16_sports_centre_unavailable,E,3,Посчитай обеспеченность спортивными центрами.,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012522-bdfd68
+q16_sports_centre_unavailable,E,3,Посчитай обеспеченность спортивными центрами.,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012522-bdfd68
+q16_sports_centre_unavailable,E,3,Посчитай обеспеченность спортивными центрами.,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012522-bdfd68
+q16_sports_centre_unavailable,E,3,Посчитай обеспеченность спортивными центрами.,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012522-bdfd68
+q17_housing_price_out_of_model,E,1,Какая средняя цена жилья в квартале 100?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012652-d4c510
+q17_housing_price_out_of_model,E,1,Какая средняя цена жилья в квартале 100?,D2,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012652-d4c510
+q17_housing_price_out_of_model,E,1,Какая средняя цена жилья в квартале 100?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012652-d4c510
+q17_housing_price_out_of_model,E,1,Какая средняя цена жилья в квартале 100?,D4,0.73075,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012652-d4c510
+q17_housing_price_out_of_model,E,1,Какая средняя цена жилья в квартале 100?,composite,0.6792152777777778,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012652-d4c510
+q17_housing_price_out_of_model,E,1,Какая средняя цена жилья в квартале 100?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012652-d4c510
+q17_housing_price_out_of_model,E,1,Какая средняя цена жилья в квартале 100?,judge_coherence,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012652-d4c510
+q17_housing_price_out_of_model,E,1,Какая средняя цена жилья в квартале 100?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012652-d4c510
+q17_housing_price_out_of_model,E,1,Какая средняя цена жилья в квартале 100?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012652-d4c510
+q17_housing_price_out_of_model,E,1,Какая средняя цена жилья в квартале 100?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012652-d4c510
+q17_housing_price_out_of_model,E,2,Какая средняя цена жилья в квартале 100?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012849-2f7ebc
+q17_housing_price_out_of_model,E,2,Какая средняя цена жилья в квартале 100?,D2,0.6666666666666666,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012849-2f7ebc
+q17_housing_price_out_of_model,E,2,Какая средняя цена жилья в квартале 100?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012849-2f7ebc
+q17_housing_price_out_of_model,E,2,Какая средняя цена жилья в квартале 100?,D4,0.73075,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012849-2f7ebc
+q17_housing_price_out_of_model,E,2,Какая средняя цена жилья в квартале 100?,composite,0.6792152777777778,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012849-2f7ebc
+q17_housing_price_out_of_model,E,2,Какая средняя цена жилья в квартале 100?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012849-2f7ebc
+q17_housing_price_out_of_model,E,2,Какая средняя цена жилья в квартале 100?,judge_coherence,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012849-2f7ebc
+q17_housing_price_out_of_model,E,2,Какая средняя цена жилья в квартале 100?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012849-2f7ebc
+q17_housing_price_out_of_model,E,2,Какая средняя цена жилья в квартале 100?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012849-2f7ebc
+q17_housing_price_out_of_model,E,2,Какая средняя цена жилья в квартале 100?,judge_metacognition,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-012849-2f7ebc
+q17_housing_price_out_of_model,E,3,Какая средняя цена жилья в квартале 100?,D1,0.75,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013001-4417a3
+q17_housing_price_out_of_model,E,3,Какая средняя цена жилья в квартале 100?,D2,1.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013001-4417a3
+q17_housing_price_out_of_model,E,3,Какая средняя цена жилья в квартале 100?,D3,0.4444444444444444,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013001-4417a3
+q17_housing_price_out_of_model,E,3,Какая средняя цена жилья в квартале 100?,D4,0.66825,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013001-4417a3
+q17_housing_price_out_of_model,E,3,Какая средняя цена жилья в квартале 100?,composite,0.7156736111111112,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013001-4417a3
+q17_housing_price_out_of_model,E,3,Какая средняя цена жилья в квартале 100?,judge_framing,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013001-4417a3
+q17_housing_price_out_of_model,E,3,Какая средняя цена жилья в квартале 100?,judge_coherence,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013001-4417a3
+q17_housing_price_out_of_model,E,3,Какая средняя цена жилья в квартале 100?,judge_justification,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013001-4417a3
+q17_housing_price_out_of_model,E,3,Какая средняя цена жилья в квартале 100?,judge_uncertainty,5.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013001-4417a3
+q17_housing_price_out_of_model,E,3,Какая средняя цена жилья в квартале 100?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013001-4417a3
+q18_block_243_development,A,1,Что разместить в квартале 243 для роста обеспеченности?,D1,0.25,
+q18_block_243_development,A,1,Что разместить в квартале 243 для роста обеспеченности?,D2,0.6666666666666666,
+q18_block_243_development,A,1,Что разместить в квартале 243 для роста обеспеченности?,D3,0.4444444444444444,
+q18_block_243_development,A,1,Что разместить в квартале 243 для роста обеспеченности?,D4,0.16,
+q18_block_243_development,A,1,Что разместить в квартале 243 для роста обеспеченности?,composite,0.38027777777777777,
+q18_block_243_development,A,1,Что разместить в квартале 243 для роста обеспеченности?,judge_framing,1.0,
+q18_block_243_development,A,1,Что разместить в квартале 243 для роста обеспеченности?,judge_coherence,1.0,
+q18_block_243_development,A,1,Что разместить в квартале 243 для роста обеспеченности?,judge_justification,1.0,
+q18_block_243_development,A,1,Что разместить в квартале 243 для роста обеспеченности?,judge_uncertainty,1.0,
+q18_block_243_development,A,1,Что разместить в квартале 243 для роста обеспеченности?,judge_metacognition,1.0,
+q18_block_243_development,A,2,Что разместить в квартале 243 для роста обеспеченности?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013059-74dcbe
+q18_block_243_development,A,2,Что разместить в квартале 243 для роста обеспеченности?,D2,0.5833333333333334,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013059-74dcbe
+q18_block_243_development,A,2,Что разместить в квартале 243 для роста обеспеченности?,D3,0.5555555555555556,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013059-74dcbe
+q18_block_243_development,A,2,Что разместить в квартале 243 для роста обеспеченности?,D4,0.57625,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013059-74dcbe
+q18_block_243_development,A,2,Что разместить в квартале 243 для роста обеспеченности?,composite,0.6475347222222223,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013059-74dcbe
+q18_block_243_development,A,2,Что разместить в квартале 243 для роста обеспеченности?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013059-74dcbe
+q18_block_243_development,A,2,Что разместить в квартале 243 для роста обеспеченности?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013059-74dcbe
+q18_block_243_development,A,2,Что разместить в квартале 243 для роста обеспеченности?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013059-74dcbe
+q18_block_243_development,A,2,Что разместить в квартале 243 для роста обеспеченности?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013059-74dcbe
+q18_block_243_development,A,2,Что разместить в квартале 243 для роста обеспеченности?,judge_metacognition,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013059-74dcbe
+q18_block_243_development,A,3,Что разместить в квартале 243 для роста обеспеченности?,D1,0.875,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013211-78d63f
+q18_block_243_development,A,3,Что разместить в квартале 243 для роста обеспеченности?,D2,0.7576923076923077,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013211-78d63f
+q18_block_243_development,A,3,Что разместить в квартале 243 для роста обеспеченности?,D3,0.7606837606837608,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013211-78d63f
+q18_block_243_development,A,3,Что разместить в квартале 243 для роста обеспеченности?,D4,0.7075,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013211-78d63f
+q18_block_243_development,A,3,Что разместить в квартале 243 для роста обеспеченности?,composite,0.7752190170940171,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013211-78d63f
+q18_block_243_development,A,3,Что разместить в квартале 243 для роста обеспеченности?,judge_framing,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013211-78d63f
+q18_block_243_development,A,3,Что разместить в квартале 243 для роста обеспеченности?,judge_coherence,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013211-78d63f
+q18_block_243_development,A,3,Что разместить в квартале 243 для роста обеспеченности?,judge_justification,3.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013211-78d63f
+q18_block_243_development,A,3,Что разместить в квартале 243 для роста обеспеченности?,judge_uncertainty,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013211-78d63f
+q18_block_243_development,A,3,Что разместить в квартале 243 для роста обеспеченности?,judge_metacognition,4.0,p:\AI_asistent\ITMO\blocksnet-agent\outputs\run_20260617-013211-78d63f

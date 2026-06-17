@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from difflib import get_close_matches
+from difflib import SequenceMatcher, get_close_matches
 
 import pandas as pd
 from langchain_core.tools import tool
@@ -37,7 +37,8 @@ def _unknown_service_message(blocks: pd.DataFrame, service_type: str) -> str:
     presets = {"basic", "advanced", "comfort", "key"}
     land_uses = {item.name.lower() for item in LandUse}
     land_uses.update(str(item.value).lower() for item in LandUse)
-    close = get_close_matches(str(service_type), available, n=3, cutoff=0.25)
+    ranked = _rank_service_matches(str(service_type), available)
+    close = [name for name, _score in ranked[:3]]
     examples = ", ".join(available[:20]) + (" ..." if len(available) > 20 else "")
 
     if lowered in presets:
@@ -53,11 +54,39 @@ def _unknown_service_message(blocks: pd.DataFrame, service_type: str) -> str:
     else:
         hint = "Используй точное имя сервиса из list_service_types() или list_key_services()."
 
-    suggestions = f" Ближайшие допустимые сервисы: {', '.join(close)}." if close else ""
+    suggestions = ""
+    if ranked and ranked[0][1] >= 0.55:
+        suggestions = (
+            f" Ближайшее валидное имя: '{ranked[0][0]}' "
+            f"(similarity={ranked[0][1]:.2f}). Повтори вызов с service_type='{ranked[0][0]}'."
+        )
+    elif close:
+        suggestions = f" Ближайшие допустимые сервисы: {', '.join(close)}."
     return (
         f"Ошибка: тип сервиса '{service_type}' не найден. {hint}{suggestions}\n"
         f"Допустимые сервисы: {examples}"
     )
+
+
+def _rank_service_matches(service_type: str, available: list[str]) -> list[tuple[str, float]]:
+    query = str(service_type).strip().lower()
+    if not query:
+        return []
+    aliases = {
+        "sports": "pitch",
+        "sport": "pitch",
+        "sport_centre": "pitch",
+        "sports_center": "pitch",
+        "sports_centre": "pitch",
+    }
+    if query in aliases and aliases[query] in available:
+        return [(aliases[query], 1.0)]
+    close = get_close_matches(query, available, n=5, cutoff=0.0)
+    ranked = [
+        (name, SequenceMatcher(None, query, name.lower()).ratio())
+        for name in (close or available)
+    ]
+    return sorted(ranked, key=lambda item: item[1], reverse=True)
 
 
 # T2: единая метка, отличающая общегородской агрегат от поквартального значения.
@@ -255,7 +284,12 @@ def make_provision_tools(ctx: dict) -> list:
         Выход: strong/weak provision (доля удовлетворённого спроса: strong — консервативная оценка,
         weak — расширенная) и число кварталов с полной/частичной/нулевой обеспеченностью.
         Подводные камни: не подменяй обеспеченность на compute_services_count (количество ≠ покрытие);
-        service_type должен существовать среди capacity_*; при отсутствии demand он импутируется по населению.
+        service_type должен существовать среди capacity_*; если в list_key_services/list_service_types
+        service помечен provision_available=False, demand-норматива нет и обеспеченность надо трактовать
+        осторожно: лучше использовать capacity напрямую или близкий нормируемый сервис.
+
+        Когда выбирать: чтобы оценить покрытие населения сервисом или найти кварталы с дефицитом.
+        Не путать с: compute_services_count — количество объектов не равно обеспеченности спроса.
         """
         try:
             blocks = ensure_blocks(state, data_dir)

@@ -13,7 +13,31 @@
 
 from __future__ import annotations
 
+import re
+
 from langchain_core.tools import BaseTool, tool
+
+_SERVICE_SYNONYMS: dict[str, tuple[str, ...]] = {
+    "pitch": ("спорт", "спортив", "спортплощад", "площадк", "sports", "sport", "playground"),
+    "sports_centre": ("спортцентр", "спорткомплекс", "фитнес", "sports centre", "sport centre"),
+    "school": ("школ", "school", "education"),
+    "kindergarten": ("детсад", "детский сад", "садик", "kindergarten"),
+    "polyclinic": ("поликлиник", "клиник", "медицин", "health", "clinic"),
+    "pharmacy": ("аптек", "лекарств", "pharmacy"),
+    "convenience": ("магазин", "продукт", "ритейл", "convenience"),
+    "bus_stop": ("останов", "автобус", "транспорт", "bus"),
+    "swimming_pool": ("бассейн", "swimming"),
+    "extra_education": ("допобраз", "круж", "секци", "extra education"),
+    "cafe": ("кафе", "coffee", "cafe"),
+    "park": ("парк", "зелён", "зелен", "park"),
+}
+_SERVICE_TOOLS = {
+    "compute_service_provision",
+    "suggest_target_blocks",
+    "propose_zone_development",
+    "compute_scenario_provision",
+    "get_weakest_services",
+}
 
 
 def split_doc(doc: str | None) -> tuple[str, str]:
@@ -36,7 +60,7 @@ def build_tool_registry(tools: list[BaseTool]) -> tuple[list[BaseTool], dict[str
     for t in tools:
         short, full = split_doc(t.description)
         short = short or t.name
-        registry[t.name] = {"short": short, "full": full or short}
+        registry[t.name] = {"short": short, "full": _augment_tool_doc(t.name, full or short)}
         try:
             short_tools.append(t.model_copy(update={"description": short}))
         except Exception:
@@ -45,11 +69,40 @@ def build_tool_registry(tools: list[BaseTool]) -> tuple[list[BaseTool], dict[str
 
 
 def _score(query: str, text: str) -> int:
-    terms = {term for term in query.lower().replace("_", " ").split() if len(term) > 2}
+    terms = set(_query_terms(query))
     if not terms:
         return 0
     lowered = text.lower()
     return sum(1 for term in terms if term in lowered)
+
+
+def _query_terms(query: str) -> list[str]:
+    lowered = query.lower().replace("_", " ")
+    terms = [term for term in re.split(r"\W+", lowered) if len(term) > 2]
+    for service, aliases in _SERVICE_SYNONYMS.items():
+        if service in lowered or any(alias in lowered for alias in aliases):
+            terms.extend([service, *aliases, "service", "provision", "обеспеченность"])
+    return terms
+
+
+def _service_hints(query: str) -> list[str]:
+    lowered = query.lower().replace("_", " ")
+    hints = []
+    for service, aliases in _SERVICE_SYNONYMS.items():
+        if service in lowered or any(alias in lowered for alias in aliases):
+            hints.append(service)
+    return hints
+
+
+def _augment_tool_doc(name: str, full: str) -> str:
+    if name not in _SERVICE_TOOLS:
+        return full
+    aliases = ", ".join(f"{service} ({'/'.join(aliases[:3])})" for service, aliases in _SERVICE_SYNONYMS.items())
+    return (
+        f"{full}\n\n"
+        "Индекс сервисов: русские/английские синонимы помогают выбрать валидный service_type. "
+        f"Примеры: {aliases}."
+    )
 
 
 def make_help_tools(registry: dict[str, dict[str, str]]) -> list[BaseTool]:
@@ -72,6 +125,13 @@ def make_help_tools(registry: dict[str, dict[str, str]]) -> list[BaseTool]:
         if not hits:
             hits = [(name, meta) for _, name, meta in scored[:6]]
         lines = ["Подходящие инструменты (затем get_tool_help(name) для полной справки):"]
+        service_hints = _service_hints(query)
+        if service_hints:
+            lines.append(
+                "Похоже на service_type: "
+                + ", ".join(f"'{service}'" for service in service_hints)
+                + ". Для обеспеченности используй compute_service_provision с этим именем."
+            )
         lines.extend(f"- {name}: {meta['short']}" for name, meta in hits)
         return "\n".join(lines)
 
