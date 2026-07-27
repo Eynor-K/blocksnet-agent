@@ -1,6 +1,6 @@
 # План реализации — инструкция исполнителю
 
-Эта папка — **исполняемый** план рефакторинга `blocksnet-mcp` на A2A-сервис +
+Эта папка — **исполняемый** план рефакторинга `blocksnet-agent` на A2A-агента +
 MCP raw tools. Рассчитан на агента, который будет писать код, не имея
 предварительного контекста по проекту.
 
@@ -29,7 +29,7 @@ MCP raw tools. Рассчитан на агента, который будет �
 | 02 | [02-session-store.md](02-session-store.md) | `blocksnet_mcp/session.py` | 0.5 д |
 | 03 | [03-mcp-server.md](03-mcp-server.md) | MCP с 32 tools, без обязательного LLM | 1.5 д |
 | 04 | [04-agent-decoupling.md](04-agent-decoupling.md) | per-run стоп-флаг, единые настройки | 0.5 д |
-| 05 | [05-a2a-service.md](05-a2a-service.md) | A2A-сервис, Agent Card, 2 skill | 2 д |
+| 05 | [05-a2a-service.md](05-a2a-service.md) | A2A-агент, Agent Card, 2 skill | 2 д |
 | 06 | [06-auth-context.md](06-auth-context.md) | Bearer, `scenario_id`/`project_id` | 1 д |
 | 07 | [07-docker.md](07-docker.md) | 2 образа, compose, healthcheck | 1 д |
 | 08 | [08-contract-docs.md](08-contract-docs.md) | контракт v2, каталог, README | 1 д |

@@ -41,8 +41,8 @@ $ git ls-files .env
 
 | Образ | Размер на диске | Virtual size | Время |
 |---|---|---|---|
-| `blocksnet-mcp/mcp:test` | 473 MB | 1.97 GB | ~3 мин |
-| `blocksnet-mcp/agent:test` | 495 MB | 2.11 GB | ~5 мин |
+| `blocksnet-agent/mcp:test` | 473 MB | 1.97 GB | ~3 мин |
+| `blocksnet-agent/a2a-agent:test` | 495 MB | 2.11 GB | ~5 мин |
 
 **Найден и пофикшен баг из блокера #1**: имена системных пакетов в `Dockerfile.*`
 были Ubuntu 24.04-specific (`libgdal34t64`, `libgeos3.12.1t64`), но `python:3.11-slim`
@@ -63,7 +63,7 @@ $ git ls-files .env
 
 ```
 GET /health
-200 — {"status": "ok", "name": "blocksnet-mcp-a2a", "version": "0.2.0", "skills": ["run_pipeline", "analyze_urban_question"]}
+200 — {"status": "ok", "name": "blocksnet-agent-a2a", "version": "0.2.0", "skills": ["run_pipeline", "analyze_urban_question"]}
 ```
 
 ⚠️ Проверено через `TestClient` (starlette in-process), не через `curl`. На реальной
@@ -73,7 +73,7 @@ GET /health
 
 ```json
 {
-  "name": "blocksnet-mcp-a2a",
+  "name": "blocksnet-agent-a2a",
   "version": "0.2.0",
   "skills": ["run_pipeline", "analyze_urban_question"],
   "supportedInterfaces": [{"url": "http://127.0.0.1:8765/", "protocolBinding": "JSONRPC", "protocolVersion": "1.0"}],
@@ -185,14 +185,14 @@ file: reopen fd 8: permission denied
 
 ### ⚠️ [8] MCP через реальный MCP-клиент
 
-Не подключал Claude Desktop / Cursor к MCP-серверу. На реальной машине:
+Не подключал Claude Desktop / Cursor к MCP-server. На реальной машине:
 ```jsonc
 {
   "mcpServers": {
     "blocksnet": {
       "command": "/path/to/.venv/bin/python",
       "args": ["-m", "blocksnet_mcp"],
-      "cwd": "/path/to/blocksnet-mcp",
+      "cwd": "/path/to/blocksnet-agent",
       "env": { "DATA_DIR": "./data/saint_petersburg" }
     }
   }

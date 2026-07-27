@@ -1,4 +1,4 @@
-# Архитектура `blocksnet-mcp`
+# Архитектура `blocksnet-agent`
 
 > **Актуальная архитектура проекта.** Документ описывает целевое состояние:
 > два транспорта (MCP-stdio + A2A-HTTP) на одном ядре агента.
@@ -10,12 +10,12 @@
 
 ## 1. Главная идея
 
-Два сервиса на одном ядре:
+Два решения на одном ядре:
 
-- **MCP-сервер** (`python -m blocksnet_mcp`) — stdio, **32 raw-инструмента + 3 session-tools**.
+- **MCP-server** (`python -m blocksnet_mcp`) — stdio, **32 raw-инструмента + 3 session-tools**.
   Не требует LLM. Подходит для интеграции в LLM-агенты (Claude/Cursor), скрипты,
   дашборды.
-- **A2A-сервис** (`python -m blocksnet_agent`) — HTTP (FastAPI), **2 skill-а**:
+- **A2A-агент** (`python -m blocksnet_agent`) — HTTP (FastAPI), **2 skill-а**:
   `run_pipeline` (основной) и `analyze_urban_question` (DEPRECATED, back-compat).
   Требует LLM (CHAT_URL/API_KEY). Подходит для MAS-оркестрации, standalone чат-агентов.
 
@@ -48,7 +48,7 @@ payload, конфиг. Никакой дубликации — один исто
               │                                                       │
    ┌──────────▼────────────┐                          ┌───────────────▼──────────┐
    │ blocksnet_mcp/        │                          │ blocksnet_agent.a2a/    │
-   │ (MCP-обёртка)         │                          │ (A2A-сервис)            │
+   │ (MCP-server)          │                          │ (A2A-агент)             │
    │                       │                          │                         │
    │ server.py   ───std─►  │                          │ server.py   ──HTTP──►   │
    │   FastMCP             │                          │   FastAPI               │
@@ -187,4 +187,4 @@ envelope dict → MCP-клиент
 | [deployment.md](deployment.md) | Quickstart, env-таблица, Docker |
 | [tool_contract.md](tool_contract.md) | Контракт: 32 MCP-tools, 2 A2A skill-а |
 | [mcp_tool_catalog.md](mcp_tool_catalog.md) | Auto-generated каталог |
-| [a2a_agent_card.md](a2a_agent_card.md) | Карточка A2A-сервиса |
+| [a2a_agent_card.md](a2a_agent_card.md) | Карточка A2A-агента |

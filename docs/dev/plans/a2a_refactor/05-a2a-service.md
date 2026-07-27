@@ -1,6 +1,6 @@
-# Шаг 05 — A2A-сервис: Agent Card, task lifecycle, два skill
+# Шаг 05 — A2A-агент: Agent Card, task lifecycle, два skill
 
-**Цель.** `python -m blocksnet_agent` поднимает A2A-сервис, отдающий Agent Card
+**Цель.** `python -m blocksnet_agent` поднимает A2A-агента, отдающего Agent Card
 и исполняющий `run_pipeline` / `analyze_urban_question`.
 
 **Предусловия.** Шаг 00.6 (спайк, `spike-a2a.md` с точной версией SDK) и
@@ -18,7 +18,7 @@
 - Весь код SDK — только внутри `blocksnet_agent/a2a/`. Ядро агента про A2A
   не знает (инвариант: `agent.py` не редактируется).
 - Агент вызывает инструменты **in-process**. Никакого MCP-клиента внутри
-  A2A-сервиса (см. [../../decisions/open_questions.md](../../decisions/open_questions.md) Q6 —
+  A2A-агента (см. [../../decisions/open_questions.md](../../decisions/open_questions.md) Q6 —
   это не оптимизация, а условие сохранения качества ответов).
 
 ## Структура пакета

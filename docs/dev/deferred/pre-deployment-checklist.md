@@ -70,7 +70,7 @@ curl -X POST http://localhost:8080/ \
   }'
 
 # MCP через stdio — настроить Claude Desktop / Cursor,
-# указать python -m blocksnet_mcp как MCP-сервер.
+# указать python -m blocksnet_mcp как MCP-server.
 ```
 
 **Если клиент получает 401 / 400 / `VersionNotSupportedError`** — это блокирующая

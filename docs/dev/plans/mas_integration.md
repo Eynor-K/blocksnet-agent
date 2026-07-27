@@ -1,10 +1,10 @@
-# План реализации интеграции `blocksnet-mcp` в MAS
+# План реализации интеграции `blocksnet-agent` в MAS
 
 > **Статус a2a-рефакторинга (2026-07):**
 > Этапы 2-6 закрыты шагами **03-07 плана a2a-рефакторинга** в
 > `docs/a2a_refactor/implementation/`:
 > - **Этап 1 (local vs MAS runtime)** — закрыт шагом 04 (per-run stop, settings).
-> - **Этап 2 (HTTP transport)** — закрыт шагом 05 (A2A-сервис на FastAPI).
+> - **Этап 2 (HTTP transport)** — закрыт шагом 05 (A2A-агент на FastAPI).
 > - **Этап 3 (Bearer auth)** — закрыт шагом 06 (`blocksnet_agent.authcore` + `a2a/auth.py`).
 > - **Этап 4 (UrbanDB context adapter)** — закрыт шагом 06 (`blocksnet_agent.context` + `ScenarioContext`).
 > - **Этап 5 (контракт v2)** — закрыт шагом 08 (`docs/tool_contract.md`, `docs/mcp_tool_catalog.md`).
@@ -15,7 +15,7 @@
 
 ## Цель
 
-К началу августа `blocksnet-mcp` должен быть интегрирован в MAS как сетевой MCP-сервис, который:
+К началу августа `blocksnet-agent` должен быть интегрирован в MAS как сетевой MCP-server, который:
 
 - доступен по HTTP / Streamable HTTP endpoint;
 - защищён MAS-compatible Bearer/JWT-авторизацией;
@@ -156,7 +156,7 @@ MAS / MCP client
 
 ### Цель
 
-Сделать `blocksnet-mcp` сетевым сервисом.
+Сделать `blocksnet-agent` сетевым решением.
 
 ### Работы
 
@@ -357,7 +357,7 @@ Contract docs, schema validation and tests готовы.
 ### Работы
 
 - Подготовить metadata:
-  - service name: `blocksnet-mcp`;
+  - service name: `blocksnet-agent`;
   - description;
   - endpoint URL;
   - protocol;

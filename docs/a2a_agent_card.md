@@ -1,6 +1,6 @@
-# Agent Card для BlocksNetAgent A2A-сервиса
+# Agent Card для BlocksNetAgent A2A-агента
 
-> Agent Card — это JSON-манифест, который A2A-сервис отдаёт на пути
+> Agent Card — это JSON-манифест, который A2A-агент отдаёт на пути
 > ``/.well-known/agent-card.json`` (по стандарту a2a-protocol). Используется
 > для discovery клиентами (LLM-агенты, MAS-оркестраторы).
 
@@ -22,9 +22,9 @@ curl -s http://localhost:8080/.well-known/agent-card.json | jq
 
 ```json
 {
-  "name": "blocksnet-mcp-a2a",
+  "name": "blocksnet-agent-a2a",
   "version": "0.2.0",
-  "description": "A2A-сервис для городской аналитики на базе BlocksNetAgent. Загружает данные кварталов, считает метрики, рассчитывает предложения по размещению сервисов.",
+  "description": "A2A-агент для городской аналитики на базе BlocksNetAgent. Загружает данные кварталов, считает метрики, рассчитывает предложения по размещению сервисов.",
   "supportedInterfaces": [
     {
       "url": "http://0.0.0.0:8080/",

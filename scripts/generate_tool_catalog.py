@@ -99,7 +99,7 @@ def generate_catalog_markdown() -> str:
 > Тест ``tests/test_tool_catalog_docs.py`` гарантирует, что закоммиченная
 > версия совпадает с актуальной.
 
-MCP-сервер ``blocksnet_mcp`` экспонирует {total} инструментов ({exposed} каталожных
+MCP-server ``blocksnet_mcp`` экспонирует {total} инструментов ({exposed} каталожных
 + 3 служебных: ``open_session``, ``close_session``, ``session_info``).
 
 Из каталожных инструментов:

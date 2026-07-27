@@ -1,9 +1,9 @@
 # WIKI-LLM индекс проекта
 
-Назначение: единая карта `blocksnet-mcp` для LLM-навигации. Индекс помогает быстро
+Назначение: единая карта `blocksnet-agent` для LLM-навигации. Индекс помогает быстро
 выбрать нужные файлы, не загружая весь репозиторий в контекст.
 
-Дата индексации: 2026-07-23. Корень проекта: `blocksnet-mcp/`.
+Дата индексации: 2026-07-23. Корень проекта: `blocksnet-agent/`.
 
 ## Как пользоваться
 
@@ -31,7 +31,7 @@
 | `docs/` | Документация | При анализе проекта |
 | `blocksnet_mcp/` | MCP-обертка + сессии + envelope | При правках MCP-слоя |
 | `blocksnet_agent/` | Ядро агента (ReAct, PTR, confidence) | При правках агента |
-| `blocksnet_agent/a2a/` | A2A-сервис (FastAPI, agent_card, skills, auth) | При правках A2A-слоя |
+| `blocksnet_agent/a2a/` | A2A-агент (FastAPI, agent_card, skills, auth) | При правках A2A-слоя |
 | `data/` | Локальная модель города и нормативы | При настройке данных |
 | `tests/` | 257 тестов | При проверке контракта |
 | `scripts/` | smoke + generate_tool_catalog + smoke_docker | При ручной проверке |
@@ -44,7 +44,7 @@
 | `docs/` | 8 актуальных .md + `dev/` + `reports/` | Документация |
 | `blocksnet_mcp/` | `server.py`, `__init__.py`, `__main__.py`, `envelope.py`, `session.py`, `settings.py`, `agent_tool.py` (legacy), `serialize.py`, `tools_mcp.py` (shim) | MCP-обёртка |
 | `blocksnet_agent/` | Пакет агента и `tools/` (data/network/provision/services/indicators/optimize/viz/registry/demand) | Ядро агента |
-| `blocksnet_agent/a2a/` | `server.py`, `agent_card.py`, `auth.py`, `executor.py`, `schemas.py`, `settings.py`, `skills.py`, `task_manager.py`, `__main__.py` | A2A-сервис |
+| `blocksnet_agent/a2a/` | `server.py`, `agent_card.py`, `auth.py`, `executor.py`, `schemas.py`, `settings.py`, `skills.py`, `task_manager.py`, `__main__.py` | A2A-агент |
 | `data/` | `service_type.json`, `archetypes.csv`, `service_aliases.json` (версионируются); gpkg/pickle — gitignored | Локальная модель города |
 | `tests/` | 16+ тест-файлов (контракт, сериализация, runtime, PTR, isolation, A2A) | 257 тестов |
 | `scripts/` | `smoke_mcp_tools.py`, `smoke_a2a_agent.py`, `generate_tool_catalog.py`, `smoke_docker.sh` | Ручная проверка |
@@ -60,7 +60,7 @@
 | `docs/tool_contract.md` | Контракт: 32 MCP-tools, 2 A2A skill-а, сессии, auth |
 | `docs/deployment.md` | Quickstart (локальный + Docker), env-таблица |
 | `docs/mcp_tool_catalog.md` | Auto-generated каталог 32 raw-инструментов |
-| `docs/a2a_agent_card.md` | Реальная карточка A2A-сервиса, описание полей |
+| `docs/a2a_agent_card.md` | Реальная карточка A2A-агента, описание полей |
 
 ## Целевой MCP-слой
 
@@ -89,7 +89,7 @@
 | `blocksnet_agent/payload.py` | `build_payload(result, run_dir, status, error, error_code)` — общий для A2A и MCP |
 | `blocksnet_agent/authcore.py` | `StaticTokenVerifier` (constant-time compare), `Principal`, `AuthError` |
 | `blocksnet_agent/context.py` | `ScenarioContext` + `resolve_context(scenario_id, project_id, ...)`. Whitelist `[a-zA-Z0-9_-]{1,64}`. Path traversal защита |
-| `blocksnet_agent/a2a/` | A2A-сервис: см. отдельную таблицу |
+| `blocksnet_agent/a2a/` | A2A-агент: см. отдельную таблицу |
 | `blocksnet_agent/hypotheses.py` | PTR-цикл гипотез; `overlay_candidates` |
 | `blocksnet_agent/prompts.py` | System prompt и формат ответа |
 | `blocksnet_agent/config.py` | Настройки и корень проекта |
@@ -98,7 +98,7 @@
 | `blocksnet_agent/tools/` | Доменные инструменты BlocksNet и RAG-справка по tools |
 | `blocksnet_agent/synthesis.py` | **P-S5.x:** Финальный структурный синтез ответа. Перенесён из `fp2mp-core/nodes/synthesis.py` (паттерн 7-секционного decision memo). `FinalSynthesis` + `synthesize()` + `write_synthesis()` + `collect_evidence()`. **Инвариант 6 в `architecture.md` §6 — стабильная точка вызова** |
 
-## A2A-сервис
+## A2A-агент
 
 | Путь | Роль |
 |---|---|
@@ -172,8 +172,8 @@
 | Задача | Минимальный контекст |
 |---|---|
 | Понять продукт | `README.md`, `docs/architecture.md`, `docs/WIKI-LLM.md` |
-| Реализовать MCP-сервер | `docs/architecture.md`, `docs/tool_contract.md`, `blocksnet_mcp/README.md` |
-| Реализовать A2A-сервис | `docs/architecture.md`, `docs/tool_contract.md`, `blocksnet_agent/a2a/` |
+| Реализовать MCP-server | `docs/architecture.md`, `docs/tool_contract.md`, `blocksnet_mcp/README.md` |
+| Реализовать A2A-агента | `docs/architecture.md`, `docs/tool_contract.md`, `blocksnet_agent/a2a/` |
 | Настроить локальный запуск | `RUN.md`, `docs/deployment.md`, `.env.example` |
 | Написать сериализацию | `docs/tool_contract.md`, `blocksnet_mcp/README.md`, `blocksnet_mcp/serialize.py` |
 | Добавить тесты | `docs/tool_contract.md`, `tests/` |

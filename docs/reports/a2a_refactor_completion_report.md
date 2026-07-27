@@ -133,8 +133,8 @@ bash scripts/smoke_docker.sh  # требует docker + curl
 
 Цели a2a-рефакторинга достигнуты:
 
-- ✅ **MCP-сервер без LLM** — главная архитектурная развязка; `import blocksnet_mcp.server` НЕ тянет `langgraph`/`tiktoken` (verified).
-- ✅ **A2A-сервис с двумя skill-ами** — Agent Card, JSON-RPC `/`, healthcheck, lifecycle через `TaskManager`.
+- ✅ **MCP-server без LLM** — главная архитектурная развязка; `import blocksnet_mcp.server` НЕ тянет `langgraph`/`tiktoken` (verified).
+- ✅ **A2A-агент с двумя skill-ами** — Agent Card, JSON-RPC `/`, healthcheck, lifecycle через `TaskManager`.
 - ✅ **Auth + scenario_id** — Bearer с constant-time compare, anti-enumeration, path-traversal защита.
 - ✅ **Per-run stop** — cancel одной задачи не валит соседние (concurrent-safety).
 - ✅ **Docker** — два образа (mcp без LLM, agent с LLM), compose с healthcheck'ами.

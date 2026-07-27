@@ -1,6 +1,6 @@
 # Deployment
 
-> **Актуальный документ.** Описывает запуск **обоих сервисов**: MCP-stdio и
+> **Актуальный документ.** Описывает запуск **обоих решений**: MCP-server и
 > A2A-HTTP. Подробный разбор — в `RUN.md` и `README.md`.
 
 ---
@@ -35,10 +35,10 @@ DEADLINE_SEC=480
 ### 1.3. Запуск сервисов
 
 ```bash
-# 1) MCP-сервер (stdio) — для MCP-клиентов (Claude/Cursor/etc)
+# 1) MCP-server (stdio) — для MCP-клиентов (Claude/Cursor/etc)
 python -m blocksnet_mcp
 
-# 2) A2A-сервис (HTTP) — для standalone / MAS
+# 2) A2A-агент (HTTP) — для standalone / MAS
 python -m blocksnet_agent
 # → http://0.0.0.0:8080/
 #    .well-known/agent-card.json — карточка A2A
@@ -46,7 +46,7 @@ python -m blocksnet_agent
 #    /health — liveness
 ```
 
-**MCP-сервер работает без LLM** (CHAT_URL/API_KEY не обязательны). Это
+**MCP-server работает без LLM** (CHAT_URL/API_KEY не обязательны). Это
 главное отличие от A2A — `import blocksnet_mcp.server` НЕ тянет
 `langgraph`/`tiktoken` (verified `tests/test_image_deps.py`).
 
@@ -58,7 +58,7 @@ python -m blocksnet_agent
     "blocksnet": {
       "command": "/path/to/.venv/bin/python",
       "args": ["-m", "blocksnet_mcp"],
-      "cwd": "/path/to/blocksnet-mcp",
+      "cwd": "/path/to/blocksnet-agent",
       "env": {
         "DATA_DIR": "./data",
         "OUTPUT_DIR": "./outputs",
@@ -87,8 +87,8 @@ docker compose exec -T mcp python -c "import blocksnet_mcp.server; print('OK')"
 
 | Образ | Размер | Описание |
 |---|---|---|
-| `blocksnet-mcp/mcp` | компактный (без LLM) | stdio MCP-сервер |
-| `blocksnet-mcp/agent` | большой (с LLM) | A2A-сервис, 8080:8080 |
+| `blocksnet-agent/mcp` | компактный (без LLM) | stdio MCP-server |
+| `blocksnet-agent/a2a-agent` | большой (с LLM) | A2A-агент, 8080:8080 |
 
 Healthcheck:
 - **agent**: HTTP GET `/health` (curl в образе)
@@ -100,14 +100,14 @@ Healthcheck:
 
 ```text
 ┌──────────────────┐    stdio    ┌─────────────────────────┐
-│ LLM-агент        │◄───────────►│ blocksnet-mcp/mcp       │
+│ LLM-агент        │◄───────────►│ blocksnet-agent/mcp     │
 │ (Claude, Cursor) │             │ (raw-tools, без LLM)    │
 └──────────────────┘             └─────────────────────────┘
                                             │
                                             │ общий volume ./data
                                             ▼
 ┌──────────────────┐   HTTP/JSON-RPC  ┌─────────────────────┐
-│ MAS-оркестратор   │◄───────────────►│ blocksnet-mcp/agent │
+│ MAS-оркестратор   │◄───────────────►│ blocksnet-agent/a2a-agent │
 │                  │   Bearer auth   │ (LLM-зависимый)      │
 └──────────────────┘                 └─────────────────────┘
 ```
@@ -172,8 +172,8 @@ outputs/
 
 | Образ | Размер | LLM-зависимости |
 |---|---|---|
-| `blocksnet-mcp/mcp` | (TBD) | нет |
-| `blocksnet-mcp/agent` | (TBD) | да |
+| `blocksnet-agent/mcp` | (TBD) | нет |
+| `blocksnet-agent/a2a-agent` | (TBD) | да |
 
 ## 7. Проверка работоспособности
 
@@ -205,14 +205,14 @@ bash scripts/smoke_docker.sh  # требует docker + curl
 | `SessionScenarioMismatch` | Смена `scenario_id` в существующей сессии | Открыть новую сессию (`open_session` с другим id) |
 | `SCENARIO_NOT_MATERIALIZED` | `scenario_id` задан, но `data_dir/<scenario_id>/` не существует | Создать каталог или использовать `materializer` |
 | `DeadlineExceeded` | Прогон не успел за `DEADLINE_SEC` | Увеличить deadline или уменьшить `MAX_ITERATIONS` |
-| MCP-сервер не стартует | Не установлены системные пакеты | Проверить `libgdal`, `libgeos`, `libproj` |
+| MCP-server не стартует | Не установлены системные пакеты | Проверить `libgdal`, `libgeos`, `libproj` |
 | A2A возвращает 401 | Токен невалиден или отсутствует | Проверить `Authorization: Bearer <token>` |
 
 ## 9. См. также
 
 | Документ | Назначение |
 |---|---|
-| [architecture.md](architecture.md) | Архитектура двух сервисов |
+| [architecture.md](architecture.md) | Архитектура двух решений |
 | [tool_contract.md](tool_contract.md) | Контракт: 32 MCP-tools, 2 A2A skill-а |
-| [a2a_agent_card.md](a2a_agent_card.md) | Карточка A2A-сервиса |
+| [a2a_agent_card.md](a2a_agent_card.md) | Карточка A2A-агента |
 | [mcp_tool_catalog.md](mcp_tool_catalog.md) | Каталог MCP-инструментов |

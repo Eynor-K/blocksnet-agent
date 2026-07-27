@@ -28,7 +28,7 @@ flowchart TB
         A4["Агент 4<br/>проверка ПЗЗ"]
     end
 
-    subgraph MCPS["MCP-серверы соседей (Light LLM)"]
+    subgraph MCPS["MCP-server соседних решений (Light LLM)"]
         M1["UrbanResponder<br/>RegulatoryRequirements"]
         M2["UrbanSpaceAPI"]
         M3["UrbanResponder<br/>ObjectEffects"]
@@ -37,8 +37,8 @@ flowchart TB
     end
 
     subgraph BN["Зона BlocksNet — реализация на стороне BlocksNet"]
-        BNA["blocksnet-urban-planner<br/>A2A-сервис · Agent Card · LLM"]
-        BNM["blocksnet-mcp<br/>MCP raw tools · без LLM"]
+        BNA["blocksnet-urban-planner<br/>A2A-агент · Agent Card · LLM"]
+        BNM["blocksnet-agent<br/>MCP-server · без LLM"]
     end
 
     ORCH --> A1 --> M1
@@ -69,7 +69,7 @@ flowchart TB
     IN1["MAS / «Простор»"] -->|A2A JSON-RPC · Bearer · scenario_id| CARD
     IN2["Claude Desktop · Cursor · CI · другой агент"] -->|MCP stdio/HTTP| TOOLS
 
-    subgraph A2A["blocksnet-urban-planner (A2A-сервис)"]
+    subgraph A2A["blocksnet-urban-planner (A2A-агент)"]
         CARD["Agent Card<br/>/.well-known/agent-card.json"]
         SK["skills:<br/>• run_pipeline (multi-step)<br/>• analyze_urban_question (обёртка)"]
         TM["task_manager<br/>submitted → working →<br/>completed / failed / canceled"]
@@ -78,7 +78,7 @@ flowchart TB
         CARD --> SK --> TM --> AG --> ST1
     end
 
-    subgraph MCP["blocksnet-mcp (raw tools)"]
+    subgraph MCP["blocksnet-agent / MCP-server (raw tools)"]
         TOOLS["tools/list — 32 инструмента"]
         SESS["SessionStore<br/>session_id → state · TTL · LRU"]
         ENV["конверт ответа<br/>status · text · artifacts · error_code"]
@@ -112,7 +112,7 @@ flowchart TB
 | `city-blocks-aggregator` | домен инструментов «данные и структура» | `load_blocks`, `build_adjacency_graph`, `compute_density_indicators`, `compute_development_indicators`, `get_block_info` |
 | `transport-analytics` | домен «доступность и связность» | `load_accessibility_matrix`, `compute_mean/median/max_accessibility`, `compute_connectivity`, `compute_land_use_accessibility`, `compute_area_accessibility` |
 | `optimizer` | домен «оптимизация и сценарии» | `suggest_target_blocks`, `propose_zone_development`, `compute_scenario_provision`, `compute_service_provision`, `compute_shared_provision` |
-| `master-urban-planner` | **сам A2A-сервис**: PTR-цикл вместо ручных развилок | все + `find_tools`, `get_tool_help`, `submit_answer` |
+| `master-urban-planner` | **сам A2A-агент**: PTR-цикл вместо ручных развилок | все + `find_tools`, `get_tool_help`, `submit_answer` |
 
 **Почему не отдельные сервисы.** Все три домена работают над одним и тем же
 `state`: `blocks` (GeoDataFrame кварталов) и `acc_mx` (матрица доступности)
@@ -226,7 +226,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant P as Оркестратор / CI / другой агент
-    participant M as blocksnet-mcp
+    participant M as blocksnet-agent / MCP-server
     participant S as SessionStore
     participant F as Инструменты
 
@@ -344,7 +344,7 @@ sequenceDiagram
 | Элемент MAS.drawio (2026-06-23) | В новой схеме |
 |---|---|
 | «Зона деятельности агента-оркестратора BlocksNet» | сохранена как зона, внутри — два сервиса вместо четырёх агентов |
-| `master-urban-planner` | `blocksnet-urban-planner` (A2A-сервис) |
+| `master-urban-planner` | `blocksnet-urban-planner` (A2A-агент) |
 | `city-blocks-aggregator` / `transport-analytics` / `optimizer` | домены инструментов, не сервисы (§3) |
 | «Субагенты (реализация на стороне BloksNet)» | заменено на «MCP raw tools» — второй вход в ту же зону |
 | Развилки «Вопрос про транспорт / оптимизацию?» | сняты, заменены PTR-циклом + RAG (§4) |
@@ -361,8 +361,8 @@ sequenceDiagram
 | Зона | Заливка |
 |---|---|
 | Зона BlocksNet | `#FFE6CC` (оранжевая, как в оригинале) |
-| A2A-сервис | `#E1D5E7` (фиолетовая, как блоки агентов) |
-| MCP-сервер | `#D5E8D4` (зелёная, как MCP-серверы соседей) |
+| A2A-агент | `#E1D5E7` (фиолетовая, как блоки агентов) |
+| MCP-server | `#D5E8D4` (зелёная, как MCP-server соседей) |
 | Общая фабрика инструментов | `#DAE8FC` (голубая) |
 | Обязательства / замечания | `#D5E8D4` с рамкой, как блоки «Замечания/Проблемы» |
 

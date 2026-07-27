@@ -1,16 +1,14 @@
-# blocksnet-mcp
+# blocksnet-agent
 
-`blocksnet-mcp` — два сервиса для городской аналитики поверх `BlocksNetAgent`:
+`blocksnet-agent` включает два решения для городской аналитики поверх `BlocksNetAgent`:
 
-- **MCP-сервер** (`python -m blocksnet_mcp`) — stdio, 32 raw-tools + 3 session-tools.
-  Не требует LLM.
-- **A2A-сервис** (`python -m blocksnet_agent`) — HTTP, 2 skill-а (`run_pipeline`,
-  `analyze_urban_question`). Требует LLM (CHAT_URL/API_KEY).
+- **MCP-server** (`python -m blocksnet_mcp`) — stdio, 32 raw-tools + 3 session-tools.
+Не требует LLM.
+- **A2A-агент** (`python -m blocksnet_agent`) — HTTP, 2 skill-а (`run_pipeline`,  
+`analyze_urban_question`). Требует LLM (CHAT_URL/API_KEY).
 
-> 👋 **Первый раз здесь?** Начни с [`RUN.md`](RUN.md) — 5 минут до работающего запуска.
-
-MCP-сервер — для интеграции в LLM-агенты через Model Context Protocol.
-A2A-сервис — для интеграции в MAS-цепочки (Agent-to-Agent) и standalone
+MCP-server — для интеграции в LLM-агенты через Model Context Protocol.
+A2A-агент — для интеграции в MAS-цепочки (Agent-to-Agent) и standalone
 HTTP-клиентов.
 
 Главный навигационный индекс: [docs/WIKI-LLM.md](docs/WIKI-LLM.md).
@@ -24,17 +22,21 @@ HTTP-клиентов.
 3. **Инварианты M1-M3, C1/C2/C3**: заземленность, измеренность, самосогласованность.
 4. **Измеренные предложения развития**: TPE-оптимизация + сценарная проверка.
 5. **Структурный финальный синтез**: 7-секционный decision memo на русском, всегда
-   возвращается клиенту (поля `synthesis` / `synthesis_citations` / `synthesis_path` /
+  возвращается клиенту (поля `synthesis` / `synthesis_citations` / `synthesis_path` /
    `synthesis_fallback` в payload).
 
 Два транспорта, два потребителя, **одна кодовая база**:
 
-- **MCP-tool path** — клиент вызывает конкретный ``compute_*``/``load_*`` напрямую
-  (без LLM-цикла). Подходит для: интеграции в Claude/Cursor/etc, скриптов, дашбордов.
-- **A2A-skill path** — клиент отправляет ``run_pipeline(question)`` и получает
-  стриминг статусов + финальный JSON. Подходит для: MAS-оркестрации, чат-агентов.
+- **MCP-tool path** — клиент вызывает конкретный `compute_`*/`load_*` напрямую
+(без LLM-цикла). Подходит для: интеграции в Claude/Cursor/etc, скриптов, дашбордов.
+- **A2A-skill path** — клиент отправляет `run_pipeline(question)` и получает
+стриминг статусов + финальный JSON. Подходит для: MAS-оркестрации, чат-агентов.
+
+
 
 ## Quickstart
+
+
 
 ### Локальный запуск (без Docker)
 
@@ -52,13 +54,15 @@ cp .env.example .env
 # DATA_DIR=./data
 # OUTPUT_DIR=./outputs
 
-# 1) MCP-сервер (stdio) — для MCP-клиентов
+# 1) MCP-server (stdio) — для MCP-клиентов
 python -m blocksnet_mcp
 
-# 2) A2A-сервис (HTTP) — для standalone / MAS
+# 2) A2A-агент (HTTP) — для standalone / MAS
 python -m blocksnet_agent
 # → http://0.0.0.0:8080/ (Agent Card, JSON-RPC /, /health)
 ```
+
+
 
 ### Docker
 
@@ -74,22 +78,24 @@ docker compose up -d
 ## Каталог инструментов и контракт
 
 - **MCP**: [docs/mcp_tool_catalog.md](docs/mcp_tool_catalog.md) — auto-generated из
-  живого кода через `build_catalog()`. 32 raw-инструмента + 3 session-tools.
+живого кода через `build_catalog()`. 32 raw-инструмента + 3 session-tools.
 - **A2A**: [docs/a2a_agent_card.md](docs/a2a_agent_card.md) — карточка сервиса
-  (реальный вывод), описание skill-ов.
+(реальный вывод), описание skill-ов.
 - **Контракт**: [docs/tool_contract.md](docs/tool_contract.md) — формат
-  ответа (поля `synthesis` / `synthesis_citations` / `synthesis_path` /
-  `synthesis_fallback` в §12), коды ошибок, поведение по сценариям.
+ответа (поля `synthesis` / `synthesis_citations` / `synthesis_path` /
+`synthesis_fallback` в §12), коды ошибок, поведение по сценариям.
+
+
 
 ## Структура репозитория
 
 ```text
-blocksnet-mcp/
+blocksnet-agent/
 ├── README.md
 ├── pyproject.toml           # extras: mcp / agent / dev
 ├── requirements.txt         # back-compat alias для pip install -r
 ├── Dockerfile.mcp           # raw-tools образ, без LLM
-├── Dockerfile.agent         # A2A-сервис, с langgraph + a2a-sdk
+├── Dockerfile.agent         # A2A-агент, с langgraph + a2a-sdk
 ├── docker-compose.yml
 ├── .dockerignore
 ├── blocksnet_mcp/           # MCP-обёртка
@@ -101,7 +107,7 @@ blocksnet-mcp/
 │   ├── serialize.py         # P1.1/P1.2/P1.6 + P-S5.3 _attach_synthesis()
 │   └── tools_mcp.py         # back-compat shim
 ├── blocksnet_agent/         # общее ядро
-│   ├── a2a/                 # A2A-сервис (FastAPI)
+│   ├── a2a/                 # A2A-агент (FastAPI)
 │   ├── authcore.py          # StaticTokenVerifier
 │   ├── context.py           # ScenarioContext + resolve_context
 │   ├── payload.py           # build_payload (общий для A2A и MCP)
@@ -114,18 +120,17 @@ blocksnet-mcp/
 └── docs/                    # tool_contract.md, mcp_tool_catalog.md (auto-gen), A2A Agent Card, ...
 ```
 
+
+
 ## Контракт инструмента
 
 `analyze_urban_question(question, max_iterations=None)` — DEPRECATED legacy MCP-инструмент
 для back-compat. Сохранён, но новые интеграции используют A2A `run_pipeline`.
 Полная спецификация контракта: [docs/tool_contract.md](docs/tool_contract.md).
 
-## Финальный ответ клиенту
+## Финальный ответ
 
-После рефакторинга P-S5.x клиент **всегда** получает структурный ответ —
-агент больше не выдаёт «9-секционный дамп графа» в prose. Финальный синтез
-собирается отдельным шагом в `blocksnet_agent/synthesis.py` (паттерн
-перенесён из `fp2mp_core/nodes/synthesis.py`).
+После рефакторинга P-S5.x клиент **всегда** получает структурный ответ — агент больше не выдаёт «9-секционный дамп графа» в prose. Финальный синтез собирается отдельным шагом в `blocksnet_agent/synthesis.py.`
 
 ### Жизненный цикл одного вызова
 
@@ -145,7 +150,9 @@ ReAct (AgentExecutor)
                           / ["synthesis_path"] / ["synthesis_fallback"]
 ```
 
-### Что отдаёт `payload` клиенту (фрагмент JSON-RPC result)
+
+
+### Что отдаёт `payload` пользователю (фрагмент JSON-RPC result)
 
 ```jsonc
 {
@@ -167,62 +174,63 @@ ReAct (AgentExecutor)
 }
 ```
 
+
+
 ### 7 секций `synthesis` (порядок фиксирован)
 
-| № | Заголовок | Что внутри |
-|---|---|---|
-| 0 | `## Вопрос` | Эхо исходного вопроса |
-| 1 | `## Ответ` | Committed conclusion в 1–3 предложения + `(доверие 0.NN)` |
-| 2 | `## Как читаю вопрос` | Проблемная рамка задачи |
-| 3 | `## На чём держится ответ` | Главные компоненты: инструменты, гипотезы |
-| 4 | `## Варианты, которые взвешивал` | Реальные альтернативы + почему выбранный путь выигрывает |
-| 5 | `## Аргумент «за»` | Подтверждающие наблюдения **с `[source]`** citations |
-| 6 | `## Что осталось неопределённым` | Material uncertainty + confidence каждого утверждения |
-| 7 | `## Где это рассуждение может быть ошибочным` | Reasoning-level critique: rejected framings, calibrated claims, source bias |
-| + | `## Ограничения` | Авто-собранные limitations (failed obs + inconclusive гипотезы) |
 
-### Что писал агент раньше vs сейчас
+| №   | Заголовок                                     | Что внутри                                                                  |
+| --- | --------------------------------------------- | --------------------------------------------------------------------------- |
+| 0   | `## Вопрос`                                   | Эхо исходного вопроса                                                       |
+| 1   | `## Ответ`                                    | Committed conclusion в 1–3 предложения + `(доверие 0.NN)`                   |
+| 2   | `## Как читаю вопрос`                         | Проблемная рамка задачи                                                     |
+| 3   | `## На чём держится ответ`                    | Главные компоненты: инструменты, гипотезы                                   |
+| 4   | `## Варианты, которые взвешивал`              | Реальные альтернативы + почему выбранный путь выигрывает                    |
+| 5   | `## Аргумент «за»`                            | Подтверждающие наблюдения **с** `[source]` citations                        |
+| 6   | `## Что осталось неопределённым`              | Material uncertainty + confidence каждого утверждения                       |
+| 7   | `## Где это рассуждение может быть ошибочным` | Reasoning-level critique: rejected framings, calibrated claims, source bias |
+| +   | `## Ограничения`                              | Авто-собранные limitations (failed obs + inconclusive гипотезы)             |
 
-| Раньше (P0.x — P1.x) | Сейчас (P-S5.x) |
-|---|---|
-| 9-секционный prose-блок (`ANALYSIS PLAN`/`RESULT`/`REFLECTION`/`HYPOTHESES`/`NUMERIC SELF-CHECK`/`RECOMMENDATIONS`/`FOLLOW_UPS`/`CONFIDENCE`/`LIMITATIONS`) | Минимум `ANALYSIS PLAN`+`RESULT`+`LIMITATIONS`; остальное — рекомендуется, не обязательно |
-| `RECOMMENDATIONS` — JSON-массив строкой в prose (хрупкий regex) | Структурные рекомендации — через терминальный `submit_answer(recommendations=…)` |
-| `FOLLOW_UPS` — prose-секция | Не нужна: «Что осталось неопределённым» собирает синтез |
-| Клиент получал сырой prose, парсил сам | Клиент получает `synthesis` (markdown) + `synthesis_citations` (массив источников) |
-
-Артефакты на диске всегда: `run_dir/synthesis.md` — структурный memo, `run_dir/run_log.{md,json}` —
-трасса tool-calls. Полный контракт: [docs/tool_contract.md §12](docs/tool_contract.md#12-выходной-payload-analyze_urban_question--run_pipeline).
 
 ## Индексация WIKI-LLM
 
-| Индекс | Назначение |
-|---|---|
-| [docs/WIKI-LLM.md](docs/WIKI-LLM.md) | Главная карта проекта для LLM-навигации |
-| [docs/README.md](docs/README.md) | Человекочитаемый индекс документации |
-| [blocksnet_mcp/README.md](blocksnet_mcp/README.md) | Индекс MCP-слоя |
-| [blocksnet_agent/README.md](blocksnet_agent/README.md) | Индекс переносимого ядра агента |
-| [examples/README.md](examples/README.md) | Индекс интерактивных блокнотов и локальных примеров |
-| [tests/README.md](tests/README.md) | Индекс контрактных тестов |
-| [scripts/README.md](scripts/README.md) | Индекс локальных smoke-проверок MCP |
+
+| Индекс                                                 | Назначение                                          |
+| ------------------------------------------------------ | --------------------------------------------------- |
+| [docs/WIKI-LLM.md](docs/WIKI-LLM.md)                   | Главная карта проекта для LLM-навигации             |
+| [docs/README.md](docs/README.md)                       | Человекочитаемый индекс документации                |
+| [blocksnet_mcp/README.md](blocksnet_mcp/README.md)     | Индекс MCP-слоя                                     |
+| [blocksnet_agent/README.md](blocksnet_agent/README.md) | Индекс переносимого ядра агента                     |
+| [examples/README.md](examples/README.md)               | Индекс интерактивных блокнотов и локальных примеров |
+| [tests/README.md](tests/README.md)                     | Индекс контрактных тестов                           |
+| [scripts/README.md](scripts/README.md)                 | Индекс локальных smoke-проверок MCP                 |
+
+
+
 
 ## Документация
 
-| Документ | О чём |
-|---|---|
-| [docs/architecture.md](docs/architecture.md) | Целевая архитектура: два транспорта (MCP + A2A), поток `run_pipeline` |
-| [docs/tool_contract.md](docs/tool_contract.md) | Контракт MCP-инструментов и A2A-skill-ов: формат ответа, сессии, auth |
-| [docs/mcp_tool_catalog.md](docs/mcp_tool_catalog.md) | Auto-generated каталог 32 raw-инструментов + 3 session-tools |
-| [docs/a2a_agent_card.md](docs/a2a_agent_card.md) | Реальная карточка A2A-сервиса, описание полей |
-| [docs/deployment.md](docs/deployment.md) | Локальный запуск + Docker compose + единая таблица env |
-| [docs/WIKI-LLM.md](docs/WIKI-LLM.md) | Карта репозитория для LLM-навигации |
+
+| Документ                                             | О чём                                                                 |
+| ---------------------------------------------------- | --------------------------------------------------------------------- |
+| [docs/architecture.md](docs/architecture.md)         | Целевая архитектура: два транспорта (MCP + A2A), поток `run_pipeline` |
+| [docs/tool_contract.md](docs/tool_contract.md)       | Контракт MCP-инструментов и A2A-skill-ов: формат ответа, сессии, auth |
+| [docs/mcp_tool_catalog.md](docs/mcp_tool_catalog.md) | Auto-generated каталог 32 raw-инструментов + 3 session-tools          |
+| [docs/a2a_agent_card.md](docs/a2a_agent_card.md)     | Реальная карточка A2A-агента, описание полей                          |
+| [docs/deployment.md](docs/deployment.md)             | Локальный запуск + Docker compose + единая таблица env                |
+| [docs/WIKI-LLM.md](docs/WIKI-LLM.md)                 | Карта репозитория для LLM-навигации                                   |
+
+
+
 
 ## Статус
 
-**Два сервиса готовы:** MCP-stdio (`python -m blocksnet_mcp`, 32 raw-tools + 3 session-tools,
-без LLM) и A2A-HTTP (`python -m blocksnet_agent`, 2 skill-а, с LLM). Bearer auth +
+**Два решения готовы:** MCP-server (`python -m blocksnet_mcp`, 32 raw-tools + 3 session-tools,
+без LLM) и A2A-агент (`python -m blocksnet_agent`, 2 skill-а, с LLM). Bearer auth +
 scenario_id, per-run stop, Docker с разделением зависимостей. **Финальный синтез
 (7-секционный decision memo)** собирается всегда, в `run_dir/synthesis.md` и в payload.
 **266 tests passed**, 0 регрессий.
 
 > История реализации, планы и deferred-задачи — в `docs/dev/`. Этот README описывает
 > только текущее состояние.
+

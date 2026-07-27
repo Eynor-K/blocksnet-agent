@@ -36,7 +36,7 @@ MCP-слой как «33 детерминированных функции», н
 Обращений к `state[...]` в tools: data 8, network 8, services 8, provision 9,
 optimize 5, indicators 5, viz 2.
 
-**Последствие.** MCP-сервер, экспонирующий эти функции «как есть», отдаст
+**Последствие.** MCP-server, экспонирующий эти функции «как есть», отдаст
 на 12+ инструментах «Кэш пуст / сначала вызови load_blocks()». Ни один
 многошаговый сценарий не отработает.
 
@@ -76,7 +76,7 @@ stateless функции» в reasoning/architecture заменена на «д�
 дёргают функции напрямую с готовым `state`. Регресс уйдёт в прод незамеченным.
 
 **Исправление.** Топология развёрнута (новый Q6): агент **не** ходит в MCP.
-Tools остаются in-process для агента; MCP-сервер — **параллельный** фасад над
+Tools остаются in-process для агента; MCP-server — **параллельный** фасад над
 той же фабрикой `make_tools()` со своим SessionStore. Этап 4 старого плана
 («A2A ↔ MCP интеграция») удалён из must-have и переоформлен как отложенный
 `MCP_TOOL_PROXY` (требует отдельного дизайна переноса state — см.
@@ -177,7 +177,7 @@ tools через ту же `make_tools()`, а не импортировать ф
 **Что в документах.** `reasoning.md` §3.1 и `../architecture/target_architecture.md` §1 перечисляют
 `estimate_repopulation`, `accessibility_matrix`, `join_blocks_services`,
 `add_service_capacity`, `optimize_tpe_zones`. `../plans/a2a_refactor/overview.md`, критерий этапа 4:
-«A2A-агент вызывает `estimate_repopulation` через MCP-сервер».
+«A2A-агент вызывает `estimate_repopulation` через MCP-server».
 
 **Что в коде.** Ни одного из этих имён не существует. Фактические:
 `load_accessibility_matrix`, `compute_service_provision`,
@@ -253,7 +253,7 @@ tools через ту же `make_tools()`, а не импортировать ф
 
 ## R11. MINOR — `python -m blocksnet_mcp` сегодня не работает
 
-Критерий завершения: «MCP-сервер поднимается через `python -m blocksnet_mcp`».
+Критерий завершения: «MCP-server поднимается через `python -m blocksnet_mcp`».
 `blocksnet_mcp/__main__.py` отсутствует; `blocksnet_agent/__main__.py` тоже
 (`../architecture/target_architecture.md` §3 показывает его как существующий). Оба добавлены явными
 задачами.

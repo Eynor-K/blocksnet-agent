@@ -1,4 +1,4 @@
-# Целевая архитектура: A2A-сервис + MCP raw tools
+# Целевая архитектура: A2A-агент + MCP raw tools
 
 Целевая картина после рефакторинга. Мотивация — [reasoning.md](../decisions/reasoning.md),
 принятые решения — [open_questions.md](../decisions/open_questions.md), исполнение —
@@ -19,7 +19,7 @@
                 │ A2A JSON-RPC (HTTP)              │ MCP (stdio → HTTP)
                 ▼                                  ▼
 ┌───────────────────────────────────┐  ┌───────────────────────────────────┐
-│ blocksnet-agent-service           │  │ blocksnet-mcp                     │
+│ blocksnet-agent-a2a               │  │ blocksnet-agent-mcp               │
 │ (пакет blocksnet_agent.a2a)       │  │ (пакет blocksnet_mcp)             │
 │                                   │  │                                   │
 │ ┌───────────────────────────────┐ │  │ ┌───────────────────────────────┐ │
@@ -74,8 +74,8 @@
 
 | Слой | PTR-цикл | Гипотезы / инварианты | LLM | RAG по tools |
 |---|---|---|---|---|
-| **A2A-сервис** | да | да | да | да |
-| **MCP-сервер** | нет | нет | нет | да — `find_tools`/`get_tool_help` детерминированы (keyword-поиск, без эмбеддингов) |
+| **A2A-агент** | да | да | да | да |
+| **MCP-server** | нет | нет | нет | да — `find_tools`/`get_tool_help` детерминированы (keyword-поиск, без эмбеддингов) |
 | **blocksnet lib** | нет | нет | нет | нет |
 
 Единственное место, где MCP касается LLM — deprecated `agent_tool.py`, и то
@@ -84,7 +84,7 @@
 
 ### 2.2. Что общее, что раздельное
 
-| Компонент | A2A-сервис | MCP-сервер |
+| Компонент | A2A-агент | MCP-server |
 |---|---|---|
 | `blocksnet_agent/tools/*` | общий код | общий код |
 | `make_tools()` / `catalog.py` | общий вызов | общий вызов |
@@ -98,8 +98,8 @@
 
 | Поток | Откуда | Куда | Транспорт |
 |---|---|---|---|
-| Запрос пользователя | MAS / A2A-клиент | A2A-сервис | A2A JSON-RPC / HTTP |
-| Прогресс, артефакты | A2A-сервис | клиент | `TaskStatusUpdateEvent` / artifacts |
+| Запрос пользователя | MAS / A2A-клиент | A2A-агент | A2A JSON-RPC / HTTP |
+| Прогресс, артефакты | A2A-агент | клиент | `TaskStatusUpdateEvent` / artifacts |
 | Вызов инструмента (агент) | PTR-цикл | tools | **in-process**, общий `state` |
 | Вызов инструмента (внешний) | MCP-клиент | tools | MCP, `state` сессии |
 | Данные сценария | UrbanDB | context adapter | HTTP → материализация в `DATA_DIR` |
@@ -151,7 +151,7 @@ close_session("s-7f3a")              → память освобождена
                 → MCP не затронут
 
 новая LLM-модель = CHAT_URL/MODEL в .env
-                 → перезапуск только A2A-сервиса
+                 → перезапуск только A2A-агента
 ```
 
 ## 3. Структура репозитория после рефакторинга
@@ -159,13 +159,13 @@ close_session("s-7f3a")              → память освобождена
 `←` помечено новое, `~` — изменяемое, остальное без изменений.
 
 ```text
-blocksnet-mcp/
+blocksnet-agent/
 ├── blocksnet_agent/
 │   ├── agent.py                     # ядро PTR/RAG/инварианты — НЕ ТРОГАТЬ
 │   ├── hypotheses.py  metrics.py  llm.py  prompts.py
 │   ├── runtime.py                 ~ стоп-флаг → per-RunContext (R9)
 │   ├── config.py                    Settings — база для A2ASettings
-│   ├── __main__.py                ← python -m blocksnet_agent → A2A-сервис
+│   ├── __main__.py                ← python -m blocksnet_agent → A2A-агент
 │   ├── tools/
 │   │   ├── __init__.py            ~ make_tools() + exclude-параметр
 │   │   ├── catalog.py             ← ToolSpec, build_catalog(), TOOL_BLOCKLIST
@@ -213,11 +213,11 @@ blocksnet-mcp/
 
 ## 4. Режимы деплоя
 
-| Режим | A2A-сервис | MCP-сервер | Когда |
+| Режим | A2A-агент | MCP-server | Когда |
 |---|---|---|---|
 | Local dev | не нужен | `python -m blocksnet_mcp` (stdio) | Claude Desktop / Cursor / отладка tools |
 | Local agent | `python -m blocksnet_agent` (uvicorn) | опционально, независимо | разработка агента |
-| Docker local | контейнер `blocksnet-agent` | контейнер `blocksnet-mcp` | `docker compose up` |
+| Docker local | контейнер `blocksnet-agent-a2a` | контейнер `blocksnet-agent-mcp` | `docker compose up` |
 | MAS staging | HTTP + Bearer + scenario_id | HTTP + Bearer + scenario_id | staging |
 | MAS prod | HTTP + JWT + scenario_id | HTTP + JWT + scenario_id | prod |
 

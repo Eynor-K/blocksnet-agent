@@ -1,11 +1,11 @@
 # Контракт инструментов
 
-- **MCP-сервер экспонирует 32 raw-инструмента** (``compute_*``, ``load_*``, ``list_*``,
+- **MCP-server экспонирует 32 raw-инструмента** (``compute_*``, ``load_*``, ``list_*``,
   ``get_*``, ``render_metric_map``, ``suggest_target_blocks``, ``propose_zone_development``,
   ``build_adjacency_graph``, ``find_tools``, ``get_tool_help``) +
   **3 служебных** (``open_session``/``close_session``/``session_info``). Полный каталог —
   ``docs/mcp_tool_catalog.md`` (auto-generated из живого кода).
-- **A2A-сервис** экспонирует 2 skill-а в Agent Card: ``run_pipeline`` (новый, основной) и
+- **A2A-агент** экспонирует 2 skill-а в Agent Card: ``run_pipeline`` (новый, основной) и
   ``analyze_urban_question`` (DEPRECATED, обёртка для back-compat).
 - **Сессии и scenario_id**: изоляция state между параллельными клиентами; привязка
   к ``scenario_id``/``project_id`` (whitelist `[a-zA-Z0-9_-]{1,64}`).

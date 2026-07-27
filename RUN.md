@@ -1,30 +1,23 @@
 # RUN.md — быстрый запуск для получателя проекта
 
-> **Если ты читаешь это первым документом** — `RUN.md` показывает как развернуть
-> и проверить систему за 10 минут. Подробности — в `README.md`, `docs/deployment.md`,
+> `RUN.md` показывает как развернуть и проверить систему за 10 минут. Подробности — в `README.md`, `docs/deployment.md`,
 > и `docs/tool_contract.md`.
 
 ---
 
 ## Что это за проект
 
-`blocksnet-mcp` — два сервиса для городской аналитики поверх `BlocksNetAgent`:
+`blocksnet-agent` включает два решения для городской аналитики поверх `BlocksNetAgent`:
 
-- **MCP-сервер** (`python -m blocksnet_mcp`) — stdio, 32 raw-tools + 3 session-tools.
-  **Не требует LLM** — может работать на чистых данных.
-- **A2A-сервис** (`python -m blocksnet_agent`) — HTTP, 2 skill-а (`run_pipeline`,
-  `analyze_urban_question` DEPRECATED). Требует LLM через OpenAI-compatible endpoint
-  (Ollama Cloud, OpenRouter, локальный).
-
-**Текущее состояние:** MVP готов. **257 pytest passed**, **0 регрессий**.
-
-**Что НЕ готово для production** (этапы 7-10 MAS-плана):
-JWT-валидатор, HTTP MCP endpoint, UrbanDB HTTP-клиент, e2e с реальным UrbanDB,
-hardening, handoff. Папка `docs/dev/deferred/` содержит рабочие материалы
-(планы, отчёты, отложенные задачи) — это нужно только разработчикам, расширяющим
-систему; для пользователя/получателя проекта это не требуется.
+- **MCP-server** (`python -m blocksnet_mcp`) — stdio, 32 raw-tools + 3 session-tools.
+**Не требует LLM** — может работать на чистых данных.
+- **A2A-агент** (`python -m blocksnet_agent`) — HTTP, 2 skill-а (`run_pipeline`,  
+`analyze_urban_question` DEPRECATED). Требует LLM через OpenAI-compatible endpoint  
+(Ollama Cloud, OpenRouter, локальный).
 
 ---
+
+
 
 ## Способ 1 — Локальный запуск без Docker (самый быстрый)
 
@@ -44,11 +37,11 @@ mkdir -p data/saint_petersburg
 # Должно быть: data/saint_petersburg/blocks_with_services.gpkg
 #             data/saint_petersburg/acc_mx.pickle
 
-# 4. Запустить A2A-сервис (HTTP, FastAPI)
+# 4. Запустить A2A-агента (HTTP, FastAPI)
 DATA_DIR=data/saint_petersburg python -m blocksnet_agent
 # → http://0.0.0.0:8080/ (Agent Card, JSON-RPC /, /health)
 
-# В другом терминале — MCP-сервер (stdio, без LLM)
+# В другом терминале — MCP-server (stdio, без LLM)
 DATA_DIR=data/saint_petersburg python -m blocksnet_mcp
 # → stdio MCP, подключай через Claude Desktop / Cursor
 ```
@@ -78,6 +71,8 @@ print(json.loads(result))
 
 ---
 
+
+
 ## Способ 2 — Docker Compose (для проверки контейнеризации)
 
 ```bash
@@ -102,19 +97,16 @@ curl http://localhost:8080/.well-known/agent-card.json | jq
 docker compose down
 ```
 
-**Известное ограничение:** в LXC-контейнерах (Proxmox) `docker run` может
-падать с `sysctl net.ipv4.ip_unprivileged_port_start: permission denied`. На
-обычной VM или хосте с native Docker проблемы нет.
-
 ---
+
+
 
 ## Что попробовать после запуска
 
 1. **Health:** `curl http://localhost:8080/health` → `{"status": "ok", ...}`
 2. **Agent Card:** `curl http://localhost:8080/.well-known/agent-card.json`
 3. **A2A-протокол:** отправь `SendMessage` через curl:
-
-   ```bash
+  ```bash
    curl -X POST http://localhost:8080/ \
      -H "A2A-Version: 1.0" \
      -H "Content-Type: application/json" \
@@ -122,38 +114,30 @@ docker compose down
        "jsonrpc": "2.0", "id": "1", "method": "SendMessage",
        "params": {"message": {"role": 1, "parts": [{"text": "Какие сервисы есть?"}], "messageId": "m1"}}
      }'
-   ```
-
+  ```
 4. **MCP-каталог:** см. [docs/mcp_tool_catalog.md](docs/mcp_tool_catalog.md) —
-   32 инструмента с описаниями.
+  32 инструмента с описаниями.
 
 ---
 
-## Куда смотреть если что-то не работает
 
-| Симптом | Где смотреть |
-|---|---|
-| `pip install` падает | Python 3.11+; см. `pyproject.toml` `[project]` requires-python |
-| `python -m blocksnet_agent` не стартует | Проверь `.env` (CHAT_URL, API_KEY) |
-| `DATA_DIR` не найден | Должен существовать; положи `blocks_with_services.gpkg` + `acc_mx.pickle` |
-| `docker run` падает на sysctl | Это LXC/Proxmox — запусти на VM с native Docker |
-| `git ls-files .env` показывает `.env` | Проверь `.gitignore` (строка `.env`) |
-| Тесты pytest падают | Не должно быть: 257 passed. Если падают — сообщи об ошибке с трейсом |
-
----
 
 ## Что НЕ включено в передачу
 
-| Файл/каталог | Почему |
-|---|---|
-| `.env` | В `.gitignore`. **Содержит боевой Ollama Cloud API-ключ** — нужно завести свой |
-| `data/` (city-specific geodata) | 336 MB, в `.gitignore`. Положить отдельно |
-| `outputs/` | Runtime-артефакты, в `.gitignore` |
-| `.venv/`, `.venv-spike/` | Восстанавливается через `pip install -e ".[agent,dev]"` |
-| `__pycache__/`, `*.pyc` | Кеш, в `.gitignore` |
-| `.git/` | Восстанавливается через `git clone` |
+
+| Файл/каталог                    | Почему                                                                         |
+| ------------------------------- | ------------------------------------------------------------------------------ |
+| `.env`                          | В `.gitignore`. **Содержит боевой Ollama Cloud API-ключ** — нужно завести свой |
+| `data/` (city-specific geodata) | 336 MB, в `.gitignore`. Положить отдельно                                      |
+| `outputs/`                      | Runtime-артефакты, в `.gitignore`                                              |
+| `.venv/`, `.venv-spike/`        | Восстанавливается через `pip install -e ".[agent,dev]"`                        |
+| `__pycache__/`, `*.pyc`         | Кеш, в `.gitignore`                                                            |
+| `.git/`                         | Восстанавливается через `git clone`                                            |
+
 
 ---
+
+
 
 ## Документация (порядок чтения)
 
@@ -176,6 +160,8 @@ docker compose down
 > опционально при расширении функциональности.
 
 ---
+
+
 
 ## Если что-то непонятно
 

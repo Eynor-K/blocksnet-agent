@@ -25,7 +25,7 @@
 | [02](02-session-store.md) | SessionStore для MCP | 0.5 д | 03 |
 | [03](03-mcp-server.md) | MCP: 32 tool, старт без LLM | 1.5 д | 06, 07 |
 | [04](04-agent-decoupling.md) | Per-run стоп-флаг, единые настройки | 0.5 д | 05 |
-| [05](05-a2a-service.md) | A2A-сервис, Agent Card, 2 skill | 2 д | 06, 07 |
+| [05](05-a2a-service.md) | A2A-агент, Agent Card, 2 skill | 2 д | 06, 07 |
 | [06](06-auth-context.md) | Bearer, `scenario_id`/`project_id` | 1 д | 08 |
 | [07](07-docker.md) | Два образа, compose | 1 д | 08 |
 | [08](08-contract-docs.md) | Контракт v2, каталог, README | 1 д | — |
@@ -79,7 +79,7 @@
 - [ ] MCP экспонирует весь каталог (сверка тестом, не числом) и стартует
       без `CHAT_URL`/`API_KEY`
 - [ ] Многошаговый сценарий через MCP работает (сессии)
-- [ ] A2A-сервис отдаёт Agent Card и два skill; выход `analyze_urban_question`
+- [ ] A2A-агент отдаёт Agent Card и два skill; выход `analyze_urban_question`
       совместим с текущим
 - [ ] Оба образа собираются, `docker compose up` — healthy
 - [ ] `pytest` не хуже baseline, новые тесты зелёные

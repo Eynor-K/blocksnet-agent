@@ -1,7 +1,7 @@
-# Документация `blocksnet-mcp`
+# Документация `blocksnet-agent`
 
-**MCP-сервер + A2A-сервис городской аналитики** поверх `BlocksNetAgent`.
-Сервер экспонирует 32 raw-tools + 3 session-tools через MCP-stdio, и 2 skill-а
+**MCP-server + A2A-агент городской аналитики** поверх `BlocksNetAgent`.
+MCP-server экспонирует 32 raw-tools + 3 session-tools через MCP-stdio, а A2A-агент — 2 skill-а
 (`run_pipeline`, `analyze_urban_question`) через A2A-HTTP.
 
 | Документ | О чём |
@@ -12,7 +12,7 @@
 | [tool_contract.md](tool_contract.md) | Контракт: 32 MCP-tools, 2 A2A skill-а, сессии, auth |
 | [deployment.md](deployment.md) | Quickstart (локальный + Docker), единая таблица env-переменных |
 | [mcp_tool_catalog.md](mcp_tool_catalog.md) | Auto-generated каталог 32 raw-инструментов + 3 session-tools |
-| [a2a_agent_card.md](a2a_agent_card.md) | Реальная карточка A2A-сервиса, описание полей |
+| [a2a_agent_card.md](a2a_agent_card.md) | Реальная карточка A2A-агента, описание полей |
 
 ## Категории
 
@@ -24,7 +24,7 @@
 | `tool_contract.md` | Контракт: 32 MCP-tools, 2 A2A skill-а, сессии, auth |
 | `deployment.md` | Локальный запуск + Docker compose + единая env-таблица |
 | `mcp_tool_catalog.md` | Auto-generated из живого кода (`scripts/generate_tool_catalog.py`). 32 raw-tools + 3 session |
-| `a2a_agent_card.md` | Реальная карточка A2A-сервиса с описанием полей и SDK-версией |
+| `a2a_agent_card.md` | Реальная карточка A2A-агента с описанием полей и SDK-версией |
 | `WIKI-LLM.md` | LLM-карта: что где лежит, маршруты чтения |
 
 ## Когда что читать
