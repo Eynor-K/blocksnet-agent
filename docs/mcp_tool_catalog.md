@@ -6,7 +6,7 @@
 > Тест ``tests/test_tool_catalog_docs.py`` гарантирует, что закоммиченная
 > версия совпадает с актуальной.
 
-MCP-server ``blocksnet_mcp`` экспонирует 35 инструментов (32 каталожных
+MCP-server ``blocksnet_mcp`` экспонирует 36 инструментов (33 каталожных
 + 3 служебных: ``open_session``, ``close_session``, ``session_info``).
 
 Из каталожных инструментов:
@@ -215,6 +215,38 @@ MCP-server ``blocksnet_mcp`` экспонирует 35 инструментов 
 *(без аргументов)*
 
 **ToolSpec:** `name=compute_population_centrality`, `short='Вычисляет центральность кварталов на основе населения и графа смежности.'`
+
+---
+
+## `compute_road_congestion`
+
+**Краткое описание:** Строит OD-матрицу и рассчитывает загруженность рёбер дорожного графа.
+
+**Справка:**
+
+```
+Строит OD-матрицу и рассчитывает загруженность рёбер дорожного графа.
+
+        Экспериментальная метрика из blocksnet feat/road_congestion. Требует в data_dir:
+        blocks_with_services.gpkg, blocks_to_nodes.pickle, nodes_to_nodes.pickle и
+        graph_drive.graphml (альтернативы *.pkl и drive.graphml поддержаны). В графе нужны
+        int EPSG в graph['crs'], x/y узлов, time_min и lanes рёбер; после нормализации lanes
+        должны быть 1..8. Кварталы должны иметь population, land_use, site_area и count_*;
+        capacity_* автоматически преобразуются в count_* как число объектов с capacity>0.
+
+        accessibility — порог block→node в минутах (ближайший узел включается всегда).
+        max_trips — предохранитель от O(trips × Dijkstra); расчёт не запускается, если OD больше.
+        Результаты: state['origin_destination_matrix'], state['road_congestion_edges']; CSV
+        origin_destination_matrix.csv и road_congestion_edges.csv. congestion_level>1 допустим
+        и означает перегрузку. Не использовать main blocksnet: API есть только в feature-ветке.
+```
+
+**Вход:**
+
+- `accessibility` (`number`, необязательный) _(default: `10.0)`_
+- `max_trips` (`integer`, необязательный) _(default: `50000)`_
+
+**ToolSpec:** `name=compute_road_congestion`, `short='Строит OD-матрицу и рассчитывает загруженность рёбер дорожного графа.'`
 
 ---
 

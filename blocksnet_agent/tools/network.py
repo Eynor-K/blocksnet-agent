@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pandas as pd
+import numpy as np
 from langchain_core.tools import tool
 from blocksnet.analysis.network import (
     area_accessibility,
@@ -44,6 +45,59 @@ def _save(result, path) -> None:
     else:
         pd.Series(result).to_csv(path)
     record_file(path, "csv")
+
+
+def _load_road_congestion_inputs(data_dir):
+    """Load branch-specific OD/congestion inputs without synthesising spatial data."""
+    import networkx as nx
+
+    candidates = {
+        "blocks_to_nodes": ("blocks_to_nodes.pickle", "blocks_to_nodes.pkl"),
+        "nodes_to_nodes": ("nodes_to_nodes.pickle", "nodes_to_nodes.pkl"),
+        "graph_drive": ("graph_drive.graphml", "drive.graphml"),
+    }
+    resolved = {}
+    for key, names in candidates.items():
+        path = next((data_dir / name for name in names if (data_dir / name).exists()), None)
+        if path is None:
+            raise FileNotFoundError(f"{key}: ожидается один из файлов {list(names)} в {data_dir}")
+        resolved[key] = path
+
+    blocks_to_nodes = pd.read_pickle(resolved["blocks_to_nodes"]).astype("float32")
+    nodes_to_nodes = pd.read_pickle(resolved["nodes_to_nodes"]).astype("float32")
+    graph_drive = nx.read_graphml(resolved["graph_drive"], node_type=int, force_multigraph=True)
+
+    crs = graph_drive.graph.get("crs")
+    if isinstance(crs, str):
+        digits = "".join(char for char in crs if char.isdigit())
+        if digits:
+            graph_drive.graph["crs"] = int(digits)
+    for _, data in graph_drive.nodes(data=True):
+        for key in ("x", "y"):
+            if key in data:
+                data[key] = float(data[key])
+    for _, _, _, data in graph_drive.edges(keys=True, data=True):
+        if "time_min" in data:
+            data["time_min"] = float(data["time_min"])
+
+    return blocks_to_nodes, nodes_to_nodes, graph_drive
+
+
+def _road_congestion_summary(edges_df: pd.DataFrame, total_trips: int) -> str:
+    levels = pd.to_numeric(edges_df["congestion_level"], errors="coerce").dropna()
+    intensities = pd.to_numeric(edges_df["intensity"], errors="coerce").fillna(0)
+    loaded = int((intensities > 0).sum())
+    saturated = int((levels > 1.0).sum())
+    top = edges_df.assign(congestion_level=levels).nlargest(5, "congestion_level")
+    return (
+        f"OD и дорожная загруженность вычислены: поездок={total_trips}, "
+        f"рёбер с потоком={loaded}, перегруженных рёбер (level>1)={saturated}.\n"
+        f"congestion_level: мин={levels.min():.4f}, макс={levels.max():.4f}, "
+        f"среднее={levels.mean():.4f}.\n"
+        f"Топ-5 рёбер по загруженности:\n{top[['intensity', 'capacity', 'congestion_level']].to_string()}\n"
+        "Метрика экспериментальная: требуется blocksnet из ветки feat/road_congestion; "
+        "назначение выполняется по одной поездке (медленно на больших OD)."
+    )
 
 
 def _acc_summary(df: pd.DataFrame | pd.Series, col: str | None = "accessibility") -> str:
@@ -167,6 +221,95 @@ def make_network_tools(ctx: dict) -> list:
         except Exception as exc:
             return f"Ошибка: {exc}"
 
+    @tool
+    def compute_road_congestion(accessibility: float = 10.0, max_trips: int = 50000) -> str:
+        """Строит OD-матрицу и рассчитывает загруженность рёбер дорожного графа.
+
+        Экспериментальная метрика из blocksnet feat/road_congestion. Требует в data_dir:
+        blocks_with_services.gpkg, blocks_to_nodes.pickle, nodes_to_nodes.pickle и
+        graph_drive.graphml (альтернативы *.pkl и drive.graphml поддержаны). В графе нужны
+        int EPSG в graph['crs'], x/y узлов, time_min и lanes рёбер; после нормализации lanes
+        должны быть 1..8. Кварталы должны иметь population, land_use, site_area и count_*;
+        capacity_* автоматически преобразуются в count_* как число объектов с capacity>0.
+
+        accessibility — порог block→node в минутах (ближайший узел включается всегда).
+        max_trips — предохранитель от O(trips × Dijkstra); расчёт не запускается, если OD больше.
+        Результаты: state['origin_destination_matrix'], state['road_congestion_edges']; CSV
+        origin_destination_matrix.csv и road_congestion_edges.csv. congestion_level>1 допустим
+        и означает перегрузку. Не использовать main blocksnet: API есть только в feature-ветке.
+        """
+        try:
+            from blocksnet.analysis.network import origin_destination_matrix, road_congestion
+            from blocksnet.analysis.services import services_count
+            from blocksnet.relations import accessibility_graph_to_gdfs
+
+            blocks = ensure_blocks(state, data_dir).copy()
+            if "site_area" not in blocks:
+                blocks["site_area"] = blocks.geometry.area
+            count_columns = [column for column in blocks.columns if column.startswith("count_")]
+            if not count_columns:
+                capacity_columns = [column for column in blocks.columns if column.startswith("capacity_")]
+                for column in capacity_columns:
+                    blocks[f"count_{column.removeprefix('capacity_')}"] = (
+                        pd.to_numeric(blocks[column], errors="coerce").fillna(0) > 0
+                    ).astype(int)
+            blocks_to_nodes, nodes_to_nodes, graph_drive = _load_road_congestion_inputs(data_dir)
+            if set(blocks.index) != set(blocks_to_nodes.index):
+                raise ValueError("индекс blocks должен совпадать с blocks_to_nodes")
+            blocks = blocks.loc[blocks_to_nodes.index]
+            node_ids = list(nodes_to_nodes.index)
+            if list(nodes_to_nodes.columns) != node_ids or list(blocks_to_nodes.columns) != node_ids:
+                raise ValueError("узлы blocks_to_nodes и квадратной nodes_to_nodes должны совпадать и иметь один порядок")
+            graph_nodes = set(graph_drive.nodes)
+            if not set(node_ids) <= graph_nodes:
+                missing = sorted(set(node_ids) - graph_nodes)[:10]
+                raise ValueError(f"OD-узлы отсутствуют в graph_drive: {missing}")
+            invalid_lanes = []
+            for u, v, key, data in graph_drive.edges(keys=True, data=True):
+                raw = data.get("lanes", 1)
+                try:
+                    if isinstance(raw, list):
+                        raw = min(raw) if raw else 1
+                    if isinstance(raw, str):
+                        raw = raw.replace("|", ";").replace(",", ";").split(";")[0]
+                    lanes = int(float(raw))
+                except (TypeError, ValueError):
+                    lanes = 1
+                if lanes < 1 or lanes > 8:
+                    invalid_lanes.append((u, v, key, lanes))
+            if invalid_lanes:
+                raise ValueError(f"lanes вне поддерживаемого диапазона 1..8: {invalid_lanes[:5]}")
+
+            count_df = services_count(blocks)
+            od_mx = origin_destination_matrix(
+                blocks,
+                blocks_to_nodes,
+                nodes_to_nodes,
+                count_df,
+                accessibility=float(accessibility),
+            )
+            total_trips = int(np.asarray(od_mx).sum())
+            if total_trips > int(max_trips):
+                raise ValueError(
+                    f"OD содержит {total_trips} поездок > max_trips={max_trips}; "
+                    "уменьши территорию или явно увеличь лимит"
+                )
+            graph_congestion = road_congestion(od_mx, graph_drive, weight_key="time_min")
+            _, edges = accessibility_graph_to_gdfs(graph_congestion)
+            state["origin_destination_matrix"] = od_mx
+            state["road_congestion_edges"] = edges
+            _save(od_mx, output_dir / "origin_destination_matrix.csv")
+            _save(edges.drop(columns="geometry", errors="ignore"), output_dir / "road_congestion_edges.csv")
+            return _road_congestion_summary(edges, total_trips)
+        except ImportError as exc:
+            return (
+                "Ошибка: road congestion недоступен в установленной blocksnet. "
+                "Установи aimclub/blocksnet из ветки feat/road_congestion и iduedu==0.4.1. "
+                f"Детали: {exc}"
+            )
+        except Exception as exc:
+            return f"Ошибка: {exc}"
+
     return [
         compute_mean_accessibility,
         compute_median_accessibility,
@@ -174,4 +317,5 @@ def make_network_tools(ctx: dict) -> list:
         compute_connectivity,
         compute_land_use_accessibility,
         compute_area_accessibility,
+        compute_road_congestion,
     ]

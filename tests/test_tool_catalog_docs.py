@@ -51,6 +51,7 @@ def test_catalog_lists_32_canonical_tools() -> None:
         "compute_mean_accessibility",
         "compute_median_accessibility",
         "compute_population_centrality",
+        "compute_road_congestion",
         "compute_scenario_provision",
         "compute_service_provision",
         "compute_services_centrality",

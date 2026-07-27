@@ -23,7 +23,9 @@ mcp = [
     "geopandas>=0.14.0",
     "pandas>=2.0.0",
     "numpy>=1.24.0",
-    "blocksnet>=1.0.0a9",
+    "networkx>=3.1,<4.0",
+    "iduedu==0.4.1",
+    "blocksnet @ git+https://github.com/aimclub/blocksnet.git@feat/road_congestion",
     "matplotlib>=3.7.0",
     "optuna>=3.4.0",
 ]
@@ -38,6 +40,7 @@ agent = [
     "langgraph>=1.1.0",
     "tiktoken>=0.7.0",
     "a2a-sdk>=1.1.0",
+    "fastapi>=0.115.0",
 ]
 
 # Тесты + ноутбуки.
