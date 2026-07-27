@@ -1,0 +1,7 @@
+{
+  "pitch": ["sports", "sport", "спорт", "спортивные площадки", "спортплощадка"],
+  "school": ["школа", "школы", "school"],
+  "pharmacy": ["аптека", "аптеки", "pharmacy"],
+  "kindergarten": ["детский сад", "детсад", "садик", "kindergarten"],
+  "swimming_pool": ["бассейн", "swimming pool", "pool"]
+}

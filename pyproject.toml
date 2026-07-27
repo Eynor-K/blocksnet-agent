@@ -1,0 +1,88 @@
+[project]
+name = "blocksnet-mcp"
+version = "0.2.0"
+description = "BlocksNetAgent: A2A-сервис и MCP-сервер для городской аналитики на базе blocksnet"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "GeoMind team" }]
+keywords = ["blocksnet", "mcp", "a2a", "urban-analytics", "agent"]
+
+# Зависимости по умолчанию — минимум для импорта пакета.
+# Реальный рантайм требует установки одного из extras ниже.
+dependencies = []
+
+[project.optional-dependencies]
+
+# Базовый MCP-сервер: stdio/FastMCP + блокснет-аналитика.
+# БЕЗ langchain/langgraph/tiktoken/a2a — MCP-контейнер не должен тянуть LLM-стек.
+mcp = [
+    "mcp>=1.9.0",
+    "pydantic-settings>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "geopandas>=0.14.0",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "blocksnet>=1.0.0a9",
+    "matplotlib>=3.7.0",
+    "optuna>=3.4.0",
+]
+
+# Агент: всё из mcp + LLM-стек + a2a-sdk.
+# Для A2A-сервиса на шаге 05.
+agent = [
+    "blocksnet-mcp[mcp]",
+    "langchain-core>=1.3.0",
+    "langchain-classic>=1.0.0",
+    "langchain-openai>=1.2.0",
+    "langgraph>=1.1.0",
+    "tiktoken>=0.7.0",
+    "a2a-sdk>=1.1.0",
+]
+
+# Тесты + ноутбуки.
+dev = [
+    "pytest>=8.0.0",
+    "ipython>=8.0.0",
+    "ipykernel>=6.0.0",
+    "nbformat>=5.0.0",
+    "nbclient>=0.10.0",
+    "nbconvert>=7.0.0",
+]
+
+# Полный набор: агент + тесты + ноутбуки. Для разработки.
+all = [
+    "blocksnet-mcp[agent,dev]",
+]
+
+[project.scripts]
+# MCP raw tools (stdio). Без LLM.
+blocksnet-mcp = "blocksnet_mcp.server:run"
+# A2A-сервис (FastAPI/HTTP). С LLM.
+blocksnet-agent = "blocksnet_agent.service:run"
+
+[project.urls]
+Homepage = "https://github.com/SevenSolarStudio/blocksnet-mcp"
+Issues = "https://github.com/SevenSolarStudio/blocksnet-mcp/issues"
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["blocksnet_mcp", "blocksnet_agent", "blocksnet_agent.tools"]
+
+[tool.setuptools.package-data]
+"blocksnet_mcp" = ["py.typed"]
+"blocksnet_agent" = ["py.typed"]
+"blocksnet_agent.tools" = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-q --no-header"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]

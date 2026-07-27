@@ -1,0 +1,79 @@
+# a2a/07: MCP-сервер — НЕ тянет LLM-зависимости.
+#
+# Размер образа существенно меньше agent-образа (нет langgraph,
+# langchain_openai, tiktoken, optuna). Использует только:
+# - mcp>=1.9.0 (FastMCP + JSON-RPC)
+# - pydantic-settings, python-dotenv
+# - geopandas, pandas, numpy, blocksnet, matplotlib, optuna
+#
+# LLM-переменные НЕ объявлять — это витрина того, что MCP их не требует.
+
+# ---- Stage 1: builder (сборка колёс) -------------------------------------
+FROM python:3.11-slim AS builder
+
+# Системные зависимости для geopandas/blocksnet: GDAL, GEOS, PROJ.
+# Без них образ не соберётся.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libgdal-dev \
+    libgeos-dev \
+    libproj-dev \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /build
+
+# Сначала requirements для кеширования слоя pip.
+COPY pyproject.toml ./
+COPY blocksnet_mcp/ ./blocksnet_mcp/
+COPY blocksnet_agent/ ./blocksnet_agent/
+
+# Устанавливаем только MCP-extras — НЕ agent. Это критично: образ не должен
+# тянуть langgraph/langchain_openai/tiktoken.
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir .[mcp]
+
+# ---- Stage 2: runtime (slim) ----------------------------------------------
+FROM python:3.11-slim AS runtime
+
+# Минимальный набор рантайм-зависимостей (без -dev пакетов).
+# a2a/07 fix: python:3.11-slim основан на Debian 12 (bookworm), а не Ubuntu.
+# Правильные имена пакетов: libgdal36, libgeos-c1t64, libproj25.
+# 'libgeos3*' — wildcard для libgeos3.13.1 (bookworm) и совместимости с Ubuntu.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgdal36 \
+    libgeos-c1t64 \
+    'libgeos3*' \
+    libproj25 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Non-root пользователь.
+RUN groupadd -r app && useradd -r -g app -d /app -s /sbin/nologin app
+
+WORKDIR /app
+
+# Копируем установленный пакет из builder.
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+COPY --from=builder /build/blocksnet_mcp /app/blocksnet_mcp
+COPY --from=builder /build/blocksnet_agent /app/blocksnet_agent
+COPY pyproject.toml /app/
+
+# DATA_DIR/OUTPUT_DIR — volume (НЕ в образ). Создаём пустые каталоги
+# для owner-контроля, монтирование их перекроет.
+RUN mkdir -p /app/data /app/outputs && \
+    chown -R app:app /app
+
+USER app
+
+# VOLUME для данных (НЕ bake в образ).
+VOLUME ["/app/data", "/app/outputs"]
+
+# ENV по умолчанию — для stdio-MCP (compose переопределит).
+ENV DATA_DIR=/app/data \
+    OUTPUT_DIR=/app/outputs \
+    PYTHONUNBUFFERED=1
+
+# entrypoint — stdio MCP.
+ENTRYPOINT ["python", "-m", "blocksnet_mcp"]

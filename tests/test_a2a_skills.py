@@ -1,0 +1,302 @@
+"""Тесты шага 05 a2a-рефакторинга: контракт skill-ов и валидация.
+
+Главные гарантии:
+- ``analyze_urban_question`` (A2A) возвращает те же ключи, что MCP-tool
+  (status/tool/run_id/run_dir/error_code/hypotheses/measured/recommendation_blocks).
+- ``run_pipeline`` эмитит submitted → working → completed.
+- Ошибка агента → ``failed`` + ``error_code``, не исключение наружу.
+- Пустой ``question`` → ``VALIDATION_ERROR``.
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
+
+import pytest
+
+from blocksnet_agent.a2a import skills
+from blocksnet_agent.a2a.task_manager import TaskManager
+
+
+@pytest.fixture
+def task_manager() -> TaskManager:
+    return TaskManager(
+        max_concurrent=2, task_ttl_sec=60.0, progress_interval_sec=0.0
+    )
+
+
+@pytest.fixture
+def mock_blocksnet_agent(monkeypatch: pytest.MonkeyPatch):
+    """Подменяет BlocksNetAgent.run + Settings() — без реального LLM.
+
+    Патчит ``blocksnet_agent.config.Settings``, потому что executor.py делает
+    ``from blocksnet_agent.config import Settings`` внутри функции.
+    """
+    from blocksnet_agent import config as cfg_module
+    from blocksnet_agent.config import Settings
+
+    fake_settings = Settings.model_construct(
+        chat_url="http://test",
+        api_key="test",
+        model="test-model",
+        data_dir=Path("/tmp"),
+        output_dir=Path("/tmp"),
+        max_iterations=5,
+    )
+    monkeypatch.setattr(cfg_module, "Settings", lambda: fake_settings)
+
+    class _FakeResult:
+        def __init__(self):
+            self.output = "Mock"
+            self.run_id = "test"
+            self.run_dir = "/tmp/run"
+            self.sections = {}
+            self.confidence = 0.5
+            self.limitations = []
+            self.artifacts = []
+            self.submitted_answer = None
+            self.overlay_recommendations = []
+            self.overlay_meta = {}
+            self.hypotheses = []
+            self.measured = {}
+            self._data = {
+                "question": "x", "output": self.output, "sections": {},
+                "confidence": self.confidence, "limitations": [],
+                "artifacts": [], "recommendation_blocks": [],
+                "overlay_candidates": None, "overlay_meta": None,
+                "hypotheses": [], "measured": {},
+            }
+
+        def get(self, k, d=None):
+            return self._data.get(k, d)
+
+    from blocksnet_agent import BlocksNetAgent
+    monkeypatch.setattr(BlocksNetAgent, "run", lambda self, task: _FakeResult())
+
+    return {"settings": fake_settings, "result_cls": _FakeResult}
+
+
+# --- контракт ответа -------------------------------------------------------
+
+
+def test_run_pipeline_output_has_required_keys(
+    task_manager: TaskManager, mock_blocksnet_agent: dict
+) -> None:
+    """``run_pipeline`` отдаёт dict с обязательными ключами (как MCP-tool)."""
+    record = task_manager.submit(
+        {"question": "тест"},
+        runner=lambda rec, cb: skills.get_skill("run_pipeline").runner(
+            input_payload={"question": "тест"},
+            task_manager=task_manager,
+            output_dir=Path("/tmp"),
+            data_dir=Path("/tmp"),
+            deadline_sec=None,
+            progress_cb=lambda s, m: None,
+        ),
+    )
+    record.future.result(timeout=5.0)
+    output = (task_manager.get(record.task_id) or record).output or {}
+    assert "status" in output
+    assert "tool" in output
+    assert output["tool"] == "run_pipeline"
+
+
+def test_analyze_urban_question_proxy_to_run_pipeline(
+    task_manager: TaskManager, mock_blocksnet_agent: dict
+) -> None:
+    """``analyze_urban_question`` — прокси на ``run_pipeline``, тот же формат."""
+    record = task_manager.submit(
+        {"question": "q"},
+        runner=lambda rec, cb: skills.get_skill("analyze_urban_question").runner(
+            input_payload={"question": "q"},
+            task_manager=task_manager,
+            output_dir=Path("/tmp"),
+            data_dir=Path("/tmp"),
+            deadline_sec=None,
+            progress_cb=lambda s, m: None,
+        ),
+    )
+    record.future.result(timeout=5.0)
+    output = (task_manager.get(record.task_id) or record).output or {}
+    assert "status" in output
+    # tool — analyze_urban_question (back-compat) или run_pipeline (если прокси).
+    assert output.get("status") in ("ok", "partial", "failed")
+
+
+def test_analyze_urban_question_contract_keys_match_mcp(
+    task_manager: TaskManager, mock_blocksnet_agent: dict
+) -> None:
+    """Ответ A2A-skill содержит те же ключи верхнего уровня, что MCP-tool."""
+    expected_keys = {
+        "status", "tool", "question", "analysis_plan", "result", "hypotheses",
+        "measured", "recommendation_blocks", "confidence", "limitations",
+        "artifacts", "run_id", "run_dir",
+    }
+
+    record = task_manager.submit(
+        {"question": "q"},
+        runner=lambda rec, cb: skills.get_skill("run_pipeline").runner(
+            input_payload={"question": "q"},
+            task_manager=task_manager,
+            output_dir=Path("/tmp"),
+            data_dir=Path("/tmp"),
+            deadline_sec=None,
+            progress_cb=lambda s, m: None,
+        ),
+    )
+    record.future.result(timeout=5.0)
+    output = (task_manager.get(record.task_id) or record).output or {}
+
+    for k in expected_keys:
+        assert k in output, f"обязательный ключ {k!r} отсутствует в A2A-ответе"
+
+
+# --- валидация -------------------------------------------------------------
+
+
+def test_empty_question_returns_validation_error(
+    task_manager: TaskManager, mock_blocksnet_agent: dict
+) -> None:
+    """Пустой вопрос → ``status=failed``, ``error_code=VALIDATION_ERROR``."""
+    record = task_manager.submit(
+        {"question": ""},
+        runner=lambda rec, cb: skills.get_skill("run_pipeline").runner(
+            input_payload={"question": ""},
+            task_manager=task_manager,
+            output_dir=Path("/tmp"),
+            data_dir=Path("/tmp"),
+            deadline_sec=None,
+            progress_cb=lambda s, m: None,
+        ),
+    )
+    record.future.result(timeout=5.0)
+    output = (task_manager.get(record.task_id) or record).output or {}
+    assert output.get("status") == "failed"
+    assert output.get("error_code") == "VALIDATION_ERROR"
+
+
+def test_invalid_max_iterations_returns_validation_error(
+    task_manager: TaskManager, mock_blocksnet_agent: dict
+) -> None:
+    """``max_iterations=0`` → ``VALIDATION_ERROR``."""
+    record = task_manager.submit(
+        {"question": "q", "max_iterations": 0},
+        runner=lambda rec, cb: skills.get_skill("run_pipeline").runner(
+            input_payload={"question": "q", "max_iterations": 0},
+            task_manager=task_manager,
+            output_dir=Path("/tmp"),
+            data_dir=Path("/tmp"),
+            deadline_sec=None,
+            progress_cb=lambda s, m: None,
+        ),
+    )
+    record.future.result(timeout=5.0)
+    output = (task_manager.get(record.task_id) or record).output or {}
+    assert output.get("status") == "failed"
+    assert output.get("error_code") == "VALIDATION_ERROR"
+
+
+# --- реестр skills ----------------------------------------------------------
+
+
+def test_skills_registry_has_two_skills() -> None:
+    """В реестре ровно два skill-а."""
+    assert len(skills.SKILLS) == 2
+    ids = {spec.id for spec in skills.SKILLS}
+    assert ids == {"run_pipeline", "analyze_urban_question"}
+
+
+def test_get_skill_returns_correct_spec() -> None:
+    """``get_skill(id)`` возвращает нужный SkillSpec."""
+    spec = skills.get_skill("run_pipeline")
+    assert spec is not None
+    assert spec.id == "run_pipeline"
+    assert spec.input_model.__name__ == "RunPipelineInput"
+
+
+def test_get_skill_returns_none_for_unknown() -> None:
+    """``get_skill(unknown)`` → None, не KeyError."""
+    assert skills.get_skill("nonexistent_skill") is None
+
+
+# --- e2e executor с monkeypatch --------------------------------------------
+
+
+def test_execute_run_pipeline_with_mock_agent(
+    task_manager: TaskManager, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """``execute_run_pipeline`` через monkeypatch BlocksNetAgent.run → ok."""
+    from blocksnet_agent.a2a import executor as exec_module
+    from blocksnet_agent.config import Settings
+
+    class _FakeResult:
+        """Mock AgentResult с интерфейсом dict — to_json() ожидает ``.get()``."""
+
+        def __init__(self) -> None:
+            self.output = "Mock result"
+            self.run_id = "test-fake"
+            self.run_dir = "/tmp/run_mock"
+            self.sections = {}
+            self.confidence = 0.5
+            self.limitations = []
+            self.artifacts = []
+            self.submitted_answer = None
+            self.overlay_recommendations = []
+            self.overlay_meta = {}
+            self.hypotheses = []
+            self.measured = {}
+            self.valid_block_ids = []
+            self._data = {
+                "question": "mock question",
+                "output": self.output,
+                "sections": self.sections,
+                "confidence": self.confidence,
+                "limitations": self.limitations,
+                "artifacts": self.artifacts,
+                "recommendation_blocks": [],
+                "overlay_candidates": None,
+                "overlay_meta": None,
+                "hypotheses": self.hypotheses,
+                "measured": self.measured,
+            }
+
+        def get(self, key: str, default=None):
+            return self._data.get(key, default)
+
+    # Подменяем Settings() — без чтения реальных credentials.
+    fake_settings = Settings.model_construct(
+        chat_url="http://test",
+        api_key="test",
+        model="test-model",
+        data_dir=Path("/tmp"),
+        output_dir=Path("/tmp"),
+        max_iterations=5,
+    )
+
+    # Подменяем BlocksNetAgent.run.
+    def _fake_run(self, task):
+        return _FakeResult()
+
+    from blocksnet_agent import BlocksNetAgent
+
+    monkeypatch.setattr(BlocksNetAgent, "run", _fake_run)
+
+    record = task_manager.submit(
+        {"question": "mock question"},
+        runner=lambda rec, cb: exec_module.execute_run_pipeline(
+            question="mock question",
+            max_iterations=5,
+            output_dir=Path("/tmp"),
+            data_dir=Path("/tmp"),
+            deadline_sec=None,
+            stop_event=rec.stop_event,
+            progress_cb=lambda s, m: None,
+            agent_settings=fake_settings,  # передаём напрямую — без .env
+        ),
+    )
+    record.future.result(timeout=5.0)
+    output = (task_manager.get(record.task_id) or record).output or {}
+    assert output.get("status") == "ok"
+    assert output.get("tool") == "run_pipeline"
+    assert output.get("run_id")

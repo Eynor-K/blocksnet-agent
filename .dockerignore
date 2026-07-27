@@ -1,0 +1,65 @@
+# Данные — гигабайты, в образ НЕ копировать.
+data/
+/data/
+*.gpkg
+*.pickle
+
+# Артефакты запусков — на хосте, не в образ.
+outputs/
+
+# Виртуальные окружения — никогда не в образ.
+.venv/
+.venv-spike/
+.python310/
+.python-version
+
+# Кеши сборки.
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Jupyter.
+.ipynb_checkpoints/
+examples/
+
+# Документация — не нужна в рантайме.
+docs/
+
+# Git.
+.git/
+.gitignore
+
+# Логи.
+*.log
+logs/
+
+# Тесты (тесты — для разработки, не для рантайма).
+tests/
+
+# IDE/редакторы.
+.idea/
+.vscode/
+.DS_Store
+*.tmp
+*.bak
+*.swp
+
+# Документация плана (не нужна в образе).
+docs/a2a_refactor/
+
+# Локальные настройки.
+.env
+.env.local
+.env.*.local
+
+# Релизы и wheel'ы.
+*.whl
+pip-wheel-metadata/
+
+# Optuna-логи.
+OptunaOptimizer.log

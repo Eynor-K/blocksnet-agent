@@ -1,0 +1,70 @@
+# a2a/07: A2A-сервер — с LLM-зависимостями.
+#
+# Больше MCP-образа за счёт: a2a-sdk, langchain-core, langchain-classic,
+# langchain-openai, langgraph, tiktoken. Использует agent-extras.
+
+# ---- Stage 1: builder (сборка колёс) -------------------------------------
+FROM python:3.11-slim AS builder
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libgdal-dev \
+    libgeos-dev \
+    libproj-dev \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /build
+
+COPY pyproject.toml ./
+COPY blocksnet_agent/ ./blocksnet_agent/
+COPY blocksnet_mcp/ ./blocksnet_mcp/
+
+# Устанавливаем agent-extras (включает всё из mcp + langgraph + a2a-sdk).
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir .[agent]
+
+# ---- Stage 2: runtime (slim) ----------------------------------------------
+FROM python:3.11-slim AS runtime
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgdal36 \
+    libgeos-c1t64 \
+    'libgeos3*' \
+    libproj25 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -r app && useradd -r -g app -d /app -s /sbin/nologin app
+
+WORKDIR /app
+
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+COPY --from=builder /build/blocksnet_agent /app/blocksnet_agent
+COPY --from=builder /build/blocksnet_mcp /app/blocksnet_mcp
+COPY pyproject.toml /app/
+
+RUN mkdir -p /app/data /app/outputs && \
+    chown -R app:app /app
+
+USER app
+
+VOLUME ["/app/data", "/app/outputs"]
+
+# ENV по умолчанию. CHAT_URL/API_KEY задаются через .env файл (НЕ в образе).
+ENV A2A_HOST=0.0.0.0 \
+    A2A_PORT=8080 \
+    DATA_DIR=/app/data \
+    OUTPUT_DIR=/app/outputs \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app
+
+# EXPOSE для compose / healthchecks.
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -fsS http://127.0.0.1:8080/health || exit 1
+
+ENTRYPOINT ["python", "-m", "blocksnet_agent"]

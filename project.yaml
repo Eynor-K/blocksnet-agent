@@ -1,0 +1,15 @@
+# Project marker for the /root/workflow indexer.
+name: blocksnet-mcp
+section: ITMO
+status: active
+summary: "TickTick-synced: 🤖blocksnet-mcp in 🧪ITMO"
+tags: []
+wiki: "knowledge/projects/itmo/blocksnet-mcp"
+updated: 2026-07-12
+ticktick_id: 6a438d81ebdd37000000066a
+ticktick_name: "🤖blocksnet-mcp"
+ticktick_group: "🧪ITMO"
+# Backlink: заметка с описанием решения, записанная 2026-06-30
+# (id читается через TickTick MCP get_task_by_id, см. README)
+ticktick_note_task_id: 6a4394388f083b866a05f172
+ticktick_note_title: "blocksnet-mcp: описание решения (ITMO)"
