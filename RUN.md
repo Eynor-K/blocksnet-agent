@@ -9,7 +9,7 @@
 
 `blocksnet-agent` включает два решения для городской аналитики поверх `BlocksNetAgent`:
 
-- **MCP-server** (`python -m blocksnet_mcp`) — stdio, 32 raw-tools + 3 session-tools.
+- **MCP-server** (`python -m blocksnet_mcp`) — stdio, 33 raw-tools + 3 session-tools.
 **Не требует LLM** — может работать на чистых данных.
 - **A2A-агент** (`python -m blocksnet_agent`) — HTTP, 2 skill-а (`run_pipeline`,  
 `analyze_urban_question` DEPRECATED). Требует LLM через OpenAI-compatible endpoint  
@@ -18,6 +18,12 @@
 ---
 
 
+
+> **Интеграция в CodeSynapse (MAS):** значения регистрации, процедура
+> подключения и разбор типовых ошибок — в
+> [docs/codesynapse_registration.md](docs/codesynapse_registration.md).
+> Соответствие контракту и открытые вопросы —
+> [docs/reports/codesynapse_contract_compliance.md](docs/reports/codesynapse_contract_compliance.md).
 
 ## Способ 1 — Локальный запуск без Docker (самый быстрый)
 
@@ -36,6 +42,17 @@ cp .env.example .env
 mkdir -p data/saint_petersburg
 # Должно быть: data/saint_petersburg/blocks_with_services.gpkg
 #             data/saint_petersburg/acc_mx.pickle
+#
+# Для ``compute_road_congestion`` дополнительно нужны три файла, которые
+# готовит ``scripts/prepare_road_congestion_inputs.py`` (см. R4 плана
+# ``docs/dev/plans/road_congestion.md``):
+#
+#   data/saint_petersburg/blocks_to_nodes.pickle
+#   data/saint_petersburg/nodes_to_nodes.pickle
+#   data/saint_petersburg/graph_drive.graphml
+#
+# Пример:
+#   DATA_DIR=data/saint_petersburg python -m scripts.prepare_road_congestion_inputs
 
 # 4. Запустить A2A-агента (HTTP, FastAPI)
 DATA_DIR=data/saint_petersburg python -m blocksnet_agent
@@ -116,7 +133,7 @@ docker compose down
      }'
   ```
 4. **MCP-каталог:** см. [docs/mcp_tool_catalog.md](docs/mcp_tool_catalog.md) —
-  32 инструмента с описаниями.
+  33 инструмента с описаниями.
 
 ---
 
@@ -146,7 +163,7 @@ docker compose down
 3. [docs/deployment.md](docs/deployment.md) — подробный deployment, env, troubleshooting — 15 минут
 4. [docs/tool_contract.md](docs/tool_contract.md) — контракт, коды ошибок, сессии — 20 минут
 5. [docs/architecture.md](docs/architecture.md) — целевая архитектура MCP+A2A — 10 минут
-6. [docs/mcp_tool_catalog.md](docs/mcp_tool_catalog.md) — каталог 32 инструментов — 5 минут
+6. [docs/mcp_tool_catalog.md](docs/mcp_tool_catalog.md) — каталог 33 инструментов — 5 минут
 7. [docs/a2a_agent_card.md](docs/a2a_agent_card.md) — реальная Agent Card — 5 минут
 
 **Итого: ~70 минут на полное погружение.**

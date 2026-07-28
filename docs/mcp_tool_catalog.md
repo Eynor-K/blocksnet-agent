@@ -227,24 +227,50 @@ MCP-server ``blocksnet_mcp`` экспонирует 36 инструментов 
 ```
 Строит OD-матрицу и рассчитывает загруженность рёбер дорожного графа.
 
-        Экспериментальная метрика из blocksnet feat/road_congestion. Требует в data_dir:
-        blocks_with_services.gpkg, blocks_to_nodes.pickle, nodes_to_nodes.pickle и
-        graph_drive.graphml (альтернативы *.pkl и drive.graphml поддержаны). В графе нужны
-        int EPSG в graph['crs'], x/y узлов, time_min и lanes рёбер; после нормализации lanes
-        должны быть 1..8. Кварталы должны иметь population, land_use, site_area и count_*;
-        capacity_* автоматически преобразуются в count_* как число объектов с capacity>0.
+        Экспериментальная метрика. Реализация — вендоренная
+        ``origin_destination_matrix`` + ``road_congestion`` из
+        ``blocksnet_agent.vendor.road_congestion`` (upstream
+        aimclub/blocksnet @ feat/road_congestion @ 3a2ea5f).
 
-        accessibility — порог block→node в минутах (ближайший узел включается всегда).
-        max_trips — предохранитель от O(trips × Dijkstra); расчёт не запускается, если OD больше.
-        Результаты: state['origin_destination_matrix'], state['road_congestion_edges']; CSV
-        origin_destination_matrix.csv и road_congestion_edges.csv. congestion_level>1 допустим
-        и означает перегрузку. Не использовать main blocksnet: API есть только в feature-ветке.
+        Требует в ``data_dir``: ``blocks_with_services.gpkg``,
+        ``blocks_to_nodes.pickle``, ``nodes_to_nodes.pickle``,
+        ``graph_drive.graphml`` (альтернативы ``*.pkl`` и ``drive.graphml``
+        поддержаны). Сценарий подготовки: ``scripts/prepare_road_congestion_inputs.py``.
+
+        Граф: int EPSG в ``graph['crs']``, ``x``/``y`` узлов, ``time_min`` и
+        ``lanes`` рёбер. ``lanes`` нормализуется как в upstream:
+        ``lanes < 1`` → 1, значения > 8 отвергаются заранее с понятным
+        сообщением (иначе ``KeyError`` в ``_get_capacity_by_lanes``).
+
+        Кварталы: ``population``, ``land_use``, ``site_area``, ``count_*``;
+        ``capacity_*`` автоматически преобразуются в ``count_*``.
+
+        ``accessibility`` — порог block→node в минутах (ближайший узел
+        включается всегда). ``max_trips`` — предохранитель: расчёт не
+        запускается, если OD больше. ``od_top_pairs`` — сколько пар OD писать
+        в CSV (топ по объёму, sparse-формат; полная матрица живёт только в
+        ``state['origin_destination_matrix']``).
+
+        Результаты: ``state['origin_destination_matrix']``,
+        ``state['road_congestion_edges']``; CSV
+        ``origin_destination_matrix.csv`` (топ-N пар) и
+        ``road_congestion_edges.csv``. ``congestion_level > 1`` — допустимая
+        перегрузка.
+
+        Семантика OD: модель origin-constrained, поездки ≈ Σ население ×
+        ``trip_rate(land_use)`` (RESIDENTIAL=1.0, BUSINESS=2.7, INDUSTRIAL=2.0,
+        SPECIAL=1.2, TRANSPORT=1.0, RECREATION=1.4, AGRICULTURE=0.2).
+        Назначение дискретное: ``nx.dijkstra`` на каждую поездку —
+        ``O(поездки × Dijkstra)``. Поднятие ``max_trips`` выше реального
+        числа поездок на территории ведёт к зависанию, а не к результату:
+        вместо этого уменьшите территорию или агрегируйте узлы.
 ```
 
 **Вход:**
 
 - `accessibility` (`number`, необязательный) _(default: `10.0)`_
 - `max_trips` (`integer`, необязательный) _(default: `50000)`_
+- `od_top_pairs` (`integer`, необязательный) _(default: `200)`_
 
 **ToolSpec:** `name=compute_road_congestion`, `short='Строит OD-матрицу и рассчитывает загруженность рёбер дорожного графа.'`
 

@@ -25,7 +25,7 @@ mcp = [
     "numpy>=1.24.0",
     "networkx>=3.1,<4.0",
     "iduedu==0.4.1",
-    "blocksnet @ git+https://github.com/aimclub/blocksnet.git@feat/road_congestion",
+    "blocksnet>=1.0.0a9",  # road_congestion metric is vendored under blocksnet_agent.vendor.road_congestion
     "matplotlib>=3.7.0",
     "optuna>=3.4.0",
 ]
@@ -46,6 +46,9 @@ agent = [
 # Тесты + ноутбуки.
 dev = [
     "pytest>=8.0.0",
+    # Валидация Agent Card против исполняемых схем CodeSynapse
+    # (tests/test_codesynapse_contract.py, scripts/validate_agent_card.py).
+    "jsonschema>=4.0.0",
     "ipython>=8.0.0",
     "ipykernel>=6.0.0",
     "nbformat>=5.0.0",
@@ -73,12 +76,19 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["blocksnet_mcp", "blocksnet_agent", "blocksnet_agent.tools"]
+packages = [
+    "blocksnet_mcp",
+    "blocksnet_agent",
+    "blocksnet_agent.tools",
+    "blocksnet_agent.vendor",
+    "blocksnet_agent.vendor.road_congestion",
+]
 
 [tool.setuptools.package-data]
 "blocksnet_mcp" = ["py.typed"]
 "blocksnet_agent" = ["py.typed"]
 "blocksnet_agent.tools" = ["py.typed"]
+"blocksnet_agent.vendor.road_congestion" = ["LICENSE.blocksnet", "README.md", "py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

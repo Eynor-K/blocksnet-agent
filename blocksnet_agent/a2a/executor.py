@@ -109,14 +109,29 @@ def execute_run_pipeline(
     # data_dir на подкаталог сценария. Без scenario_id — используем data_dir
     # как есть (текущее поведение полностью сохраняется).
     if scenario_id is not None:
-        from blocksnet_agent.context import resolve_context
+        from blocksnet_agent.context import ContextError, resolve_context
 
-        scenario_ctx = resolve_context(
-            scenario_id=scenario_id,
-            project_id=project_id,
-            data_dir=data_dir,
-            output_dir=output_dir,
-        )
+        try:
+            scenario_ctx = resolve_context(
+                scenario_id=scenario_id,
+                project_id=project_id,
+                data_dir=data_dir,
+                output_dir=output_dir,
+            )
+        except ContextError as exc:
+            # Без materializer'а (UrbanDB не подключён) это **штатный** исход, а
+            # не авария: сценарий = имя заранее подготовленного датасета, и
+            # клиент вполне может назвать несуществующий. Отдаём машинный код
+            # и список доступных датасетов, чтобы вызывающий агент исправился
+            # сам, а не упёрся в generic TASK_EXCEPTION.
+            return build_payload(
+                type("R", (), {"output": "", "run_id": None})(),
+                "",
+                tool="run_pipeline",
+                status="failed",
+                error=exc.message,
+                error_code=exc.code,
+            )
         data_dir = scenario_ctx.data_dir
 
     # Копируем данные из agent_settings и обновляем data_dir (под scenario_id).

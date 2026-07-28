@@ -12,7 +12,7 @@
 
 Два решения на одном ядре:
 
-- **MCP-server** (`python -m blocksnet_mcp`) — stdio, **32 raw-инструмента + 3 session-tools**.
+- **MCP-server** (`python -m blocksnet_mcp`) — stdio, **33 raw-инструмента + 3 session-tools**.
   Не требует LLM. Подходит для интеграции в LLM-агенты (Claude/Cursor), скрипты,
   дашборды.
 - **A2A-агент** (`python -m blocksnet_agent`) — HTTP (FastAPI), **2 skill-а**:
@@ -30,7 +30,7 @@ payload, конфиг. Никакой дубликации — один исто
                         │                                                │
                         │  ┌──────────────┐    ┌──────────────────────┐ │
                         │  │ runtime.py   │    │ tools/ + catalog.py  │ │
-                        │  │ (per-run,    │    │ 32 raw tools + RAG   │ │
+                        │  │ (per-run,    │    │ 33 raw tools + RAG   │ │
                         │  │  start_run)  │    │                      │ │
                         │  └──────────────┘    └──────────────────────┘ │
                         │  ┌──────────────┐    ┌──────────────────────┐ │
@@ -53,10 +53,10 @@ payload, конфиг. Никакой дубликации — один исто
    │ server.py   ───std─►  │                          │ server.py   ──HTTP──►   │
    │   FastMCP             │                          │   FastAPI               │
    │ envelope.py           │                          │                         │
-   │ session.py            │                          │ 32 raw-tools не         │
+   │ session.py            │                          │ 33 raw-tools не         │
    │  (LRU+TTL+isolation)  │                          │ экспонируются —         │
    │                       │                          │ только 2 skill-а:       │
-   │ 32 raw-tools          │                          │ run_pipeline +          │
+   │ 33 raw-tools          │                          │ run_pipeline +          │
    │ + 3 session-tools     │                          │ analyze_urban_question  │
    └───────────────────────┘                          └─────────────────────────┘
               │                                                     │
@@ -185,6 +185,6 @@ envelope dict → MCP-клиент
 | Документ | Назначение |
 |---|---|
 | [deployment.md](deployment.md) | Quickstart, env-таблица, Docker |
-| [tool_contract.md](tool_contract.md) | Контракт: 32 MCP-tools, 2 A2A skill-а |
+| [tool_contract.md](tool_contract.md) | Контракт: 33 MCP-tools, 2 A2A skill-а |
 | [mcp_tool_catalog.md](mcp_tool_catalog.md) | Auto-generated каталог |
 | [a2a_agent_card.md](a2a_agent_card.md) | Карточка A2A-агента |

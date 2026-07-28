@@ -57,9 +57,9 @@
 | `docs/README.md` | Человекочитаемый индекс документации |
 | `docs/WIKI-LLM.md` | Этот LLM-навигационный индекс |
 | `docs/architecture.md` | Целевая архитектура: два транспорта (MCP + A2A), поток `run_pipeline` |
-| `docs/tool_contract.md` | Контракт: 32 MCP-tools, 2 A2A skill-а, сессии, auth |
+| `docs/tool_contract.md` | Контракт: 33 MCP-tools, 2 A2A skill-а, сессии, auth |
 | `docs/deployment.md` | Quickstart (локальный + Docker), env-таблица |
-| `docs/mcp_tool_catalog.md` | Auto-generated каталог 32 raw-инструментов |
+| `docs/mcp_tool_catalog.md` | Auto-generated каталог 33 raw-инструментов |
 | `docs/a2a_agent_card.md` | Реальная карточка A2A-агента, описание полей |
 
 ## Целевой MCP-слой

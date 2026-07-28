@@ -2,7 +2,7 @@
 
 `blocksnet-agent` включает два решения для городской аналитики поверх `BlocksNetAgent`:
 
-- **MCP-server** (`python -m blocksnet_mcp`) — stdio, 32 raw-tools + 3 session-tools.
+- **MCP-server** (`python -m blocksnet_mcp`) — stdio, 33 raw-tools + 3 session-tools.
 Не требует LLM.
 - **A2A-агент** (`python -m blocksnet_agent`) — HTTP, 2 skill-а (`run_pipeline`,  
 `analyze_urban_question`). Требует LLM (CHAT_URL/API_KEY).
@@ -78,7 +78,7 @@ docker compose up -d
 ## Каталог инструментов и контракт
 
 - **MCP**: [docs/mcp_tool_catalog.md](docs/mcp_tool_catalog.md) — auto-generated из
-живого кода через `build_catalog()`. 32 raw-инструмента + 3 session-tools.
+живого кода через `build_catalog()`. 33 raw-инструмента + 3 session-tools.
 - **A2A**: [docs/a2a_agent_card.md](docs/a2a_agent_card.md) — карточка сервиса
 (реальный вывод), описание skill-ов.
 - **Контракт**: [docs/tool_contract.md](docs/tool_contract.md) — формат
@@ -215,7 +215,7 @@ ReAct (AgentExecutor)
 | ---------------------------------------------------- | --------------------------------------------------------------------- |
 | [docs/architecture.md](docs/architecture.md)         | Целевая архитектура: два транспорта (MCP + A2A), поток `run_pipeline` |
 | [docs/tool_contract.md](docs/tool_contract.md)       | Контракт MCP-инструментов и A2A-skill-ов: формат ответа, сессии, auth |
-| [docs/mcp_tool_catalog.md](docs/mcp_tool_catalog.md) | Auto-generated каталог 32 raw-инструментов + 3 session-tools          |
+| [docs/mcp_tool_catalog.md](docs/mcp_tool_catalog.md) | Auto-generated каталог 33 raw-инструментов + 3 session-tools          |
 | [docs/a2a_agent_card.md](docs/a2a_agent_card.md)     | Реальная карточка A2A-агента, описание полей                          |
 | [docs/deployment.md](docs/deployment.md)             | Локальный запуск + Docker compose + единая таблица env                |
 | [docs/WIKI-LLM.md](docs/WIKI-LLM.md)                 | Карта репозитория для LLM-навигации                                   |
@@ -225,7 +225,7 @@ ReAct (AgentExecutor)
 
 ## Статус
 
-**Два решения готовы:** MCP-server (`python -m blocksnet_mcp`, 32 raw-tools + 3 session-tools,
+**Два решения готовы:** MCP-server (`python -m blocksnet_mcp`, 33 raw-tools + 3 session-tools,
 без LLM) и A2A-агент (`python -m blocksnet_agent`, 2 skill-а, с LLM). Bearer auth +
 scenario_id, per-run stop, Docker с разделением зависимостей. **Финальный синтез
 (7-секционный decision memo)** собирается всегда, в `run_dir/synthesis.md` и в payload.

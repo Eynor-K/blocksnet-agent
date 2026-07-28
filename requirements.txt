@@ -14,7 +14,7 @@ tiktoken>=0.7.0
 geopandas>=0.14.0
 pandas>=2.0.0
 numpy>=1.24.0
-blocksnet>=1.0.0a9
+blocksnet>=1.0.0a9  # road_congestion metric is vendored under blocksnet_agent.vendor.road_congestion
 matplotlib>=3.7.0
 optuna>=3.4.0
 

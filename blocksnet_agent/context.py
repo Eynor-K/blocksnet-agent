@@ -133,8 +133,18 @@ def resolve_context(
     target_data_dir = _safe_data_dir(safe_scenario, data_dir)
     if safe_scenario is not None and not target_data_dir.exists():
         if materializer is None:
+            # UrbanDB не подключён, поэтому сценарий = имя заранее
+            # подготовленного датасета. Перечисляем доступные: вызывающий агент
+            # (в MAS — чужой) не знает нашу раскладку и без подсказки будет
+            # повторять неверный id. Абсолютный путь наружу не отдаём.
+            available = available_scenarios(data_dir)
+            hint = (
+                f"available scenarios: {', '.join(available)}"
+                if available
+                else "no scenarios are provisioned on this instance"
+            )
             raise ContextError(
-                f"scenario {safe_scenario!r} not materialized (no data at {target_data_dir})",
+                f"scenario {safe_scenario!r} is not provisioned; {hint}",
                 code=ERROR_SCENARIO_NOT_MATERIALIZED,
             )
         try:
@@ -157,6 +167,23 @@ def resolve_context(
         data_dir=target_data_dir,
         output_dir=output_dir.resolve(),
     )
+
+
+def available_scenarios(data_dir: Path, *, limit: int = 20) -> list[str]:
+    """Имена подготовленных датасетов — подкаталоги ``DATA_DIR``.
+
+    Пока UrbanDB не подключён, это и есть полный перечень допустимых значений
+    ``scenario_id``. Скрытые каталоги и ``outputs`` не считаем.
+    """
+    try:
+        names = sorted(
+            entry.name
+            for entry in data_dir.iterdir()
+            if entry.is_dir() and not entry.name.startswith(".") and entry.name != "outputs"
+        )
+    except OSError:
+        return []
+    return names[:limit]
 
 
 def make_in_process_materializer(
@@ -186,5 +213,6 @@ __all__ = [
     "ERROR_VALIDATION_ERROR",
     "ERROR_SCENARIO_NOT_MATERIALIZED",
     "resolve_context",
+    "available_scenarios",
     "make_in_process_materializer",
 ]

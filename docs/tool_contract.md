@@ -1,6 +1,6 @@
 # Контракт инструментов
 
-- **MCP-server экспонирует 32 raw-инструмента** (``compute_*``, ``load_*``, ``list_*``,
+- **MCP-server экспонирует 33 raw-инструмента** (``compute_*``, ``load_*``, ``list_*``,
   ``get_*``, ``render_metric_map``, ``suggest_target_blocks``, ``propose_zone_development``,
   ``build_adjacency_graph``, ``find_tools``, ``get_tool_help``) +
   **3 служебных** (``open_session``/``close_session``/``session_info``). Полный каталог —
@@ -84,6 +84,46 @@ A2A-skill ``run_pipeline`` предоставляет тот же формат +
 | `SCENARIO_NOT_MATERIALIZED` | ``scenario_id`` задан, но каталога нет и materializer не помог |
 
 **Envelope НЕ различает «нет токена» и «неверный токен»** (anti-enumeration).
+
+### 8.1. `compute_road_congestion` (экспериментальный)
+
+Строит OD-матрицу (origin-constrained gravity, integerized) и выполняет
+дискретное trip-by-trip назначение поездок через Дейкстру на дорожном графе.
+Возвращает для каждого ребра `intensity` (число поездок), `capacity`
+(ёмкость по полосам) и `congestion_level = intensity / capacity`.
+
+**Статус:** экспериментальный. Реализация вендорена в
+`blocksnet_agent/vendor/road_congestion/` (upstream
+`aimclub/blocksnet @ feat/road_congestion @ 3a2ea5f`), пин на feature-ветку
+снят, остальной стек работает на релизе `blocksnet` с PyPI.
+
+**Ограничения по применению:**
+
+- OD семантика: `total_trips ≈ Σ население × trip_rate(land_use)`. На
+  территории > ~50 тыс. жителей OD превышает дефолт `max_trips=50_000` —
+  предохранитель возвращает понятное сообщение **без** подсказки
+  «увеличьте лимит»: дискретное назначение — `O(поездки × Dijkstra)`,
+  поднимать `max_trips` опасно (часы работы).
+- Дефолт `max_trips=50_000` — компромисс: метрика применима к району или
+  малому городу. Для крупного города уменьшайте территорию или
+  агрегируйте узлы; честный вывод, а не маскировка дефолтом.
+- Поддерживаются `lanes ∈ 1..8`; `lanes > 8` отвергается заранее
+  (иначе `KeyError` в `_get_capacity_by_lanes`). `lanes < 1` нормализуется
+  к 1. Лоссовый разбор (`lanes` как список/строка с разделителями)
+  отражается в сводке числом рёбер.
+- OD-выгрузка: `origin_destination_matrix.csv` пишется sparse (топ-N пар,
+  дефолт 200). Полная матрица остаётся в `state['origin_destination_matrix']`.
+
+**Данные:** требует `blocks_to_nodes.pickle`, `nodes_to_nodes.pickle`,
+`graph_drive.graphml` (альтернативы `*.pkl` и `drive.graphml` поддержаны) —
+готовятся скриптом `scripts/prepare_road_congestion_inputs.py`.
+
+**Известные upstream-дефекты** (см.
+`research/road_congestion_skill_basis.md`):
+`# FIXME multidigraph edges split congestion`. Перенесены вместе с кодом;
+правки — за рамками этого плана.
+
+Полный план доведения до production: `docs/dev/plans/road_congestion.md`.
 
 ## 9. Сессии MCP
 
@@ -213,7 +253,7 @@ maps/                # PNG/CSV из compute_*
 | `analyze_urban_question` (MCP-tool, v1) | `analyze_urban_question` (MCP-tool, v2) | **DEPRECATED** — legacy LLM-tool, убрать в v2.1 |
 | `analyze_urban_question` (MCP-tool) | `analyze_urban_question` (A2A skill) | **DEPRECATED** — прокси на ``run_pipeline``, убрать в v2.1 |
 | (нет) | `run_pipeline` (A2A skill) | **NEW** — основной A2A skill |
-| (нет) | 32 raw-инструмента + 3 session-tools (MCP) | **NEW** |
+| (нет) | 33 raw-инструмента + 3 session-tools (MCP) | **NEW** — включает экспериментальный `compute_road_congestion` (см. R-план `docs/dev/plans/road_congestion.md`) |
 | (нет) | сессии с ``session_id`` + изоляция | **NEW** |
 | (нет) | ``scenario_id`` / ``project_id`` | **NEW** |
 | (нет) | Bearer auth | **NEW** (опционально) |

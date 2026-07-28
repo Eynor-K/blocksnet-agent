@@ -18,6 +18,7 @@
 from __future__ import annotations
 
 import logging
+import uuid
 from typing import Any
 
 from a2a.server.agent_execution import AgentExecutor, RequestContext
@@ -31,6 +32,7 @@ from a2a.types import (
     Message,
     Part,
     Role,
+    Task,
     TaskArtifactUpdateEvent,
     TaskState,
     TaskStatus,
@@ -39,13 +41,30 @@ from a2a.types import (
 from fastapi import FastAPI
 
 from blocksnet_agent.a2a.agent_card import build_agent_card
+from blocksnet_agent.a2a.artifacts import build_artifacts
 from blocksnet_agent.a2a.auth import auth_middleware, configure_auth
 from blocksnet_agent.a2a.executor import execute_run_pipeline
+from blocksnet_agent.a2a.params import ParamValidationError, parse_message_params
 from blocksnet_agent.a2a.settings import A2ASettings
 from blocksnet_agent.a2a.skills import SKILLS, get_skill
+from blocksnet_agent.context import ERROR_VALIDATION_ERROR
 from blocksnet_agent.a2a.task_manager import TaskManager, TaskState as A2ATaskState
 
 log = logging.getLogger("blocksnet_agent.a2a")
+
+
+def _agent_message(text: str) -> Message:
+    """Сообщение агента для ``TaskStatus.message``.
+
+    ``messageId`` обязателен по схеме CodeSynapse ($defs.message): без него
+    Task не проходит их валидацию, хотя SDK такое сообщение соберёт молча.
+    """
+    return Message(
+        message_id=uuid.uuid4().hex,
+        role=Role.ROLE_AGENT,
+        parts=[Part(text=text or "")],
+    )
+
 
 
 # --- мост между A2A SDK и TaskManager ---------------------------------------
@@ -67,60 +86,137 @@ class _A2ATaskBridge(AgentExecutor):
         self._task_manager = task_manager
         self._settings = settings
 
+    async def _fail(
+        self,
+        event_queue: EventQueue,
+        *,
+        context: RequestContext,
+        ctx_id: str,
+        error_code: str,
+        message: str,
+    ) -> None:
+        """Терминальный отказ до запуска расчёта.
+
+        Причина уходит в ``TaskStatus.message``, потому что делегирование
+        CodeSynapse (``src/agents/a2a_delegate.py``) читает именно её и
+        показывает оркестратору вместо generic-метки. Traceback наружу не
+        уходит — в MAS-ответе ему не место.
+
+        Задача заводится и здесь: SDK требует Task до любого статусного
+        события, поэтому отказ «до расчёта» — всё равно полноценная задача с
+        терминальным состоянием, а не сообщение об ошибке.
+        """
+        await event_queue.enqueue_event(
+            Task(
+                id=context.task_id or "",
+                context_id=ctx_id,
+                status=TaskStatus(state=TaskState.TASK_STATE_SUBMITTED),
+            )
+        )
+        await event_queue.enqueue_event(
+            TaskStatusUpdateEvent(
+                task_id=context.task_id or "",
+                context_id=ctx_id,
+                status=TaskStatus(
+                    state=TaskState.TASK_STATE_FAILED,
+                    message=_agent_message(f"{error_code}: {message}"),
+                ),
+            )
+        )
+
     async def execute(
         self, context: RequestContext, event_queue: EventQueue
     ) -> None:
         """Обрабатывает SendMessage."""
-        user_text = ""
-        for part in context.message.parts:
-            # protobuf Part — oneof с прямыми полями.
-            user_text += part.text or ""
+        ctx_id = getattr(context, "context_id", None) or ""
+        # Идентификатор задачи в событиях — **SDK-шный**, а не наш внутренний
+        # record.task_id: их TaskManager сверяет id и отвергает событие с
+        # чужим ("Task in event doesn't match TaskManager").
+        task_id = context.task_id or ""
 
-        # a2a/06: scenario_id/project_id приходят в ``message.metadata``
-        # (стандартное поле a2a-sdk 1.1.1, protobuf-``map<string,string>``).
-        meta = dict(context.message.metadata or {})
-        scenario_id = meta.get("scenario_id") or None
-        project_id = meta.get("project_id") or None
+        # Приоритет источников: DataPart > metadata > дефолты. CodeSynapse
+        # заполняет только DataPart (их ADR-0006), metadata остаётся ради
+        # обратной совместимости. См. blocksnet_agent/a2a/params.py.
+        try:
+            params = parse_message_params(
+                context.message.parts,
+                context.message.metadata,
+            )
+        except ParamValidationError as exc:
+            # Значение структурно доехало, но недопустимо. Считать на дефолтах
+            # нельзя — это ровно то молчаливо неверное поведение, от которого
+            # уходим. Причина уезжает в TaskStatus.message: их a2a_delegate
+            # читает именно её вместо generic-метки.
+            await self._fail(
+                event_queue,
+                context=context,
+                ctx_id=ctx_id,
+                error_code=ERROR_VALIDATION_ERROR,
+                message=str(exc),
+            )
+            return
+
+        user_text = params.question
 
         # Определяем skill — пока по skill_id из контекста или дефолт run_pipeline.
         skill_id = "run_pipeline"
-        ctx_id = getattr(context, "context_id", None) or ""
         spec = get_skill(skill_id) or SKILLS[0]
 
         # Прогресс колбэк → TaskStatusUpdateEvent.
+        #
+        # Два требования профиля 1.0, каждое из которых раньше молча гасило
+        # весь поток статусов (конструктор падал, а except ниже это глотал):
+        #   * значения TaskState — protobuf-имена TASK_STATE_*, у SDK 1.1.1 нет
+        #     ни TaskState.working, ни прочих коротких алиасов;
+        #   * legacy-поля ``final`` в 1.0 нет — ни в их схеме
+        #     ($defs.taskStatusUpdate закрыта), ни в самом SDK.
+        # Мы объявляем ``streaming: true``, так что поток статусов — часть
+        # контракта, а не внутренняя деталь.
         def _on_progress(state: str, message: str) -> None:
             try:
                 a2a_state = {
-                    "submitted": TaskState.submitted,
-                    "working": TaskState.working,
-                    "completed": TaskState.completed,
-                    "failed": TaskState.failed,
-                    "canceled": TaskState.canceled,
+                    "submitted": TaskState.TASK_STATE_SUBMITTED,
+                    "working": TaskState.TASK_STATE_WORKING,
+                    "completed": TaskState.TASK_STATE_COMPLETED,
+                    "failed": TaskState.TASK_STATE_FAILED,
+                    "canceled": TaskState.TASK_STATE_CANCELED,
                 }[state]
             except KeyError:
-                a2a_state = TaskState.working
+                # Неизвестное состояние не должно деградировать молча: клиент
+                # ждёт терминального статуса и на working будет ждать дальше.
+                log.warning(
+                    "unknown progress state %r, reported as TASK_STATE_WORKING", state
+                )
+                a2a_state = TaskState.TASK_STATE_WORKING
             try:
                 event_queue.enqueue_event(
                     TaskStatusUpdateEvent(
                         task_id=context.task_id or "",
                         context_id=ctx_id,
-                        status=TaskStatus(state=a2a_state, message=Message(
-                            role=Role.ROLE_AGENT,
-                            parts=[Part(text=message or "")],
-                        )),
-                        final=(a2a_state != TaskState.working),
+                        status=TaskStatus(state=a2a_state, message=_agent_message(message)),
                     )
                 )
             except Exception:
                 log.warning("failed to enqueue progress event", exc_info=True)
 
+        # SDK требует, чтобы задача была заведена **до** любых task-событий
+        # ("Agent should enqueue Task before TaskStatusUpdateEvent"), иначе
+        # весь ответ схлопывается в INVALID_AGENT_RESPONSE.
+        await event_queue.enqueue_event(
+            Task(
+                id=task_id,
+                context_id=ctx_id,
+                status=TaskStatus(state=TaskState.TASK_STATE_SUBMITTED),
+            )
+        )
+
         # Запускаем через TaskManager (он сам стартует в пуле).
-        input_payload = {
-            "question": user_text,
-            "max_iterations": None,
-            "scenario_id": scenario_id,
-            "project_id": project_id,
-        }
+        input_payload = params.as_input_payload()
+        if params.sources:
+            log.info(
+                "run params: %s",
+                ", ".join(f"{k}={params.sources[k]}" for k in sorted(params.sources)),
+            )
         record = self._task_manager.submit(
             input_payload,
             runner=lambda rec, cb: spec.runner(
@@ -140,32 +236,55 @@ class _A2ATaskBridge(AgentExecutor):
             except Exception:
                 log.exception("task failed during execute()")
 
-        # Эмитим финальное сообщение — текст + status.
+        # Итог отдаём **задачей**, а не сообщением. Раньше здесь эмитился
+        # голый Message: SDK переводил обмен в "message mode", и следующий же
+        # TaskArtifactUpdateEvent ронял весь ответ ошибкой
+        # INVALID_AGENT_RESPONSE ("Received TaskArtifactUpdateEvent in message
+        # mode"). CodeSynapse при этом ждёт именно Task — их делегирование
+        # читает Task.artifacts и TaskStatus.message.
         record = self._task_manager.get(record.task_id) or record
         output = record.output or {"status": "failed", "error_code": "NO_OUTPUT"}
-        status_text = (
-            f"{output.get('status', 'ok')}: {output.get('error', output.get('output', ''))[:200]}"
-        )
-        await event_queue.enqueue_event(
-            Message(
-                role=Role.ROLE_AGENT,
-                parts=[Part(text=status_text)],
-            )
-        )
-        # Если есть артефакты — эмитим как TaskArtifactUpdateEvent.
-        for artifact_path in (output.get("artifacts") or []):
+
+        # Артефакты — до терминального статуса: после него задача закрыта.
+        for artifact in build_artifacts(output):
             try:
                 await event_queue.enqueue_event(
                     TaskArtifactUpdateEvent(
-                        task_id=record.task_id,
+                        task_id=task_id,
                         context_id=ctx_id,
-                        artifact={
-                            "parts": [{"text": str(artifact_path)}],
-                        },
+                        artifact=artifact,
                     )
                 )
             except Exception:
                 log.warning("failed to enqueue artifact event", exc_info=True)
+
+        status = str(output.get("status") or "ok")
+        failed = status not in ("ok", "partial") or bool(output.get("error"))
+        if record.state == A2ATaskState.CANCELED:
+            terminal = TaskState.TASK_STATE_CANCELED
+        elif failed:
+            terminal = TaskState.TASK_STATE_FAILED
+        else:
+            terminal = TaskState.TASK_STATE_COMPLETED
+
+        # Причина отказа — в TaskStatus.message: их a2a_delegate показывает
+        # оркестратору именно её, а не generic-метку. Traceback не отдаём.
+        if failed:
+            code = output.get("error_code") or "AGENT_ERROR"
+            summary = f"{code}: {output.get('error') or 'run failed'}"
+        else:
+            summary = f"{status}: {output.get('result') or output.get('output') or 'done'}"
+
+        await event_queue.enqueue_event(
+            TaskStatusUpdateEvent(
+                task_id=task_id,
+                context_id=ctx_id,
+                status=TaskStatus(
+                    state=terminal,
+                    message=_agent_message(summary[:2000]),
+                ),
+            )
+        )
 
     async def cancel(
         self, context: RequestContext, event_queue: EventQueue
@@ -178,13 +297,9 @@ class _A2ATaskBridge(AgentExecutor):
                 task_id=task_id,
                 context_id=getattr(context, "context_id", None) or "",
                 status=TaskStatus(
-                    state=TaskState.canceled if cancelled else TaskState.failed,
-                    message=Message(
-                        role=Role.ROLE_AGENT,
-                        parts=[Part(text="canceled" if cancelled else "no such task")],
-                    ),
+                    state=TaskState.TASK_STATE_CANCELED if cancelled else TaskState.TASK_STATE_FAILED,
+                    message=_agent_message("canceled" if cancelled else "no such task"),
                 ),
-                final=True,
             )
         )
 

@@ -19,11 +19,36 @@ from __future__ import annotations
 from a2a.types import (
     AgentCapabilities,
     AgentCard,
+    AgentExtension,
     AgentInterface,
     AgentSkill,
 )
+from google.protobuf.struct_pb2 import Struct
 
+from blocksnet_agent.a2a.extension import build_parameter_extension
 from blocksnet_agent.a2a.skills import SKILLS
+
+
+def _build_extensions() -> list[AgentExtension]:
+    """Profile Extension со схемой параметров запуска.
+
+    ``AgentExtension.params`` — ``google.protobuf.Struct``, поэтому JSON Schema
+    кладётся через ``update``: у protobuf нет конструктора из dict для Struct.
+    Без ``required=True`` клиент CodeSynapse не запускает извлечение параметров
+    вообще (их ``required_extensions_with_schema``), и DataPart до нас не
+    доедет — см. ``blocksnet_agent/a2a/extension.py``.
+    """
+    spec = build_parameter_extension()
+    params = Struct()
+    params.update(spec["params"])
+    return [
+        AgentExtension(
+            uri=spec["uri"],
+            description=spec["description"],
+            required=spec["required"],
+            params=params,
+        )
+    ]
 
 
 def build_agent_card(
@@ -73,6 +98,7 @@ def build_agent_card(
         capabilities=AgentCapabilities(
             streaming=True,
             push_notifications=False,  # отложено (09-deferred.md)
+            extensions=_build_extensions(),
         ),
         default_input_modes=["text/plain"],
         default_output_modes=["text/plain", "application/json"],
