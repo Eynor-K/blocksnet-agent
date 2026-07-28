@@ -37,6 +37,10 @@ docs/mas_integration_reference.md
 docs/mas_registration.md
 docs/mcp_repository_plan.md
 
+# Local dev workspace — планы, решения, deferred, спайки, дампы codesynapse.
+# Содержимое хранится на диске локально, в репозиторий не входит.
+docs/dev/
+
 # Large/local geodata; keep only small repository fixtures below
 data/
 
