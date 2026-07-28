@@ -5,13 +5,27 @@ from pathlib import Path
 
 import pytest
 
-from examples._lib.run_mcp import (
-    ROOT,
-    extract_agent_response,
-    pick_python,
-    prepare_city,
-    select_block_id,
+# ``examples/`` — локальная песочница, целиком в .gitignore (строка «Local
+# example datasets and preprocessing sandboxes»). В свежем клоне и в CI её нет,
+# поэтому жёсткий импорт превращал этот файл в ошибку **сбора**: pytest падал с
+# exit code 2 ещё до запуска тестов, и весь пайплайн (включая docker build,
+# который ждёт `needs: pytest`) вставал.
+#
+# Тесты гарнеса осмысленны только вместе с песочницей, поэтому корректное
+# поведение — пропустить их с внятной причиной, а не уронить набор.
+run_mcp = pytest.importorskip(
+    "examples._lib.run_mcp",
+    reason=(
+        "локальная песочница examples/_lib недоступна (каталог examples/ в "
+        ".gitignore) — тесты experiment harness пропущены"
+    ),
 )
+
+ROOT = run_mcp.ROOT
+extract_agent_response = run_mcp.extract_agent_response
+pick_python = run_mcp.pick_python
+prepare_city = run_mcp.prepare_city
+select_block_id = run_mcp.select_block_id
 
 
 def test_pick_python_uses_existing_cross_platform_interpreter() -> None:
