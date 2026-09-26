@@ -10,6 +10,8 @@
   --repo <repo-name>       (default: blocksnet-agent)
   --tag-spb <tag>          (default: v2026-data-spb)
   --tag-yuzhno <tag>       (default: v2026-data-yuzhno-sakhalinsk)
+  --tag-gatchina <tag>     (default: v2026-data-gatchina)
+  --tag-moscow <tag>       (default: v2026-data-moscow)
 
 Без аргументов — дефолты для текущего репозитория.
 """
@@ -28,18 +30,23 @@ def main() -> int:
     p.add_argument("--repo", default="blocksnet-agent")
     p.add_argument("--tag-spb", default="v2026-data-spb")
     p.add_argument("--tag-yuzhno", default="v2026-data-yuzhno-sakhalinsk")
+    p.add_argument("--tag-gatchina", default="v2026-data-gatchina")
+    p.add_argument("--tag-moscow", default="v2026-data-moscow")
     args = p.parse_args()
 
+    tags = {
+        "saint-petersburg": args.tag_spb,
+        "yuzhno-sakhalinsk": args.tag_yuzhno,
+        "gatchina": args.tag_gatchina,
+        "moscow": args.tag_moscow,
+    }
     m = json.loads(MANIFEST.read_text(encoding="utf-8"))
     for sid, entry in m["scenarios"].items():
         archive = entry["archive"]
-        if sid == "saint-petersburg":
-            tag = args.tag_spb
-        elif sid == "yuzhno-sakhalinsk":
-            tag = args.tag_yuzhno
-        elif sid == "vasilievsky-island":
+        if sid == "vasilievsky-island":
             continue  # vasilievsky-island сейчас не архивируется
-        else:
+        tag = tags.get(sid)
+        if tag is None:
             continue
         url = f"https://github.com/{args.owner}/{args.repo}/releases/download/{tag}/{archive}"
         if entry.get("release_url") == url:

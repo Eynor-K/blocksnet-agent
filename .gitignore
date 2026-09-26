@@ -66,6 +66,7 @@ scripts/.*~
 !scripts/generate_tool_catalog.py
 !scripts/validate_agent_card.py
 !scripts/package_data.py
+!scripts/build_moscow_blocks_with_services.py
 !scripts/fetch_data.py
 !scripts/inject_release_urls.py
 
@@ -93,6 +94,10 @@ data/_releases/
 !data/vasilievsky-island/README.md
 !data/yuzhno-sakhalinsk/
 !data/yuzhno-sakhalinsk/README.md
+!data/gatchina/
+!data/gatchina/README.md
+!data/moscow/
+!data/moscow/README.md
 
 # OS/editor noise
 .DS_Store

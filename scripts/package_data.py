@@ -38,7 +38,7 @@ MANIFEST_PATH = DATA_DIR / "manifest.json"
 SCHEMA_VERSION = 1
 
 EXCLUDE_DIRS = {"outputs", "__pycache__", ".ipynb_checkpoints", "_releases"}
-EXCLUDE_GLOBS = ("*.tmp", "*.bak", "*.swp", "._*", ".DS_Store", "Thumbs.db")
+EXCLUDE_GLOBS = ("*.tmp", "*.bak", "*.swp", "._*", ".DS_Store", "Thumbs.db", "* .geojson")
 
 
 @dataclass
@@ -96,8 +96,47 @@ SCENARIOS: list[ScenarioSpec] = [
         notes=[
                     "compute_road_congestion НЕ готов (нет graph_drive/b2n/n2n).",
                     "blocks_with_services.gpkg = переименованный blocks.gpkg (содержит всё для provision).",
-                    "Для road_congestion: MCP-tool prepare_road_congestion_inputs (Overpass через blocksnet.relations.get_accessibility_graph).",
+                    "Для road_congestion: scripts/prepare_road_congestion_inputs.py (адаптировать путь).",
                 ],
+    ),
+    ScenarioSpec(
+        scenario_id="gatchina",
+        description=(
+            "Гатчина: ~9.5 МБ. Полный provision-набор: blocks_with_services.gpkg "
+            "(351 квартал, 46 сервисов capacity_*+count_*) + acc_mx.pickle (351x351, float16). "
+            "road_congestion inputs отсутствуют."
+        ),
+        source_globs=[
+            "gatchina/data/**",
+        ],
+        notes=[
+            "acc_mx.pickle — копия acc_mx_drive.pickle: времена по DRIVE-графу (не walk); "
+            "provision считается по drive-временам.",
+            "compute_road_congestion НЕ готов (нет graph_drive/b2n/n2n).",
+            "Для road_congestion: MCP-tool prepare_road_congestion_inputs (Overpass через blocksnet.relations.get_accessibility_graph).",
+        ],
+    ),
+    ScenarioSpec(
+        scenario_id="moscow",
+        description=(
+            "Москва: ~1.3 ГБ (только runtime-набор). blocks_with_services.gpkg "
+            "(23926 кварталов, 43 count_*+capacity_* сервиса) + acc_mx.pickle (23926x23926, float16) + POI. "
+            "Provision работает для сервисов, представленных в capacity_*; school в исходной выгрузке отсутствует."
+        ),
+        source_globs=[
+            "moscow/data/blocks_with_services.gpkg",
+            "moscow/data/acc_mx.pickle",
+            "moscow/data/service_type.json",
+            "moscow/data/services/**",
+        ],
+        notes=[
+            "compute_service_provision / compute_scenario_provision / recommend_blocks_for_services работают "
+            "для 43 сервисов с capacity_*; school отсутствует в исходном services_gdf.parquet.",
+            "compute_road_congestion НЕ готов (graph_drive.pickle — не graphml; нет blocks_to_nodes/nodes_to_nodes).",
+            "load_accessibility_matrix приводит матрицу к float64 → ~4.6 ГБ RAM; нужно ≥8 ГБ свободной памяти.",
+            "Рабочие артефакты (model.pickle, t_zones*.gpkg, graph_*.pickle, result_*.geojson, *.parquet, "
+            "building_population_2022.gpkg) в архив НЕ входят — это ~2.8 ГБ промежуточных данных пайплайна.",
+        ],
     ),
 ]
 
@@ -219,11 +258,28 @@ def package_scenario(
 
 
 def write_manifest(entries: list[dict]) -> Path:
+    # Merge с существующим манифестом: --only не должен сносить сценарии,
+    # которые в этом прогоне не переупаковывались.
+    scenarios: dict[str, dict] = {}
+    if MANIFEST_PATH.exists():
+        try:
+            existing = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+            scenarios.update(existing.get("scenarios", {}))
+        except Exception:  # noqa: BLE001 — битый манифест перезаписываем с нуля
+            pass
+    for entry in entries:
+        prev = scenarios.get(entry["scenario_id"], {})
+        # release_url валиден только для того же содержимого: если sha256
+        # изменился (архив переупакован), старый URL указывает на другой байт-поток.
+        if "release_url" not in entry and prev.get("sha256") == entry.get("sha256"):
+            if prev.get("release_url"):
+                entry["release_url"] = prev["release_url"]
+        scenarios[entry["scenario_id"]] = entry
     manifest = {
         "schema_version": SCHEMA_VERSION,
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "generator": "scripts/package_data.py",
-        "scenarios": {e["scenario_id"]: e for e in entries},
+        "scenarios": scenarios,
     }
     MANIFEST_PATH.write_text(
         json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
